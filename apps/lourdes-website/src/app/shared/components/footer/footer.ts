@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { MenuItem } from '../../models/interfaces/menu-item.interface';
+import { MENU_ITEMS } from '../../constants/menu-items';
 
 @Component({
   selector: 'app-footer',
   imports: [],
   templateUrl: './footer.html',
-  styleUrl: './footer.css',
 })
-export class Footer {}
+export class Footer {
+  public routeItems: MenuItem[] = MENU_ITEMS;
+}
