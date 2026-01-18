@@ -62,6 +62,12 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
+    "prettier": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prettier --write ."
+      }
+    },
     "test": {
       "executor": "@angular/build:unit-test",
       "options": {}

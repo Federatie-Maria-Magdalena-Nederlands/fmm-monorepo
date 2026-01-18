@@ -1,17 +1,30 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Hero } from '../../shared/components/hero/hero';
 import { Timeline } from '../../shared/components/timeline/timeline';
+import { AboutSection } from './sections/about-section/about-section';
+import { BriefHistorySection } from './sections/brief-history-section/brief-history-section';
+import { ContactUsSection } from './sections/contact-us-section/contact-us-section';
+import { ImagesMarqueeSection } from './sections/images-marquee-section/images-marquee-section';
+import { JoinCommunitySection } from './sections/join-community-section/join-community-section';
+import { UpcomingCelebrationsSection } from './sections/upcoming-celebrations-section/upcoming-celebrations-section';
 
 const COMPONENTS = [Hero, Timeline];
+const SECTIONS = [
+  AboutSection,
+  BriefHistorySection,
+  ContactUsSection,
+  ImagesMarqueeSection,
+  JoinCommunitySection,
+  UpcomingCelebrationsSection,
+];
 
 @Component({
   selector: 'app-home',
-  imports: [...COMPONENTS],
+  imports: [...COMPONENTS, ...SECTIONS],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, OnDestroy {
   private scrollListener: (() => void) | null = null;
-  private carouselInterval: any;
 
   ngOnInit() {
     this.initializeScrollTriggerAnimations();
@@ -19,9 +32,7 @@ export class Home implements OnInit, OnDestroy {
   }
 
   private initializeScrollTriggerAnimations() {
-    const animatedElements = document.querySelectorAll(
-      '[data-scroll-animate]'
-    );
+    const animatedElements = document.querySelectorAll('[data-scroll-animate]');
 
     if (!animatedElements.length) return;
 
@@ -49,7 +60,6 @@ export class Home implements OnInit, OnDestroy {
     if (!navbar) return;
 
     const handleScroll = () => {
-      console.log(window.scrollY);
       if (window.scrollY > 0) {
         navbar.classList.add('bg-white', 'shadow-lg', 'text-black');
         navbar.classList.remove('bg-transparent', 'text-white');
@@ -63,15 +73,10 @@ export class Home implements OnInit, OnDestroy {
     this.scrollListener = handleScroll;
   }
 
-
   ngOnDestroy() {
     // Clean up scroll listener
     if (this.scrollListener) {
       window.removeEventListener('scroll', this.scrollListener);
-    }
-    // Clean up carousel interval
-    if (this.carouselInterval) {
-      clearInterval(this.carouselInterval);
     }
   }
 }
