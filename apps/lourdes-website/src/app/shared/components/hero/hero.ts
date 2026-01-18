@@ -5,7 +5,9 @@ import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
   templateUrl: './hero.html',
 })
 export class Hero implements AfterViewInit {
-  @ViewChild('heroVideo', { static: false }) heroVideo: ElementRef<HTMLVideoElement> | any;
+  @ViewChild('heroVideo', { static: false }) heroVideo:
+    | ElementRef<HTMLVideoElement>
+    | undefined;
 
   ngAfterViewInit() {
     // Wait a bit for DOM to be fully ready
@@ -56,7 +58,9 @@ export class Hero implements AfterViewInit {
             console.log('✓ Video is now playing (retry successful)');
           })
           .catch(() => {
-            console.error('Video autoplay failed - user interaction may be required');
+            console.error(
+              'Video autoplay failed - user interaction may be required',
+            );
           });
       }
     }, 1000);
