@@ -15,4 +15,24 @@ export const appRoutes: Route[] = [
     loadComponent: () =>
       import('./pages/history/history').then((m) => m.History),
   },
+  {
+    path: 'youth-group',
+    loadComponent: () =>
+      import('./pages/soulfire/soulfire').then((m) => m.Soulfire),
+  },
+  {
+    path: 'magazine',
+    loadComponent: () =>
+      import('./pages/magazine/magazine').then((m) => m.Magazine),
+  },
+  // Not Found Route
+  {
+    path: '**',
+    redirectTo: 'not-found',
+  },
+  {
+    path: 'not-found',
+    loadComponent: () =>
+      import('./pages/not-found/not-found').then((m) => m.NotFound),
+  },
 ];

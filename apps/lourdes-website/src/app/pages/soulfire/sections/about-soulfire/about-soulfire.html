@@ -1,0 +1,91 @@
+<!-- About Section -->
+<section class="py-16 px-2 bg-white relative overflow-hidden mb-4">
+  <app-abstract-background></app-abstract-background>
+
+  <!-- Content -->
+  <div class="max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Young people are the future of our Church.
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto"></div>
+    </div>
+    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+      At the Catholic Youth Group Soulfire, they are given the space to deepen
+      their faith, connect with one another, and grow together. What began in
+      the Lourdes Parish now lives on in the Emmaus Parish on Reyerdijk – and
+      young people from all over Rotterdam are warmly welcome!
+    </p>
+    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+      The group is led by Father Cândido , who guides young people on their
+      faith journey with enthusiasm and warmth. Together they celebrate Mass,
+      have inspiring conversations, organize outings, volunteer, and, above all,
+      experience a great deal of joy and connection.
+    </p>
+    <ul class="list bg-base-100">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">
+        Follow our Youth Group
+      </li>
+
+      <li class="list-row">
+        <div>
+          <app-location-icon></app-location-icon>
+        </div>
+        <div>
+          <div>Meetings</div>
+          <div class="text-md uppercase font-semibold opacity-60">
+            Emmaus Parish, Reyerdijk 67, Rotterdam
+          </div>
+        </div>
+        <app-spark-icon></app-spark-icon>
+      </li>
+
+      <li class="list-row">
+        <div>
+          <app-click-icon></app-click-icon>
+        </div>
+        <div>
+          <div>Discover more on our special page</div>
+          <div class="text-md uppercase font-semibold opacity-60">
+            Soulfire Youth Group, @soulfire.rotterdam
+          </div>
+        </div>
+        <app-spark-icon></app-spark-icon>
+      </li>
+
+      <li class="list-row">
+        <div>
+          <app-fire-icon></app-fire-icon>
+        </div>
+        <div>
+          <div>Join us and keep your fire burning</div>
+          <div class="text-md uppercase font-semibold opacity-60">
+            Soulfire is here for you!
+          </div>
+        </div>
+        <app-spark-icon></app-spark-icon>
+      </li>
+    </ul>
+  </div>
+
+  <h1 class="text-3xl font-semibold text-center mx-auto">Our Photos</h1>
+  <p class="text-sm text-slate-500 text-center mt-2 max-w-lg mx-auto">
+    Photos of our community members
+  </p>
+  <div
+    class="flex flex-wrap items-center justify-center mt-12 gap-4 max-w-5xl mx-auto"
+  >
+    @for(data of images; track data) {
+    <div class="relative group rounded-lg overflow-hidden">
+      <img
+        [attr.src]="data"
+        alt="image"
+        class="size-56 object-cover object-top"
+      />
+      <div
+        class="absolute inset-0 flex flex-col justify-end p-4 text-white bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300"
+      ></div>
+    </div>
+    }
+  </div>
+</section>
