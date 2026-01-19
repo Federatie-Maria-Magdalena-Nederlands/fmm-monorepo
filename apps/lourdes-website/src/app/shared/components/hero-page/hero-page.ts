@@ -1,14 +1,23 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  input,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-hero-page',
   imports: [],
   templateUrl: './hero-page.html',
 })
-export class HeroPage {
+export class HeroPage implements AfterViewInit {
   @ViewChild('heroVideo', { static: false }) heroVideo:
     | ElementRef<HTMLVideoElement>
     | undefined;
+
+  public title = input<string>('');
+  public subtitle = input<string>('');
 
   ngAfterViewInit() {
     // Wait a bit for DOM to be fully ready
