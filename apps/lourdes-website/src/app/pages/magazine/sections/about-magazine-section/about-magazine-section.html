@@ -1,0 +1,48 @@
+<!-- About Section -->
+<section class="py-16 px-2 bg-white relative overflow-hidden mb-4">
+  <app-abstract-background></app-abstract-background>
+
+  <!-- Content -->
+  <div class="max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Our Community Magazine: Faith, Stories, and Inspiration
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto"></div>
+    </div>
+    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+      The MMM Magazine is the digital magazine of the Federation of Saint Mary
+      Magdalene, bringing together all our parishes. In this online magazine,
+      you'll find inspiring stories, news, and activities from across the
+      federation. Each edition takes you on a journey through faith life,
+      celebrations, the dedication of volunteers, and the special moments we
+      share together. This is how MMM Magazine connects us all – both close to
+      home and far away. Read the MMM Magazine online and discover how our
+      federation lives, celebrates, and supports each other.
+    </p>
+    <div class="flex">
+      <div class="text-5xl font-bold">Our Magazines</div>
+      <div class="w-full">
+        <ul class="list bg-base-100">
+          <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">
+            Magazine Information
+          </li>
+          @for(data of magazines; track data) {
+          <li class="list-row">
+            <div>
+              <app-book-open-icon></app-book-open-icon>
+            </div>
+            <div>
+              <div>{{data.name}}</div>
+              <div class="text-md uppercase font-semibold opacity-60">
+                {{data.date}}
+              </div>
+            </div>
+            <app-spark-icon></app-spark-icon>
+          </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

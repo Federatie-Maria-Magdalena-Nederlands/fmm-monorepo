@@ -21,6 +21,11 @@ export const appRoutes: Route[] = [
       import('./pages/soulfire/soulfire').then((m) => m.Soulfire),
   },
   {
+    path: 'organization',
+    loadComponent: () =>
+      import('./pages/organization/organization').then((m) => m.Organization),
+  },
+  {
     path: 'magazine',
     loadComponent: () =>
       import('./pages/magazine/magazine').then((m) => m.Magazine),
