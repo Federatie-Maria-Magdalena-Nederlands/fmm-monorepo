@@ -32,8 +32,8 @@ export const MENU_ITEMS: MenuItem[] = [
     label: 'Activities',
     children: [
       {
-        label: 'Upcoming Activities',
-        path: '/upcoming-activities',
+        label: 'Our Activities',
+        path: '/our-activities',
       },
       { label: 'Celebrations', path: '/celebrations' },
       {
