@@ -15,17 +15,6 @@ const COMPONENTS = [
 @Component({
   selector: 'app-about-soulfire',
   imports: [...COMPONENTS],
-  templateUrl: './about-soulfire.html',
+  templateUrl: './about-soulfire-section.html',
 })
-export class AboutSoulfire {
-  public images = [
-    '/assets/images/soulfire1.webp',
-    '/assets/images/soulfire2.webp',
-    '/assets/images/soulfire3.webp',
-    '/assets/images/soulfire4.webp',
-    '/assets/images/soulfire5.webp',
-    '/assets/images/soulfire6.webp',
-    '/assets/images/soulfire7.webp',
-    '/assets/images/soulfire8.webp',
-  ];
-}
+export class AboutSoulfireSection {}

@@ -1,0 +1,65 @@
+<section class="py-16 px-2 bg-white relative overflow-hidden mb-4">
+  <h1 class="text-3xl font-semibold text-center mx-auto">Our Photos</h1>
+  <p class="text-sm text-slate-500 text-center mt-2 max-w-lg mx-auto">
+    Photos of our community members
+  </p>
+  <div
+    class="flex flex-wrap items-center justify-center mt-12 gap-4 max-w-5xl mx-auto"
+  >
+    @for(data of images; track data) {
+    <div
+      class="relative group rounded-lg overflow-hidden cursor-pointer"
+      (click)="openModal(data)"
+    >
+      <img
+        [attr.src]="data"
+        alt="image"
+        class="size-56 object-cover object-top"
+      />
+      <div
+        class="absolute inset-0 flex flex-col justify-end p-4 text-white bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300"
+      >
+        <p class="text-sm font-medium">Click to view</p>
+      </div>
+    </div>
+    }
+  </div>
+  <!-- Image Modal -->
+  @if (isModalOpen) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+    (click)="closeModal()"
+  >
+    <div class="relative max-w-7xl max-h-[90vh] w-full">
+      <!-- Close Button -->
+      <button
+        class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+        (click)="closeModal()"
+        type="button"
+      >
+        <svg
+          class="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <!-- Image -->
+      <img
+        [attr.src]="selectedImage"
+        alt="Full size image"
+        class="w-full h-full object-contain rounded-lg"
+        (click)="$event.stopPropagation()"
+      />
+    </div>
+  </div>
+  }
+</section>
