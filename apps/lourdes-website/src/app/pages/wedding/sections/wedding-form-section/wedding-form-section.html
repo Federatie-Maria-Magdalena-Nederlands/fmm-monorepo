@@ -1,0 +1,804 @@
+<!-- Wedding Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Wedding Registration Form
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to register for your church wedding.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <!-- Stepper -->
+      <ul class="steps steps-horizontal w-full mb-8">
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 1 }">
+          Bride
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 2 }">
+          Groom
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 3 }">
+          Privacy
+        </li>
+      </ul>
+
+      <form [formGroup]="weddingForm" (ngSubmit)="onSubmit()">
+        <!-- Step 1: Bride Information -->
+        @if(currentStep === 1) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Bride</h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Bride's name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="brideName"
+              placeholder="Enter bride's name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('brideName')?.invalid &&
+                weddingForm.get('brideName')?.touched
+              "
+            />
+            @if(weddingForm.get('brideName')?.invalid &&
+            weddingForm.get('brideName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Bride's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Bride's last name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="brideLastName"
+              placeholder="Enter bride's last name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('brideLastName')?.invalid &&
+                weddingForm.get('brideLastName')?.touched
+              "
+            />
+            @if(weddingForm.get('brideLastName')?.invalid &&
+            weddingForm.get('brideLastName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Bride's last name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Bride's date of birth <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="brideDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('brideDOB')?.invalid &&
+                weddingForm.get('brideDOB')?.touched
+              "
+            />
+            @if(weddingForm.get('brideDOB')?.invalid &&
+            weddingForm.get('brideDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Bride's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Cell phone bride <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="bridePhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('bridePhone')?.invalid &&
+                weddingForm.get('bridePhone')?.touched
+              "
+            />
+            @if(weddingForm.get('bridePhone')?.invalid &&
+            weddingForm.get('bridePhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Bride's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Bride's email address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="brideEmail"
+              placeholder="bride.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('brideEmail')?.invalid &&
+                weddingForm.get('brideEmail')?.touched
+              "
+            />
+            @if(weddingForm.get('brideEmail')?.invalid &&
+            weddingForm.get('brideEmail')?.touched) {
+            <label class="label">
+              @if(weddingForm.get('brideEmail')?.hasError('required')) {
+              <span class="label-text-alt text-error">
+                Bride's email is required </span
+              >} @else if(weddingForm.get('brideEmail')?.hasError('email')) {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address </span
+              >}
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Bride's address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="brideAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('brideAddress')?.invalid &&
+                weddingForm.get('brideAddress')?.touched
+              "
+            />
+            @if(weddingForm.get('brideAddress')?.invalid &&
+            weddingForm.get('brideAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Bride's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and place of residence of bride
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="bridePostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('bridePostalCity')?.invalid &&
+                weddingForm.get('bridePostalCity')?.touched
+              "
+            />
+            @if(weddingForm.get('bridePostalCity')?.invalid &&
+            weddingForm.get('bridePostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 2: Groom Information -->
+        @if(currentStep === 2) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Groom</h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Groom's name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="groomName"
+              placeholder="Enter groom's name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('groomName')?.invalid &&
+                weddingForm.get('groomName')?.touched
+              "
+            />
+            @if(weddingForm.get('groomName')?.invalid &&
+            weddingForm.get('groomName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Groom's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Groom's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="groomSurname"
+              placeholder="Enter groom's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('groomSurname')?.invalid &&
+                weddingForm.get('groomSurname')?.touched
+              "
+            />
+            @if(weddingForm.get('groomSurname')?.invalid &&
+            weddingForm.get('groomSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Groom's surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Groom's date of birth <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="groomDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('groomDOB')?.invalid &&
+                weddingForm.get('groomDOB')?.touched
+              "
+            />
+            @if(weddingForm.get('groomDOB')?.invalid &&
+            weddingForm.get('groomDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Groom's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Cell phone groom <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="groomPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('groomPhone')?.invalid &&
+                weddingForm.get('groomPhone')?.touched
+              "
+            />
+            @if(weddingForm.get('groomPhone')?.invalid &&
+            weddingForm.get('groomPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Groom's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Groom's address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="groomAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('groomAddress')?.invalid &&
+                weddingForm.get('groomAddress')?.touched
+              "
+            />
+            @if(weddingForm.get('groomAddress')?.invalid &&
+            weddingForm.get('groomAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Groom's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Groom's Postcode and City
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="groomPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('groomPostalCity')?.invalid &&
+                weddingForm.get('groomPostalCity')?.touched
+              "
+            />
+            @if(weddingForm.get('groomPostalCity')?.invalid &&
+            weddingForm.get('groomPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Groom's email address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="groomEmail"
+              placeholder="groom.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('groomEmail')?.invalid &&
+                weddingForm.get('groomEmail')?.touched
+              "
+            />
+            @if(weddingForm.get('groomEmail')?.invalid &&
+            weddingForm.get('groomEmail')?.touched) {
+            <label class="label">
+              @if(weddingForm.get('groomEmail')?.hasError('required')) {
+              <span class="label-text-alt text-error">
+                Groom's email is required </span
+              >} @else if(weddingForm.get('groomEmail')?.hasError('email')) {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address </span
+              >}
+            </label>
+            }
+          </div>
+
+          <!-- Godparents Section -->
+          <div class="divider my-8"></div>
+          <h4 class="text-xl font-bold text-gray-800 mb-4">
+            Godparents Information
+          </h4>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents Name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsName"
+              placeholder="Enter godparents' name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('godparentsName')?.invalid &&
+                weddingForm.get('godparentsName')?.touched
+              "
+            />
+            @if(weddingForm.get('godparentsName')?.invalid &&
+            weddingForm.get('godparentsName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparents' name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsSurname"
+              placeholder="Enter godparents' surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('godparentsSurname')?.invalid &&
+                weddingForm.get('godparentsSurname')?.touched
+              "
+            />
+            @if(weddingForm.get('godparentsSurname')?.invalid &&
+            weddingForm.get('godparentsSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparents' surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="godparentsDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('godparentsDOB')?.invalid &&
+                weddingForm.get('godparentsDOB')?.touched
+              "
+            />
+            @if(weddingForm.get('godparentsDOB')?.invalid &&
+            weddingForm.get('godparentsDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparents' date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents Phone Number
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="godparentsPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('godparentsPhone')?.invalid &&
+                weddingForm.get('godparentsPhone')?.touched
+              "
+            />
+            @if(weddingForm.get('godparentsPhone')?.invalid &&
+            weddingForm.get('godparentsPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparents' phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('godparentsAddress')?.invalid &&
+                weddingForm.get('godparentsAddress')?.touched
+              "
+            />
+            @if(weddingForm.get('godparentsAddress')?.invalid &&
+            weddingForm.get('godparentsAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparents' address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city of godparents
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                weddingForm.get('godparentsPostalCity')?.invalid &&
+                weddingForm.get('godparentsPostalCity')?.touched
+              "
+            />
+            @if(weddingForm.get('godparentsPostalCity')?.invalid &&
+            weddingForm.get('godparentsPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Are his godparents Catholic?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="godparentsCatholic"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="godparentsCatholic"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(weddingForm.get('godparentsCatholic')?.invalid &&
+            weddingForm.get('godparentsCatholic')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 3: Privacy Statement -->
+        @if(currentStep === 3) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Privacy Statement
+          </h3>
+
+          <div class="bg-amber-50 p-6 rounded-lg">
+            <h4 class="font-bold text-lg text-gray-800 mb-3">
+              Privacy Statement Roman Catholic Parishes and General Regulations
+              for the Protection of Personal Data Parishes 2018
+            </h4>
+            <p class="text-sm text-gray-700 mb-3">
+              In connection with the General Data Protection Regulation (GDPR),
+              a Privacy Statement applies and the above-mentioned regulations
+              have been drawn up. The Privacy Statement and the General
+              Regulations are available on the website and can be downloaded.
+            </p>
+            <p class="text-sm text-gray-700 mb-3">
+              You will automatically receive the Privacy Statement as an
+              attachment with the copy confirmation.
+            </p>
+            <p class="text-sm text-gray-700 mb-3">
+              Below you will find a number of matters (in abbreviated,
+              simplified versions) that are important to you and for which we
+              request your permission (in advance). If you have any doubts about
+              the explanation in the abbreviated version, we always refer you to
+              the full Privacy Statement and/or the General Regulations.
+            </p>
+            <p class="text-sm text-gray-700 mb-3 font-semibold">
+              Information General
+            </p>
+            <div class="mt-4 space-y-3">
+              <div>
+                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="text-sm text-gray-700">
+                  The applicant(s) agree(s) to the provisions of the Privacy
+                  Statement.
+                </p>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="text-sm text-gray-700">
+                  If you do not agree, the application cannot be processed.
+                </p>
+              </div>
+              <p class="text-sm text-gray-700">
+                The information you provide may be used for parish
+                administration and will be stored digitally or on paper (in
+                registers) for this purpose. A request to view this data is
+                possible. Requesting the deletion of this data is generally not
+                possible because it is necessary for the proper functioning of a
+                parish church. The "Registration and Deregistration Procedure
+                (2013)" applies to requests to be removed from the parish
+                registers/administration.
+              </p>
+              <p class="text-sm text-gray-700">
+                Your information will always be treated confidentially and will
+                never be shared with external institutions/agencies/third
+                parties without your permission. At the end of this form, you
+                will be asked a few questions regarding the GDPR. You can agree
+                or disagree with the questions posed there, and your request
+                will be processed (regardless of your answer).
+              </p>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Do you agree with our parish's privacy policy?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="space-y-3">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="agree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes! I agree</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="disagree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No! I don't agree</span>
+              </label>
+            </div>
+            @if(weddingForm.get('privacyAgreement')?.invalid &&
+            weddingForm.get('privacyAgreement')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please agree to privacy policy to continue</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for your wedding registration! We will contact you soon
+            to discuss your special day.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your request. Please try again.</span
+          >
+        </div>
+        }
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          @if(currentStep > 1) {
+          <button
+            type="button"
+            class="btn btn-outline btn-warning"
+            (click)="previousStep()"
+          >
+            Previous
+          </button>
+          } @else {
+          <div></div>
+          } @if(currentStep < 3) {
+          <button
+            type="button"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            (click)="nextStep()"
+          >
+            Next
+          </button>
+          } @else {
+          <button
+            type="submit"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            [disabled]="weddingForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Request }
+          </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

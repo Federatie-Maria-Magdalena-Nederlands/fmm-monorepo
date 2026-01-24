@@ -76,7 +76,38 @@ export const appRoutes: Route[] = [
     loadComponent: () =>
       import('./pages/donations/donations').then((m) => m.Donations),
   },
-  // Not Found Route
+  {
+    path: 'baptism',
+    loadComponent: () =>
+      import('./pages/baptism/baptism').then((m) => m.Baptism),
+  },
+  {
+    path: 'holy-communion',
+    loadComponent: () =>
+      import('./pages/holy-communion/holy-communion').then(
+        (m) => m.HolyCommunion,
+      ),
+  },
+  {
+    path: 'confirmation',
+    loadComponent: () =>
+      import('./pages/confirmation/confirmation').then((m) => m.Confirmation),
+  },
+  {
+    path: 'wedding',
+    loadComponent: () =>
+      import('./pages/wedding/wedding').then((m) => m.Wedding),
+  },
+  {
+    path: 'annointing',
+    loadComponent: () =>
+      import('./pages/anointing/anointing').then((m) => m.Anointing),
+  },
+  {
+    path: 'consecration',
+    loadComponent: () =>
+      import('./pages/consecration/consecration').then((m) => m.Consecration),
+  }, // Not Found Route
   {
     path: '**',
     redirectTo: 'not-found',

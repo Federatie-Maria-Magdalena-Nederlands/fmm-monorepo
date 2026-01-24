@@ -17,13 +17,13 @@ export const MENU_ITEMS: MenuItem[] = [
       { label: 'Baptism', path: '/baptism' },
       {
         label: 'Holy First Communion',
-        path: '/holy-first-communion',
+        path: '/holy-communion',
       },
       { label: 'Confirmation', path: '/confirmation' },
       { label: 'Wedding', path: '/wedding' },
       {
         label: 'Annointing of the Sick',
-        path: '/annointing-of-the-sick',
+        path: '/annointing',
       },
       { label: 'Consecration', path: '/consecration' },
     ],
