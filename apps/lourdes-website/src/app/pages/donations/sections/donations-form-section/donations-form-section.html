@@ -1,0 +1,539 @@
+<!-- Donations Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Monthly Donation Form
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to set up your monthly donation.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <!-- Stepper -->
+      <ul class="steps steps-horizontal w-full mb-8">
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 1
+          }"
+        >
+          Personal
+        </li>
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 2
+          }"
+        >
+          Contact
+        </li>
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 3
+          }"
+        >
+          Donation
+        </li>
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 4
+          }"
+        >
+          Payment
+        </li>
+      </ul>
+
+      <form [formGroup]="donationForm" (ngSubmit)="onSubmit()">
+        <!-- Step 1: Personal Information -->
+        @if(currentStep === 1) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Personal Information
+          </h3>
+
+          <!-- First Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="firstName"
+              placeholder="Enter your first name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('firstName')?.invalid &&
+                donationForm.get('firstName')?.touched
+              "
+            />
+            @if(donationForm.get('firstName')?.invalid &&
+            donationForm.get('firstName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >First name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Last name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="lastName"
+              placeholder="Enter your last name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('lastName')?.invalid &&
+                donationForm.get('lastName')?.touched
+              "
+            />
+            @if(donationForm.get('lastName')?.invalid &&
+            donationForm.get('lastName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Last name is required</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 2: Contact Information -->
+        @if(currentStep === 2) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Contact Information
+          </h3>
+
+          <!-- Address 1 -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Address 1 (street name and number)
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="address1"
+              placeholder="Enter street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('address1')?.invalid &&
+                donationForm.get('address1')?.touched
+              "
+            />
+            @if(donationForm.get('address1')?.invalid &&
+            donationForm.get('address1')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Street address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Address 2 -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Address 2 (zip code and city)
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="address2"
+              placeholder="Enter zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('address2')?.invalid &&
+                donationForm.get('address2')?.touched
+              "
+            />
+            @if(donationForm.get('address2')?.invalid &&
+            donationForm.get('address2')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Zip code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Email -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Email address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="your.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('email')?.invalid &&
+                donationForm.get('email')?.touched
+              "
+            />
+            @if(donationForm.get('email')?.invalid &&
+            donationForm.get('email')?.touched) {
+            <label class="label">
+              @if(donationForm.get('email')?.hasError('required')) {
+              <span class="label-text-alt text-error"> Email is required </span>
+              } @else if(donationForm.get('email')?.hasError('email')) {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address
+              </span>
+              }
+            </label>
+            }
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Phone number <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="phoneNumber"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('phoneNumber')?.invalid &&
+                donationForm.get('phoneNumber')?.touched
+              "
+            />
+            @if(donationForm.get('phoneNumber')?.invalid &&
+            donationForm.get('phoneNumber')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Phone number is required
+              </span>
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 3: Donation Details -->
+        @if(currentStep === 3) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Donation Details
+          </h3>
+
+          <!-- Monthly Donation Amount -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >I would like to donate a fixed amount per month:
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="space-y-3">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="5"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">5 euros per month</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="10"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">10 euros per month</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="15"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">15 euros per month</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="20"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">20 euros per month</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="25"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">25 euros per month</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="50"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">50 euros per month</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="100"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">100 euros per month</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="donationAmount"
+                  value="custom"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >I will fill in the desired amount myself</span
+                >
+              </label>
+            </div>
+            @if(donationForm.get('donationAmount')?.invalid &&
+            donationForm.get('donationAmount')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Please select a donation amount
+              </span>
+            </label>
+            }
+          </div>
+
+          <!-- Custom Amount (shown only when "custom" is selected) -->
+          @if(donationForm.get('donationAmount')?.value === 'custom') {
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >I want to choose the amount myself
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="number"
+              formControlName="customAmount"
+              placeholder="Enter your custom amount in euros"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('customAmount')?.invalid &&
+                donationForm.get('customAmount')?.touched
+              "
+            />
+            @if(donationForm.get('customAmount')?.invalid &&
+            donationForm.get('customAmount')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Please enter a custom amount
+              </span>
+            </label>
+            }
+          </div>
+          }
+
+          <!-- Message -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Message <span class="text-red-600">*</span></span
+              >
+            </label>
+            <textarea
+              formControlName="message"
+              placeholder="Your message..."
+              class="textarea w-full block textarea-bordered h-32"
+              [class.textarea-error]="
+                donationForm.get('message')?.invalid &&
+                donationForm.get('message')?.touched
+              "
+            ></textarea>
+            @if(donationForm.get('message')?.invalid &&
+            donationForm.get('message')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Message is required</span>
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 4: Payment Information -->
+        @if(currentStep === 4) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Payment Information
+          </h3>
+
+          <!-- Bank Account Number -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >My bank account number is
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="bankAccount"
+              placeholder="NL00 BANK 0000 0000 00"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                donationForm.get('bankAccount')?.invalid &&
+                donationForm.get('bankAccount')?.touched
+              "
+            />
+            @if(donationForm.get('bankAccount')?.invalid &&
+            donationForm.get('bankAccount')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Bank account number is required
+              </span>
+            </label>
+            }
+          </div>
+
+          <!-- Agreement Checkbox -->
+          <div class="form-control">
+            <label class="label cursor-pointer justify-start gap-4">
+              <input
+                type="checkbox"
+                formControlName="agreement"
+                class="checkbox checkbox-warning"
+                [class.checkbox-error]="
+                  donationForm.get('agreement')?.invalid &&
+                  donationForm.get('agreement')?.touched
+                "
+              />
+              <span class="label-text font-semibold text-gray-700"
+                >I agree that the selected amount will be automatically debited
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            @if(donationForm.get('agreement')?.invalid &&
+            donationForm.get('agreement')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                You must agree to the automatic debit
+              </span>
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for your generous donation! We'll process your request
+            and contact you with confirmation.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your request. Please try again.</span
+          >
+        </div>
+        }
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          @if(currentStep > 1) {
+          <button
+            type="button"
+            class="btn btn-outline btn-warning"
+            (click)="previousStep()"
+          >
+            Previous
+          </button>
+          } @else {
+          <div></div>
+          } @if(currentStep < 4) {
+          <button
+            type="button"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            (click)="nextStep()"
+          >
+            Next
+          </button>
+          } @else {
+          <button
+            type="submit"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            [disabled]="donationForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Donation }
+          </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
