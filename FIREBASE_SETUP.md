@@ -1,48 +1,58 @@
 # Firebase & Firestore Setup Guide
 
 ## Overview
+
 This project uses Firebase for backend services, specifically Firestore for storing sacrament form submissions.
 
 ## Initial Setup
 
 ### 1. Install Firebase CLI (if not already installed)
+
 ```bash
 npm install -g firebase-tools
 ```
 
 ### 2. Login to Firebase
+
 ```bash
 firebase login
 ```
 
 ### 3. Initialize Firebase Project
+
 ```bash
 firebase init
 ```
 
 Select the following options:
+
 - ✅ Firestore
 - ✅ Hosting (already configured)
 
 ### 4. Create or Link Firebase Project
+
 Either create a new Firebase project or link to an existing one through the Firebase Console:
+
 - Go to https://console.firebase.google.com/
 - Create a new project or select an existing one
 - Enable Firestore Database (in Build > Firestore Database)
 
 ### 5. Get Firebase Configuration
+
 1. Go to Project Settings in Firebase Console
 2. Scroll down to "Your apps" section
 3. Click "Add app" and select Web (</>) icon
 4. Register your app and copy the configuration object
 
 ### 6. Update Environment Files
+
 Update the Firebase configuration in both environment files:
 
 **Development:** `apps/lourdes-website/src/environments/environment.ts`
 **Production:** `apps/lourdes-website/src/environments/environment.prod.ts`
 
 Replace the placeholder values with your actual Firebase config:
+
 ```typescript
 export const environment = {
   production: false, // or true for prod
@@ -53,12 +63,13 @@ export const environment = {
     storageBucket: 'your-project.appspot.com',
     messagingSenderId: '123456789',
     appId: '1:123456789:web:abc123',
-    measurementId: 'G-ABC123XYZ' // Optional, for Analytics
-  }
+    measurementId: 'G-ABC123XYZ', // Optional, for Analytics
+  },
 };
 ```
 
 ### 7. Deploy Firestore Rules and Indexes
+
 ```bash
 firebase deploy --only firestore:rules
 firebase deploy --only firestore:indexes
@@ -67,13 +78,16 @@ firebase deploy --only firestore:indexes
 ## Project Structure
 
 ### Services
+
 - **`firebase.service.ts`**: Core Firebase service with CRUD operations
 - **`sacrament-submission.service.ts`**: Specialized service for sacrament form submissions
 
 ### Firestore Collections
 
 #### `sacrament-submissions`
+
 Stores all sacrament form submissions with the following structure:
+
 ```typescript
 {
   id: string;                    // Auto-generated document ID
@@ -89,6 +103,7 @@ Stores all sacrament form submissions with the following structure:
 ```
 
 **Sacrament Types:**
+
 - `mass-intentions`
 - `donations`
 - `baptism`
@@ -99,13 +114,17 @@ Stores all sacrament form submissions with the following structure:
 - `consecration`
 
 ### Firestore Security Rules
+
 Located in `firestore.rules`:
+
 - Anyone can submit forms (create)
 - Only admins can read, update, or delete submissions
 - Admins are identified by custom claims (`admin: true`)
 
 ### Firestore Indexes
+
 Located in `firestore.indexes.json`:
+
 - Composite index on `type` + `submittedAt`
 - Composite index on `status` + `submittedAt`
 - Composite index on `type` + `status` + `submittedAt`
@@ -115,6 +134,7 @@ These indexes optimize queries for filtering and sorting submissions.
 ## Usage Examples
 
 ### In a Component
+
 ```typescript
 import { Component, inject } from '@angular/core';
 import { SacramentSubmissionService } from '../../shared/services/sacrament-submission.service';
@@ -127,7 +147,7 @@ export class MassIntentionsComponent {
     try {
       const submissionId = await this.sacramentService.submitForm(
         'mass-intentions',
-        formData
+        formData,
       );
       console.log('Form submitted successfully:', submissionId);
       // Show success message to user
@@ -140,11 +160,12 @@ export class MassIntentionsComponent {
 ```
 
 ### Query Submissions
+
 ```typescript
 // Get all pending baptism submissions
 const pendingBaptisms = await this.sacramentService.getSubmissions(
   'baptism',
-  'pending'
+  'pending',
 );
 
 // Get all submissions of a specific type
@@ -155,12 +176,13 @@ const submission = await this.sacramentService.getSubmission('doc-id-123');
 ```
 
 ### Update Status
+
 ```typescript
 // Approve a submission
 await this.sacramentService.updateSubmissionStatus(
   'doc-id-123',
   'approved',
-  'Everything looks good!'
+  'Everything looks good!',
 );
 ```
 
@@ -169,6 +191,7 @@ await this.sacramentService.updateSubmissionStatus(
 For local testing without affecting production data:
 
 ### 1. Install Firebase Emulator
+
 ```bash
 firebase init emulators
 ```
@@ -176,19 +199,22 @@ firebase init emulators
 Select Firestore emulator.
 
 ### 2. Start Emulator
+
 ```bash
 firebase emulators:start
 ```
 
 ### 3. Connect Your App to Emulator
+
 Update `firebase.service.ts` to connect to the emulator in development:
+
 ```typescript
 import { connectFirestoreEmulator } from 'firebase/firestore';
 
 constructor() {
   this.app = initializeApp(environment.firebase);
   this.db = getFirestore(this.app);
-  
+
   // Connect to emulator in development
   if (!environment.production) {
     connectFirestoreEmulator(this.db, 'localhost', 8080);
@@ -199,16 +225,19 @@ constructor() {
 ## Deployment
 
 ### Deploy Everything
+
 ```bash
 firebase deploy
 ```
 
 ### Deploy Only Firestore
+
 ```bash
 firebase deploy --only firestore
 ```
 
 ### Deploy Only Hosting
+
 ```bash
 firebase deploy --only hosting
 ```
@@ -216,6 +245,7 @@ firebase deploy --only hosting
 ## Monitoring
 
 Monitor your Firestore usage and performance in the Firebase Console:
+
 - Database > Firestore Database
 - Analytics > Dashboard
 - Usage and billing

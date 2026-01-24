@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ContactUs } from '@fmm/shared/models';
 import { ContactUsSubmissionService } from '../../../../shared/services/contact-us-submission.service';
@@ -20,7 +25,10 @@ export class ContactUsSection {
     this.contactForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^[\d\s\+\-\(\)]+$/)]],
+      phone: [
+        '',
+        [Validators.required, Validators.pattern(/^[\d\s\+\-\(\)]+$/)],
+      ],
       message: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
@@ -43,7 +51,7 @@ export class ContactUsSection {
     try {
       const formData: ContactUs = this.contactForm.value;
       const submissionId = await this.contactUsService.submitForm(formData);
-      
+
       console.log('Contact form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

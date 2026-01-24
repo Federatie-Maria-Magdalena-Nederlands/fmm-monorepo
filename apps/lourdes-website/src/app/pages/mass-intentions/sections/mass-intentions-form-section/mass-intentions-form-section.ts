@@ -63,11 +63,9 @@ export class MassIntentionsFormSection {
         ...this.massIntentionForm.value,
         proofOfPayment: this.selectedFile ? this.selectedFile.name : null,
       };
-      
-      const submissionId = await this.massIntentionService.submitForm(
-        formData
-      );
-      
+
+      const submissionId = await this.massIntentionService.submitForm(formData);
+
       console.log('Mass intention form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

@@ -164,9 +164,9 @@ export class AnointingFormSection {
       const formData: Anointing = this.anointingForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'anointing',
-        formData
+        formData,
       );
-      
+
       console.log('Anointing form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

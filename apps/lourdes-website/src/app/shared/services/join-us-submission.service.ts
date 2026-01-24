@@ -14,7 +14,7 @@ export interface JoinUsSubmission extends DocumentData {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JoinUsSubmissionService {
   private readonly COLLECTION_NAME = 'join-us-submissions';
@@ -29,62 +29,81 @@ export class JoinUsSubmissionService {
       type,
       status: 'pending',
       formData,
-      submittedAt: new Date().toISOString()
+      submittedAt: new Date().toISOString(),
     };
 
-    return await this.firebaseService.addDocument(this.COLLECTION_NAME, submission);
+    return await this.firebaseService.addDocument(
+      this.COLLECTION_NAME,
+      submission,
+    );
   }
 
   /**
    * Get a specific submission
    */
   async getSubmission(submissionId: string): Promise<JoinUsSubmission | null> {
-    return await this.firebaseService.getDocument(this.COLLECTION_NAME, submissionId) as JoinUsSubmission | null;
+    return (await this.firebaseService.getDocument(
+      this.COLLECTION_NAME,
+      submissionId,
+    )) as JoinUsSubmission | null;
   }
 
   /**
    * Get all submissions (optionally filter by type and status)
    */
-  async getSubmissions(type?: JoinUsType, status?: JoinUsSubmission['status']): Promise<JoinUsSubmission[]> {
+  async getSubmissions(
+    type?: JoinUsType,
+    status?: JoinUsSubmission['status'],
+  ): Promise<JoinUsSubmission[]> {
     const constraints = [];
-    
+
     if (type) {
       constraints.push(this.firebaseService.where('type', '==', type));
     }
-    
+
     if (status) {
       constraints.push(this.firebaseService.where('status', '==', status));
     }
-    
+
     constraints.push(this.firebaseService.orderBy('submittedAt', 'desc'));
-    
-    return await this.firebaseService.getDocuments(this.COLLECTION_NAME, constraints) as JoinUsSubmission[];
+
+    return (await this.firebaseService.getDocuments(
+      this.COLLECTION_NAME,
+      constraints,
+    )) as JoinUsSubmission[];
   }
 
   /**
    * Update submission status
    */
   async updateSubmissionStatus(
-    submissionId: string, 
+    submissionId: string,
     status: JoinUsSubmission['status'],
-    notes?: string
+    notes?: string,
   ): Promise<void> {
     const updateData: Partial<JoinUsSubmission> = {
       status,
-      processedAt: new Date().toISOString()
+      processedAt: new Date().toISOString(),
     };
-    
+
     if (notes) {
       updateData.notes = notes;
     }
-    
-    await this.firebaseService.updateDocument(this.COLLECTION_NAME, submissionId, updateData);
+
+    await this.firebaseService.updateDocument(
+      this.COLLECTION_NAME,
+      submissionId,
+      updateData,
+    );
   }
 
   /**
    * Delete a submission
    */
   async deleteSubmission(submissionId: string): Promise<void> {
-    await this.firebaseService.deleteDocument(this.COLLECTION_NAME, submissionId);
+    await this.firebaseService.deleteDocument(
+      this.COLLECTION_NAME,
+      submissionId,
+    );
   }
 }

@@ -158,10 +158,8 @@ export class DonationsFormSection {
 
     try {
       const formData: Donations = this.donationForm.value;
-      const submissionId = await this.donationService.submitForm(
-        formData
-      );
-      
+      const submissionId = await this.donationService.submitForm(formData);
+
       console.log('Donation form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

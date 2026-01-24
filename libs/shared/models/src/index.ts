@@ -9,4 +9,3 @@ export * from './lib/consecration.model';
 export * from './lib/volunteer.model';
 export * from './lib/church-member.model';
 export * from './lib/contact-us.model';
-

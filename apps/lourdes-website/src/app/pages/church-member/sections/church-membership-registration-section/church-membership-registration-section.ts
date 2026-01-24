@@ -186,10 +186,13 @@ export class ChurchMembershipRegistrationSection {
       const formData: ChurchMember = this.registrationForm.value;
       const submissionId = await this.joinUsService.submitForm(
         'church-member',
-        formData
+        formData,
       );
-      
-      console.log('Church membership form submitted successfully:', submissionId);
+
+      console.log(
+        'Church membership form submitted successfully:',
+        submissionId,
+      );
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.registrationForm.reset();

@@ -203,9 +203,9 @@ export class WeddingFormSection {
       const formData: Wedding = this.weddingForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'wedding',
-        formData
+        formData,
       );
-      
+
       console.log('Wedding form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

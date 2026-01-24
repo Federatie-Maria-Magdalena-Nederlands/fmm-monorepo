@@ -221,9 +221,9 @@ export class BaptismFormSection {
       const formData: Baptism = this.baptismForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'baptism',
-        formData
+        formData,
       );
-      
+
       console.log('Baptism form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

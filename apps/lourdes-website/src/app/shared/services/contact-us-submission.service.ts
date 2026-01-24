@@ -11,7 +11,7 @@ export interface ContactUsSubmission extends DocumentData {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContactUsSubmissionService {
   private readonly COLLECTION_NAME = 'contact-us-submissions';
@@ -25,58 +25,78 @@ export class ContactUsSubmissionService {
     const submission: Partial<ContactUsSubmission> = {
       status: 'pending',
       formData,
-      submittedAt: new Date().toISOString()
+      submittedAt: new Date().toISOString(),
     };
 
-    return await this.firebaseService.addDocument(this.COLLECTION_NAME, submission);
+    return await this.firebaseService.addDocument(
+      this.COLLECTION_NAME,
+      submission,
+    );
   }
 
   /**
    * Get a specific submission
    */
-  async getSubmission(submissionId: string): Promise<ContactUsSubmission | null> {
-    return await this.firebaseService.getDocument(this.COLLECTION_NAME, submissionId) as ContactUsSubmission | null;
+  async getSubmission(
+    submissionId: string,
+  ): Promise<ContactUsSubmission | null> {
+    return (await this.firebaseService.getDocument(
+      this.COLLECTION_NAME,
+      submissionId,
+    )) as ContactUsSubmission | null;
   }
 
   /**
    * Get all submissions (optionally filter by status)
    */
-  async getSubmissions(status?: ContactUsSubmission['status']): Promise<ContactUsSubmission[]> {
+  async getSubmissions(
+    status?: ContactUsSubmission['status'],
+  ): Promise<ContactUsSubmission[]> {
     const constraints = [];
-    
+
     if (status) {
       constraints.push(this.firebaseService.where('status', '==', status));
     }
-    
+
     constraints.push(this.firebaseService.orderBy('submittedAt', 'desc'));
-    
-    return await this.firebaseService.getDocuments(this.COLLECTION_NAME, constraints) as ContactUsSubmission[];
+
+    return (await this.firebaseService.getDocuments(
+      this.COLLECTION_NAME,
+      constraints,
+    )) as ContactUsSubmission[];
   }
 
   /**
    * Update submission status
    */
   async updateSubmissionStatus(
-    submissionId: string, 
+    submissionId: string,
     status: ContactUsSubmission['status'],
-    notes?: string
+    notes?: string,
   ): Promise<void> {
     const updateData: Partial<ContactUsSubmission> = {
       status,
-      processedAt: new Date().toISOString()
+      processedAt: new Date().toISOString(),
     };
-    
+
     if (notes) {
       updateData.notes = notes;
     }
-    
-    await this.firebaseService.updateDocument(this.COLLECTION_NAME, submissionId, updateData);
+
+    await this.firebaseService.updateDocument(
+      this.COLLECTION_NAME,
+      submissionId,
+      updateData,
+    );
   }
 
   /**
    * Delete a submission
    */
   async deleteSubmission(submissionId: string): Promise<void> {
-    await this.firebaseService.deleteDocument(this.COLLECTION_NAME, submissionId);
+    await this.firebaseService.deleteDocument(
+      this.COLLECTION_NAME,
+      submissionId,
+    );
   }
 }

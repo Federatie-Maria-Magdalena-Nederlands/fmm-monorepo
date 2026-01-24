@@ -122,9 +122,9 @@ export class ConsecrationFormSection {
       const formData: Consecration = this.consecrationForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'consecration',
-        formData
+        formData,
       );
-      
+
       console.log('Consecration form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

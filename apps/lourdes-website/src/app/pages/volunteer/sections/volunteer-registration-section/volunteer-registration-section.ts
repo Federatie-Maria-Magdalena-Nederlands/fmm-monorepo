@@ -130,9 +130,9 @@ export class VolunteerRegistrationSection {
       const formData: Volunteer = this.volunteerForm.value;
       const submissionId = await this.joinUsService.submitForm(
         'volunteer',
-        formData
+        formData,
       );
-      
+
       console.log('Volunteer form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

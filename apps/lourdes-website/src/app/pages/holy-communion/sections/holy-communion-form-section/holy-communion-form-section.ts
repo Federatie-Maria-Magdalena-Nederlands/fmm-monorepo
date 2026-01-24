@@ -360,9 +360,9 @@ export class HolyCommunionFormSection {
       const formData: HolyCommunion = this.communionForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'holy-communion',
-        formData
+        formData,
       );
-      
+
       console.log('Holy communion form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;

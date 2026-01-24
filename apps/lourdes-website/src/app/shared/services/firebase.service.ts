@@ -15,12 +15,12 @@ import {
   orderBy,
   limit,
   DocumentData,
-  QueryConstraint
+  QueryConstraint,
 } from 'firebase/firestore';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
   private app: FirebaseApp;
@@ -41,12 +41,15 @@ export class FirebaseService {
   /**
    * Add a document to a collection
    */
-  async addDocument(collectionName: string, data: DocumentData): Promise<string> {
+  async addDocument(
+    collectionName: string,
+    data: DocumentData,
+  ): Promise<string> {
     try {
       const docRef = await addDoc(collection(this.db, collectionName), {
         ...data,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       });
       return docRef.id;
     } catch (error) {
@@ -58,11 +61,14 @@ export class FirebaseService {
   /**
    * Get a single document by ID
    */
-  async getDocument(collectionName: string, docId: string): Promise<DocumentData | null> {
+  async getDocument(
+    collectionName: string,
+    docId: string,
+  ): Promise<DocumentData | null> {
     try {
       const docRef = doc(this.db, collectionName, docId);
       const docSnap = await getDoc(docRef);
-      
+
       if (docSnap.exists()) {
         return { id: docSnap.id, ...docSnap.data() };
       }
@@ -76,15 +82,20 @@ export class FirebaseService {
   /**
    * Get all documents from a collection
    */
-  async getDocuments(collectionName: string, constraints?: QueryConstraint[]): Promise<DocumentData[]> {
+  async getDocuments(
+    collectionName: string,
+    constraints?: QueryConstraint[],
+  ): Promise<DocumentData[]> {
     try {
       const collectionRef = collection(this.db, collectionName);
-      const q = constraints ? query(collectionRef, ...constraints) : collectionRef;
+      const q = constraints
+        ? query(collectionRef, ...constraints)
+        : collectionRef;
       const querySnapshot = await getDocs(q);
-      
-      return querySnapshot.docs.map(doc => ({
+
+      return querySnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
     } catch (error) {
       console.error('Error getting documents:', error);
@@ -95,12 +106,16 @@ export class FirebaseService {
   /**
    * Update a document
    */
-  async updateDocument(collectionName: string, docId: string, data: Partial<DocumentData>): Promise<void> {
+  async updateDocument(
+    collectionName: string,
+    docId: string,
+    data: Partial<DocumentData>,
+  ): Promise<void> {
     try {
       const docRef = doc(this.db, collectionName, docId);
       await updateDoc(docRef, {
         ...data,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       });
     } catch (error) {
       console.error('Error updating document:', error);

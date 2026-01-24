@@ -372,9 +372,9 @@ export class ConfirmationFormSection {
       const formData: Confirmation = this.confirmationForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'confirmation',
-        formData
+        formData,
       );
-      
+
       console.log('Confirmation form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
