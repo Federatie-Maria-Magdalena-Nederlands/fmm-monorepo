@@ -1,0 +1,195 @@
+<!-- Registration Form Section -->
+<section class="py-16 px-2 relative overflow-hidden">
+  <div class="max-w-2xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Register for the Course
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to secure your spot in our upcoming Bible
+        course.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <!-- First Name -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >First Name <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="text"
+            formControlName="firstName"
+            placeholder="Enter your first name"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              registrationForm.get('firstName')?.invalid &&
+              registrationForm.get('firstName')?.touched
+            "
+          />
+          @if(registrationForm.get('firstName')?.invalid &&
+          registrationForm.get('firstName')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error"
+              >First name is required</span
+            >
+          </label>
+          }
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Last Name <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="text"
+            formControlName="lastName"
+            placeholder="Enter your last name"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              registrationForm.get('lastName')?.invalid &&
+              registrationForm.get('lastName')?.touched
+            "
+          />
+          @if(registrationForm.get('lastName')?.invalid &&
+          registrationForm.get('lastName')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">Last name is required</span>
+          </label>
+          }
+        </div>
+
+        <!-- Email -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Email Address <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="your.email@example.com"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              registrationForm.get('email')?.invalid &&
+              registrationForm.get('email')?.touched
+            "
+          />
+          @if(registrationForm.get('email')?.invalid &&
+          registrationForm.get('email')?.touched) {
+          <label class="label">
+            @if(registrationForm.get('email')?.hasError('required')) {
+            <span class="label-text-alt text-error"> Email is required </span>
+            } @else if(registrationForm.get('email')?.hasError('email')) {
+            <span class="label-text-alt text-error">
+              Please enter a valid email address
+            </span>
+            }
+          </label>
+          }
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Phone Number <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="+31 6 1234 5678"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              registrationForm.get('phoneNumber')?.invalid &&
+              registrationForm.get('phoneNumber')?.touched
+            "
+          />
+          @if(registrationForm.get('phoneNumber')?.invalid &&
+          registrationForm.get('phoneNumber')?.touched) {
+          <label class="label">
+            @if(registrationForm.get('phoneNumber')?.hasError('required')) {
+            <span class="label-text-alt text-error">
+              Phone number is required
+            </span>
+            } @else if(registrationForm.get('phoneNumber')?.hasError('pattern'))
+            {
+            <span class="label-text-alt text-error">
+              Please enter a valid phone number
+            </span>
+            }
+          </label>
+          }
+        </div>
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for registering! We'll contact you soon with more
+            details.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your registration. Please try
+            again.</span
+          >
+        </div>
+        }
+
+        <!-- Submit Button -->
+        <div class="form-control mt-8">
+          <button
+            type="submit"
+            class="btn btn-lg bg-amber-600 hover:bg-amber-700 text-white border-none w-full"
+            [disabled]="registrationForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Register Now }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

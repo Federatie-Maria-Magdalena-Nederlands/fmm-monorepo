@@ -1,0 +1,52 @@
+<!-- Activities Section -->
+<section class="py-16 px-2 bg-white relative overflow-hidden mb-4">
+  <app-abstract-background></app-abstract-background>
+
+  <!-- Content -->
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Join Our Community Activities
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto"></div>
+    </div>
+    <p
+      class="text-lg text-gray-700 leading-relaxed mb-12 text-center max-w-4xl mx-auto"
+    >
+      Explore the diverse activities and events that bring our community
+      together. From spiritual gatherings to social events, there's something
+      for everyone to participate in and enjoy.
+    </p>
+
+    <!-- Activities Cards List -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for(activity of activities; track activity.title) {
+      <div
+        class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300"
+      >
+        <figure class="h-48 overflow-hidden">
+          <img
+            [src]="activity.image"
+            [alt]="activity.title"
+            class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+          />
+        </figure>
+        <div class="card-body">
+          <h3 class="card-title text-xl font-bold text-gray-800">
+            {{activity.title}}
+          </h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            {{activity.description}}
+          </p>
+          @if(activity.schedule) {
+          <div class="mt-4 flex items-center gap-2 text-sm text-amber-700">
+            <app-spark-icon></app-spark-icon>
+            <span class="font-semibold">{{activity.schedule}}</span>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

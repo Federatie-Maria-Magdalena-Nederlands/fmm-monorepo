@@ -31,7 +31,10 @@
             <ul class="p-2 bg-base-100 w-40 z-1">
               @for(child of data.children; track child.label) {
               <li>
-                <a [routerLink]="child.path" class="font-bold text-lg"
+                <a
+                  [routerLink]="child.path"
+                  class="font-bold text-lg"
+                  (click)="closeAllDropdowns()"
                   >{{ child.label }}</a
                 >
               </li>
@@ -41,7 +44,10 @@
         </li>
         } @else {
         <li>
-          <a [routerLink]="data.path" class="font-bold text-lg"
+          <a
+            [routerLink]="data.path"
+            class="font-bold text-lg"
+            (click)="closeAllDropdowns()"
             >{{ data.label }}</a
           >
         </li>
@@ -61,7 +67,10 @@
           <ul class="p-2 bg-base-100 w-80 z-1">
             @for(child of data.children; track child.label) {
             <li>
-              <a [routerLink]="child.path" class="font-bold text-lg"
+              <a
+                [routerLink]="child.path"
+                class="font-bold text-lg"
+                (click)="closeAllDropdowns()"
                 >{{ child.label }}</a
               >
             </li>
@@ -71,7 +80,10 @@
       </li>
       } @else {
       <li>
-        <a [routerLink]="data.path" class="font-bold text-lg"
+        <a
+          [routerLink]="data.path"
+          class="font-bold text-lg"
+          (click)="closeAllDropdowns()"
           >{{ data.label }}</a
         >
       </li>

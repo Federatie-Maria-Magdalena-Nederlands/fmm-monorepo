@@ -16,6 +16,7 @@ export class Navbar implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeScrollTriggerAnimations();
     this.initializeNavbarScroll();
+    this.initializeDropdownHandlers();
   }
 
   private initializeScrollTriggerAnimations() {
@@ -58,6 +59,47 @@ export class Navbar implements OnInit, OnDestroy {
 
     window.addEventListener('scroll', handleScroll);
     this.scrollListener = handleScroll;
+  }
+
+  private initializeDropdownHandlers() {
+    // Use setTimeout to ensure DOM is ready
+    setTimeout(() => {
+      const allDetails = document.querySelectorAll('nav details');
+
+      allDetails.forEach((detail) => {
+        detail.addEventListener('toggle', (event) => {
+          const targetDetail = event.target as HTMLDetailsElement;
+
+          // If this dropdown is being opened, close all others
+          if (targetDetail.open) {
+            allDetails.forEach((otherDetail) => {
+              if (
+                otherDetail !== targetDetail &&
+                (otherDetail as HTMLDetailsElement).open
+              ) {
+                (otherDetail as HTMLDetailsElement).open = false;
+              }
+            });
+          }
+        });
+      });
+    }, 0);
+  }
+
+  public closeAllDropdowns() {
+    // Close all <details> elements (dropdowns)
+    const allDetails = document.querySelectorAll('details[open]');
+    allDetails.forEach((detail) => {
+      detail.removeAttribute('open');
+    });
+
+    // Close mobile menu dropdown by removing focus
+    const dropdownToggle = document.querySelector(
+      '.dropdown [tabindex="0"]',
+    ) as HTMLElement;
+    if (dropdownToggle) {
+      dropdownToggle.blur();
+    }
   }
 
   ngOnDestroy() {
