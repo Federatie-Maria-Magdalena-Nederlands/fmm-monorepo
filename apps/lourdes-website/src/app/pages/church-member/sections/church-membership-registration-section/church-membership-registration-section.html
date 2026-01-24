@@ -1,0 +1,605 @@
+<!-- Registration Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Church Membership Registration
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Complete the registration form to become a member of our parish.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <!-- Progress Steps -->
+      <div class="mb-8">
+        <ul class="steps steps-horizontal w-full">
+          @for(step of steps; track $index; let i = $index) {
+          <li
+            class="step"
+            [class.step-warning]="i <= currentStep"
+            [class.text-xs]="true"
+          >
+            {{ step }}
+          </li>
+          }
+        </ul>
+      </div>
+
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <!-- Step 1: Personal Information -->
+        @if(currentStep === 0) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">
+            Personal Information
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold text-gray-700"
+                  >Name <span class="text-red-600">*</span></span
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="firstName"
+                placeholder="Enter your first name"
+                class="input input-bordered w-full"
+                [class.input-error]="
+                  isFieldInvalid('firstName')
+                "
+              />
+              @if(isFieldInvalid('firstName')) {
+              <label class="label">
+                <span class="label-text-alt text-error">Name is required</span>
+              </label>
+              }
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold text-gray-700"
+                  >Last name <span class="text-red-600">*</span></span
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="lastName"
+                placeholder="Enter your last name"
+                class="input input-bordered w-full"
+                [class.input-error]="
+                  isFieldInvalid('lastName')
+                "
+              />
+              @if(isFieldInvalid('lastName')) {
+              <label class="label">
+                <span class="label-text-alt text-error"
+                  >Last name is required</span
+                >
+              </label>
+              }
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Gender <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="gender"
+                  value="Man"
+                  class="radio radio-primary"
+                />
+                <span class="label-text">Man</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="gender"
+                  value="Woman"
+                  class="radio radio-primary"
+                />
+                <span class="label-text">Woman</span>
+              </label>
+            </div>
+            @if(isFieldInvalid('gender')) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select your gender</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold text-gray-700"
+                  >Email address <span class="text-red-600">*</span></span
+                >
+              </label>
+              <input
+                type="email"
+                formControlName="email"
+                placeholder="your.email@example.com"
+                class="input input-bordered w-full"
+                [class.input-error]="
+                  isFieldInvalid('email')
+                "
+              />
+              @if(isFieldInvalid('email')) {
+              <label class="label">
+                @if(registrationForm.get('email')?.hasError('required')) {
+                <span class="label-text-alt text-error">
+                  Email is required
+                </span>
+                } @if(registrationForm.get('email')?.hasError('email')) {
+                <span> Please enter a valid email address </span>
+                }
+              </label>
+              }
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold text-gray-700"
+                  >Phone number <span class="text-red-600">*</span></span
+                >
+              </label>
+              <input
+                type="tel"
+                formControlName="phoneNumber"
+                placeholder="+31 6 1234 5678"
+                class="input input-bordered w-full"
+                [class.input-error]="
+                  isFieldInvalid('phoneNumber')
+                "
+              />
+              @if(isFieldInvalid('phoneNumber')) {
+              <label class="label">
+                <span class="label-text-alt text-error">
+                  Phone number is required
+                </span>
+              </label>
+              }
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- Step 2: Address Information -->
+        @if(currentStep === 1) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">
+            Address Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Address (street name, house number and any additions)
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="address"
+              placeholder="Street name, house number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                isFieldInvalid('address')
+              "
+            />
+            @if(isFieldInvalid('address')) {
+            <label class="label">
+              <span class="label-text-alt text-error">Address is required</span>
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="postalCodeCity"
+              placeholder="1234 AB Amsterdam"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                isFieldInvalid('postalCodeCity')
+              "
+            />
+            @if(isFieldInvalid('postalCodeCity')) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Are you the main resident of this address?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="mainResident"
+                  value="Yes"
+                  class="radio radio-primary"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="mainResident"
+                  value="No"
+                  class="radio radio-primary"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(isFieldInvalid('mainResident')) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 3: Religious Information -->
+        @if(currentStep === 2) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">
+            Religious Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Were you baptized Catholic?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptizedCatholic"
+                  value="Yes"
+                  class="radio radio-primary"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptizedCatholic"
+                  value="No"
+                  class="radio radio-primary"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(isFieldInvalid('baptizedCatholic')) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 4: Marital Information -->
+        @if(currentStep === 3) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">
+            Marital Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Marital status <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              @for(status of maritalStatuses; track status) {
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="maritalStatus"
+                  [value]="status"
+                  class="radio radio-primary"
+                />
+                <span class="label-text">{{ status }}</span>
+              </label>
+              }
+            </div>
+            @if(isFieldInvalid('maritalStatus')) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select your marital status</span
+              >
+            </label>
+            }
+          </div>
+
+          @if(showMaritalDateFields()) {
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @if(showWeddingDate()) {
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold text-gray-700"
+                  >Date of wedding</span
+                >
+              </label>
+              <input
+                type="date"
+                formControlName="weddingDate"
+                class="input input-bordered w-full"
+              />
+            </div>
+            } @if(showDissolutionDate()) {
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold text-gray-700"
+                  >Date of dissolution of marriage</span
+                >
+              </label>
+              <input
+                type="date"
+                formControlName="dissolutionDate"
+                class="input input-bordered w-full"
+              />
+            </div>
+            } @if(showWidowedSince()) {
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold text-gray-700"
+                  >Widowed since</span
+                >
+              </label>
+              <input
+                type="date"
+                formControlName="widowedSince"
+                class="input input-bordered w-full"
+              />
+            </div>
+            }
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Step 5: Spouse Information -->
+        @if(currentStep === 4) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">
+            Spouse Information
+          </h3>
+
+          @if(requiresSpouseInfo()) {
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-semibold text-gray-700"
+                    >Spouse's/Wife's Surname</span
+                  >
+                </label>
+                <input
+                  type="text"
+                  formControlName="spouseSurname"
+                  placeholder="Enter surname"
+                  class="input input-bordered w-full"
+                />
+              </div>
+
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-semibold text-gray-700"
+                    >Spouse's/Wife's First Names</span
+                  >
+                </label>
+                <input
+                  type="text"
+                  formControlName="spouseFirstNames"
+                  placeholder="Enter first names"
+                  class="input input-bordered w-full"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-semibold text-gray-700"
+                    >Date of birth of husband/wife</span
+                  >
+                </label>
+                <input
+                  type="date"
+                  formControlName="spouseBirthDate"
+                  class="input input-bordered w-full"
+                />
+              </div>
+
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-semibold text-gray-700"
+                    >Place of birth of husband/wife</span
+                  >
+                </label>
+                <input
+                  type="text"
+                  formControlName="spouseBirthPlace"
+                  placeholder="Enter birth place"
+                  class="input input-bordered w-full"
+                />
+              </div>
+            </div>
+          </div>
+          } @else {
+          <div class="alert alert-info">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              class="stroke-current shrink-0 w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <span
+              >Spouse information not required for your marital status.</span
+            >
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Step 6: Additional Information -->
+        @if(currentStep === 5) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">
+            Additional Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >I would also like to register the following family
+                members:</span
+              >
+            </label>
+            <textarea
+              formControlName="familyMembers"
+              class="textarea w-full block textarea-bordered h-24"
+              placeholder="Enter family members you would like to register..."
+            ></textarea>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Ask any questions here (not mandatory)</span
+              >
+            </label>
+            <textarea
+              formControlName="questions"
+              class="textarea w-full block textarea-bordered h-32"
+              placeholder="Enter any questions or comments..."
+            ></textarea>
+          </div>
+        </div>
+        }
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for registering! We'll contact you soon with more
+            details.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your registration. Please try
+            again.</span
+          >
+        </div>
+        }
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          <button
+            type="button"
+            class="btn btn-outline"
+            (click)="previousStep()"
+            [disabled]="currentStep === 0"
+          >
+            Previous
+          </button>
+
+          @if(currentStep < steps.length - 1) {
+          <button
+            type="button"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            (click)="nextStep()"
+          >
+            Next
+          </button>
+          } @else {
+          <button
+            type="submit"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            [disabled]="registrationForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Registration }
+          </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

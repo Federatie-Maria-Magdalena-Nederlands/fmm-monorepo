@@ -1,0 +1,291 @@
+<!-- Mass Intentions Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Mass Intention Request Form
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to request a Mass intention.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <form [formGroup]="massIntentionForm" (ngSubmit)="onSubmit()">
+        <!-- Name -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Name <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="text"
+            formControlName="firstName"
+            placeholder="Enter your first name"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              massIntentionForm.get('firstName')?.invalid &&
+              massIntentionForm.get('firstName')?.touched
+            "
+          />
+          @if(massIntentionForm.get('firstName')?.invalid &&
+          massIntentionForm.get('firstName')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">Name is required</span>
+          </label>
+          }
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Last name <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="text"
+            formControlName="lastName"
+            placeholder="Enter your last name"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              massIntentionForm.get('lastName')?.invalid &&
+              massIntentionForm.get('lastName')?.touched
+            "
+          />
+          @if(massIntentionForm.get('lastName')?.invalid &&
+          massIntentionForm.get('lastName')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">Last name is required</span>
+          </label>
+          }
+        </div>
+
+        <!-- Email -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Email address <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="your.email@example.com"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              massIntentionForm.get('email')?.invalid &&
+              massIntentionForm.get('email')?.touched
+            "
+          />
+          @if(massIntentionForm.get('email')?.invalid &&
+          massIntentionForm.get('email')?.touched) {
+          <label class="label">
+            @if(massIntentionForm.get('email')?.hasError('required')) {
+            <span class="label-text-alt text-error"> Email is required </span>
+            } @else if(massIntentionForm.get('email')?.hasError('email')) {
+            <span class="label-text-alt text-error">
+              enter a valid email address
+            </span>
+            }
+          </label>
+          }
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Phone number <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="+31 6 1234 5678"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              massIntentionForm.get('phoneNumber')?.invalid &&
+              massIntentionForm.get('phoneNumber')?.touched
+            "
+          />
+          @if(massIntentionForm.get('phoneNumber')?.invalid &&
+          massIntentionForm.get('phoneNumber')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              Phone number is required
+            </span>
+          </label>
+          }
+        </div>
+
+        <!-- Desired Date -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Desired date for the Mass intention
+              <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="date"
+            formControlName="desiredDate"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              massIntentionForm.get('desiredDate')?.invalid &&
+              massIntentionForm.get('desiredDate')?.touched
+            "
+          />
+          @if(massIntentionForm.get('desiredDate')?.invalid &&
+          massIntentionForm.get('desiredDate')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              Please select a date for the Mass intention
+            </span>
+          </label>
+          }
+        </div>
+
+        <!-- Mass Intention -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Mass intention (1 per form)
+              <span class="text-red-600">*</span></span
+            >
+          </label>
+          <textarea
+            formControlName="intention"
+            placeholder="Please describe your Mass intention..."
+            class="textarea block w-full textarea-bordered h-32"
+            [class.textarea-error]="
+              massIntentionForm.get('intention')?.invalid &&
+              massIntentionForm.get('intention')?.touched
+            "
+          ></textarea>
+          @if(massIntentionForm.get('intention')?.invalid &&
+          massIntentionForm.get('intention')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              Mass intention is required
+            </span>
+          </label>
+          }
+        </div>
+
+        <!-- Money Transfer Question -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Have you transferred the money for the Mass intentions?</span
+            >
+          </label>
+          <div class="flex gap-6">
+            <label class="cursor-pointer flex items-center gap-2">
+              <input
+                type="radio"
+                formControlName="moneyTransferred"
+                value="Yes"
+                class="radio radio-warning"
+              />
+              <span class="label-text">Yes</span>
+            </label>
+            <label class="cursor-pointer flex items-center gap-2">
+              <input
+                type="radio"
+                formControlName="moneyTransferred"
+                value="No"
+                class="radio radio-warning"
+              />
+              <span class="label-text">No</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Upload Proof of Payment -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Upload your proof of payment here if applicable</span
+            >
+          </label>
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept="image/*,.pdf"
+            class="file-input file-input-bordered file-input-warning w-full"
+          />
+          @if(selectedFileName) {
+          <label class="label">
+            <span class="label-text-alt text-success"
+              >Selected: {{ selectedFileName }}</span
+            >
+          </label>
+          }
+        </div>
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for submitting your Mass intention. We'll contact you
+            soon with confirmation.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your request. Please try again.</span
+          >
+        </div>
+        }
+
+        <!-- Submit Button -->
+        <div class="form-control mt-8">
+          <button
+            type="submit"
+            class="btn btn-lg bg-amber-600 hover:bg-amber-700 text-white border-none w-full"
+            [disabled]="massIntentionForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Mass Intention }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

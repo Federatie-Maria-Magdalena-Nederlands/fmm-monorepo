@@ -54,6 +54,28 @@ export const appRoutes: Route[] = [
     loadComponent: () =>
       import('./pages/celebrations/celebrations').then((m) => m.Celebrations),
   },
+  {
+    path: 'church-member',
+    loadComponent: () =>
+      import('./pages/church-member/church-member').then((m) => m.ChurchMember),
+  },
+  {
+    path: 'volunteer',
+    loadComponent: () =>
+      import('./pages/volunteer/volunteer').then((m) => m.Volunteer),
+  },
+  {
+    path: 'mass-intentions',
+    loadComponent: () =>
+      import('./pages/mass-intentions/mass-intentions').then(
+        (m) => m.MassIntentions,
+      ),
+  },
+  {
+    path: 'donations',
+    loadComponent: () =>
+      import('./pages/donations/donations').then((m) => m.Donations),
+  },
   // Not Found Route
   {
     path: '**',

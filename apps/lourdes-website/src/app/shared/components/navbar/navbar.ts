@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { MENU_ITEMS } from '../../constants/menu-items';
 import { MenuItem } from '../../models/interfaces/menu-item.interface';
 
@@ -12,6 +12,7 @@ export class Navbar implements OnInit, OnDestroy {
   routeItems: MenuItem[] = MENU_ITEMS;
 
   private scrollListener: (() => void) | null = null;
+  private router = inject(Router);
 
   ngOnInit() {
     this.initializeScrollTriggerAnimations();
@@ -100,6 +101,10 @@ export class Navbar implements OnInit, OnDestroy {
     if (dropdownToggle) {
       dropdownToggle.blur();
     }
+  }
+
+  public goToDonate() {
+    this.router.navigate(['/donations']);
   }
 
   ngOnDestroy() {

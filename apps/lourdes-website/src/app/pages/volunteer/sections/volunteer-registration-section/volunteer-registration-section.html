@@ -1,0 +1,248 @@
+<!-- Volunteer Registration Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Volunteer Registration
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to express your interest in volunteering with
+        us.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <form [formGroup]="volunteerForm" (ngSubmit)="onSubmit()">
+        <!-- Name -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Name <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="text"
+            formControlName="firstName"
+            placeholder="Enter your first name"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              volunteerForm.get('firstName')?.invalid &&
+              volunteerForm.get('firstName')?.touched
+            "
+          />
+          @if(volunteerForm.get('firstName')?.invalid &&
+          volunteerForm.get('firstName')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">Name is required</span>
+          </label>
+          }
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Last name <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="text"
+            formControlName="lastName"
+            placeholder="Enter your last name"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              volunteerForm.get('lastName')?.invalid &&
+              volunteerForm.get('lastName')?.touched
+            "
+          />
+          @if(volunteerForm.get('lastName')?.invalid &&
+          volunteerForm.get('lastName')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">Last name is required</span>
+          </label>
+          }
+        </div>
+
+        <!-- Email -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Email address <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="your.email@example.com"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              volunteerForm.get('email')?.invalid &&
+              volunteerForm.get('email')?.touched
+            "
+          />
+          @if(volunteerForm.get('email')?.invalid &&
+          volunteerForm.get('email')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              @if(volunteerForm.get('email')?.hasError('required')) { Email is
+              required } @else if(volunteerForm.get('email')?.hasError('email'))
+              { Please enter a valid email address }
+            </span>
+          </label>
+          }
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Phone number <span class="text-red-600">*</span></span
+            >
+          </label>
+          <input
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="+31 6 1234 5678"
+            class="input input-bordered w-full"
+            [class.input-error]="
+              volunteerForm.get('phoneNumber')?.invalid &&
+              volunteerForm.get('phoneNumber')?.touched
+            "
+          />
+          @if(volunteerForm.get('phoneNumber')?.invalid &&
+          volunteerForm.get('phoneNumber')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              Phone number is required
+            </span>
+          </label>
+          }
+        </div>
+
+        <!-- Message -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >Message <span class="text-red-600">*</span></span
+            >
+          </label>
+          <textarea
+            formControlName="message"
+            placeholder="Tell us about yourself and why you'd like to volunteer..."
+            class="textarea block w-full textarea-bordered h-32"
+            [class.textarea-error]="
+              volunteerForm.get('message')?.invalid &&
+              volunteerForm.get('message')?.touched
+            "
+          ></textarea>
+          @if(volunteerForm.get('message')?.invalid &&
+          volunteerForm.get('message')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error">Message is required</span>
+          </label>
+          }
+        </div>
+
+        <!-- I would like to volunteer for -->
+        <div class="form-control mb-6">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700"
+              >I would like to volunteer for:
+              <span class="text-red-600">*</span></span
+            >
+          </label>
+          <div class="space-y-3">
+            @for(option of volunteerOptions; track option.value) {
+            <label class="cursor-pointer flex items-start gap-3">
+              <input
+                type="checkbox"
+                [value]="option.value"
+                (change)="onCheckboxChange($event, option.value)"
+                class="checkbox checkbox-warning mt-1"
+              />
+              <div class="flex-1">
+                <span class="label-text font-medium">{{ option.label }}</span>
+                @if(option.description) {
+                <p class="text-sm text-gray-600 mt-1">
+                  {{ option.description }}
+                </p>
+                }
+              </div>
+            </label>
+            }
+          </div>
+          @if(volunteerForm.get('volunteerFor')?.invalid &&
+          volunteerForm.get('volunteerFor')?.touched) {
+          <label class="label">
+            <span class="label-text-alt text-error"
+              >Please select at least one volunteer option</span
+            >
+          </label>
+          }
+        </div>
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for your interest in volunteering! We'll be in touch
+            soon.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your application. Please try
+            again.</span
+          >
+        </div>
+        }
+
+        <!-- Submit Button -->
+        <div class="form-control mt-8">
+          <button
+            type="submit"
+            class="btn btn-lg bg-amber-600 hover:bg-amber-700 text-white border-none w-full"
+            [disabled]="volunteerForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Application }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
