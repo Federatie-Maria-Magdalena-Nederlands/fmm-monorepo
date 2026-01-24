@@ -30,6 +30,30 @@ export const appRoutes: Route[] = [
     loadComponent: () =>
       import('./pages/magazine/magazine').then((m) => m.Magazine),
   },
+  {
+    path: 'our-activities',
+    loadComponent: () =>
+      import('./pages/our-activities/our-activities').then(
+        (m) => m.OurActivities,
+      ),
+  },
+  {
+    path: 'live-streaming-celebrations',
+    loadComponent: () =>
+      import('./pages/live-streaming/live-streaming').then(
+        (m) => m.LiveStreaming,
+      ),
+  },
+  {
+    path: 'bible-course',
+    loadComponent: () =>
+      import('./pages/bible-course/bible-course').then((m) => m.BibleCourse),
+  },
+  {
+    path: 'celebrations',
+    loadComponent: () =>
+      import('./pages/celebrations/celebrations').then((m) => m.Celebrations),
+  },
   // Not Found Route
   {
     path: '**',
