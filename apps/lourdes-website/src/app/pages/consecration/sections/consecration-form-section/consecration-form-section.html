@@ -129,8 +129,7 @@
               <span class="label-text-alt text-error">
                 Email address is required
               </span>
-              } @else
-              if(consecrationForm.get('emailAddress')?.hasError('email')) {
+              } @else if(consecrationForm.get('emailAddress')?.hasError('email')) {
               <span class="label-text-alt text-error">
                 Please enter a valid email address
               </span>
