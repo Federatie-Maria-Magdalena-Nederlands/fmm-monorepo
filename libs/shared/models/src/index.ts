@@ -1,0 +1,12 @@
+export * from './lib/mass-intentions.model';
+export * from './lib/donations.model';
+export * from './lib/baptism.model';
+export * from './lib/holy-communion.model';
+export * from './lib/confirmation.model';
+export * from './lib/wedding.model';
+export * from './lib/anointing.model';
+export * from './lib/consecration.model';
+export * from './lib/volunteer.model';
+export * from './lib/church-member.model';
+export * from './lib/contact-us.model';
+

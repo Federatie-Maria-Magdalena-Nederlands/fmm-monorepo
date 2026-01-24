@@ -12,64 +12,108 @@
         class="animate-slide-in-left animation-delay-100"
         data-scroll-animate
       >
-        <form class="space-y-6">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
           <div>
             <label
-              htmlFor="name"
+              for="name"
               class="block text-sm font-medium text-gray-700 mb-2"
               >Name</label
             >
             <input
               type="text"
               id="name"
+              formControlName="name"
               placeholder="Your name"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+              [class.border-red-500]="isFieldInvalid('name')"
             />
+            @if (isFieldInvalid('name')) {
+              <p class="mt-1 text-sm text-red-600">Name is required (minimum 2 characters)</p>
+            }
           </div>
           <div>
             <label
-              htmlFor="email"
+              for="email"
               class="block text-sm font-medium text-gray-700 mb-2"
               >Email</label
             >
             <input
               type="email"
               id="email"
+              formControlName="email"
               placeholder="your@email.com"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+              [class.border-red-500]="isFieldInvalid('email')"
             />
+            @if (isFieldInvalid('email')) {
+              <p class="mt-1 text-sm text-red-600">Valid email is required</p>
+            }
           </div>
           <div>
             <label
-              htmlFor="phone"
+              for="phone"
               class="block text-sm font-medium text-gray-700 mb-2"
               >Phone</label
             >
             <input
               type="tel"
               id="phone"
+              formControlName="phone"
               placeholder="(123) 456-7890"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+              [class.border-red-500]="isFieldInvalid('phone')"
             />
+            @if (isFieldInvalid('phone')) {
+              <p class="mt-1 text-sm text-red-600">Valid phone number is required</p>
+            }
           </div>
           <div>
             <label
-              htmlFor="message"
+              for="message"
               class="block text-sm font-medium text-gray-700 mb-2"
               >Message</label
             >
             <textarea
               id="message"
+              formControlName="message"
               placeholder="Your message..."
               rows="5"
               class="w-full block px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+              [class.border-red-500]="isFieldInvalid('message')"
             ></textarea>
+            @if (isFieldInvalid('message')) {
+              <p class="mt-1 text-sm text-red-600">Message is required (minimum 10 characters)</p>
+            }
           </div>
+          
+          <!-- Success Message -->
+          @if (submitSuccess) {
+            <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p class="text-green-800 text-sm">
+                <strong>Success!</strong> Your message has been sent successfully. We'll get back to you soon.
+              </p>
+            </div>
+          }
+          
+          <!-- Error Message -->
+          @if (submitError) {
+            <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p class="text-red-800 text-sm">
+                <strong>Error!</strong> There was a problem sending your message. Please try again.
+              </p>
+            </div>
+          }
+          
           <button
             type="submit"
-            class="w-full px-6 py-3 rounded-full border-2 border-amber-600 text-amber-600 font-semibold hover:bg-amber-50 transition"
+            [disabled]="isSubmitting"
+            class="w-full px-6 py-3 rounded-full border-2 border-amber-600 text-amber-600 font-semibold hover:bg-amber-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Send Message
+            @if (isSubmitting) {
+              <span>Sending...</span>
+            } @else {
+              <span>Send Message</span>
+            }
           </button>
         </form>
       </div>

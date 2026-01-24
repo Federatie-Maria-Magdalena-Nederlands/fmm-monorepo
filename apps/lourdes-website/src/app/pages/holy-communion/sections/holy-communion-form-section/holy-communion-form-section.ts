@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { HolyCommunion } from '@fmm/shared/models';
+import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,7 +18,7 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './holy-communion-form-section.html',
 })
 export class HolyCommunionFormSection {
-  public communionForm: FormGroup;
+  public communionForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
@@ -25,6 +27,7 @@ export class HolyCommunionFormSection {
   public selectedMotherCertificate = '';
   public selectedFatherCertificate = '';
   public selectedGodparentsCertificate = '';
+  private sacramentService = inject(SacramentSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.communionForm = this.formBuilder.group({
@@ -335,7 +338,7 @@ export class HolyCommunionFormSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.communionForm.invalid) {
       this.communionForm.markAllAsTouched();
       return;
@@ -353,9 +356,14 @@ export class HolyCommunionFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    setTimeout(() => {
-      console.log('Form submitted:', this.communionForm.value);
-
+    try {
+      const formData: HolyCommunion = this.communionForm.value;
+      const submissionId = await this.sacramentService.submitForm(
+        'holy-communion',
+        formData
+      );
+      
+      console.log('Holy communion form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.communionForm.reset();
@@ -368,6 +376,14 @@ export class HolyCommunionFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting holy communion form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

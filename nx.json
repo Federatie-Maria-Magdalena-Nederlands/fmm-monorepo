@@ -22,7 +22,8 @@
           "buildDepsName": "build-deps",
           "watchDepsName": "watch-deps"
         }
-      }
+      },
+      "exclude": ["libs/shared/models/*"]
     },
     {
       "plugin": "@nx/playwright/plugin",
@@ -34,6 +35,15 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["libs/shared/models/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
       }
     }
   ],

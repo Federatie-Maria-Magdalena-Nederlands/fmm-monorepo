@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { Wedding } from '@fmm/shared/models';
+import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,11 +18,12 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './wedding-form-section.html',
 })
 export class WeddingFormSection {
-  public weddingForm: FormGroup;
+  public weddingForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
+  private sacramentService = inject(SacramentSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.weddingForm = this.formBuilder.group({
@@ -178,7 +181,7 @@ export class WeddingFormSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.weddingForm.invalid) {
       this.weddingForm.markAllAsTouched();
       return;
@@ -196,9 +199,14 @@ export class WeddingFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    setTimeout(() => {
-      console.log('Form submitted:', this.weddingForm.value);
-
+    try {
+      const formData: Wedding = this.weddingForm.value;
+      const submissionId = await this.sacramentService.submitForm(
+        'wedding',
+        formData
+      );
+      
+      console.log('Wedding form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.weddingForm.reset();
@@ -207,6 +215,14 @@ export class WeddingFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting wedding form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { Consecration } from '@fmm/shared/models';
+import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,11 +18,12 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './consecration-form-section.html',
 })
 export class ConsecrationFormSection {
-  public consecrationForm: FormGroup;
+  public consecrationForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
+  private sacramentService = inject(SacramentSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.consecrationForm = this.formBuilder.group({
@@ -97,7 +100,7 @@ export class ConsecrationFormSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.consecrationForm.invalid) {
       this.consecrationForm.markAllAsTouched();
       return;
@@ -115,9 +118,14 @@ export class ConsecrationFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    setTimeout(() => {
-      console.log('Form submitted:', this.consecrationForm.value);
-
+    try {
+      const formData: Consecration = this.consecrationForm.value;
+      const submissionId = await this.sacramentService.submitForm(
+        'consecration',
+        formData
+      );
+      
+      console.log('Consecration form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.consecrationForm.reset();
@@ -126,6 +134,14 @@ export class ConsecrationFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting consecration form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

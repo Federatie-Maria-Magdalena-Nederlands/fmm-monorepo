@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { ChurchMember } from '@fmm/shared/models';
+import { JoinUsSubmissionService } from '../../../../shared/services/join-us-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -20,6 +22,7 @@ export class ChurchMembershipRegistrationSection {
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
+  private joinUsService = inject(JoinUsSubmissionService);
 
   public steps = [
     'Personal',
@@ -169,7 +172,7 @@ export class ChurchMembershipRegistrationSection {
     ].includes(status);
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.registrationForm.invalid) {
       this.registrationForm.markAllAsTouched();
       return;
@@ -179,9 +182,14 @@ export class ChurchMembershipRegistrationSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    // Simulate API call
-    setTimeout(() => {
-      // Simulate successful submission
+    try {
+      const formData: ChurchMember = this.registrationForm.value;
+      const submissionId = await this.joinUsService.submitForm(
+        'church-member',
+        formData
+      );
+      
+      console.log('Church membership form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.registrationForm.reset();
@@ -191,6 +199,15 @@ export class ChurchMembershipRegistrationSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting church membership form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

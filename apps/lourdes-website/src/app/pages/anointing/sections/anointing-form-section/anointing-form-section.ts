@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { Anointing } from '@fmm/shared/models';
+import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,11 +18,12 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './anointing-form-section.html',
 })
 export class AnointingFormSection {
-  public anointingForm: FormGroup;
+  public anointingForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
+  private sacramentService = inject(SacramentSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.anointingForm = this.formBuilder.group({
@@ -139,7 +142,7 @@ export class AnointingFormSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.anointingForm.invalid) {
       this.anointingForm.markAllAsTouched();
       return;
@@ -157,9 +160,14 @@ export class AnointingFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    setTimeout(() => {
-      console.log('Form submitted:', this.anointingForm.value);
-
+    try {
+      const formData: Anointing = this.anointingForm.value;
+      const submissionId = await this.sacramentService.submitForm(
+        'anointing',
+        formData
+      );
+      
+      console.log('Anointing form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.anointingForm.reset();
@@ -168,6 +176,14 @@ export class AnointingFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting anointing form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }
