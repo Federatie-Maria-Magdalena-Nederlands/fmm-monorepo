@@ -1,0 +1,1441 @@
+<!-- Holy Communion Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        First Holy Communion Registration Form
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to register your child for First Holy Communion.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <!-- Stepper -->
+      <ul class="steps steps-horizontal w-full mb-8">
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 1 }">
+          Communicant
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 2 }">
+          Mother
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 3 }">
+          Father
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 4 }">
+          Godparents
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 5 }">
+          Privacy
+        </li>
+      </ul>
+
+      <form [formGroup]="communionForm" (ngSubmit)="onSubmit()">
+        <!-- Step 1: Communicant Information -->
+        @if(currentStep === 1) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Sender</h3>
+
+          <!-- Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name of communicant <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="communicantName"
+              placeholder="Enter name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('communicantName')?.invalid &&
+                communionForm.get('communicantName')?.touched
+              "
+            />
+            @if(communionForm.get('communicantName')?.invalid &&
+            communionForm.get('communicantName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Name is required</span>
+            </label>
+            }
+          </div>
+
+          <!-- Surname -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Communicant's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="communicantSurname"
+              placeholder="Enter surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('communicantSurname')?.invalid &&
+                communionForm.get('communicantSurname')?.touched
+              "
+            />
+            @if(communionForm.get('communicantSurname')?.invalid &&
+            communionForm.get('communicantSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Surname is required</span>
+            </label>
+            }
+          </div>
+
+          <!-- First Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Communicant's first name
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="communicantFirstName"
+              placeholder="Enter first name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('communicantFirstName')?.invalid &&
+                communionForm.get('communicantFirstName')?.touched
+              "
+            />
+            @if(communionForm.get('communicantFirstName')?.invalid &&
+            communionForm.get('communicantFirstName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >First name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Date and Place of Birth -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Date and place of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="communicantDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('communicantDOB')?.invalid &&
+                communionForm.get('communicantDOB')?.touched
+              "
+            />
+            @if(communionForm.get('communicantDOB')?.invalid &&
+            communionForm.get('communicantDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Gender -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Gender <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="communicantGender"
+                  value="Boy"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Boy</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="communicantGender"
+                  value="Girl"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Girl</span>
+              </label>
+            </div>
+            @if(communionForm.get('communicantGender')?.invalid &&
+            communionForm.get('communicantGender')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select gender</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Nationality -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Nationality of communicant
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="communicantNationality"
+              placeholder="Enter nationality"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('communicantNationality')?.invalid &&
+                communionForm.get('communicantNationality')?.touched
+              "
+            />
+            @if(communionForm.get('communicantNationality')?.invalid &&
+            communionForm.get('communicantNationality')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Nationality is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Baptized -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptized? <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="communicantBaptized"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="communicantBaptized"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(communionForm.get('communicantBaptized')?.invalid &&
+            communionForm.get('communicantBaptized')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Conditional fields when baptized -->
+          @if(communionForm.get('communicantBaptized')?.value === 'Yes') {
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >If yes, please provide date
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="communicantBaptismDate"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('communicantBaptismDate')?.invalid &&
+                communionForm.get('communicantBaptismDate')?.touched
+              "
+            />
+            @if(communionForm.get('communicantBaptismDate')?.invalid &&
+            communionForm.get('communicantBaptismDate')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Baptism date is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptismal certificate <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="file"
+              (change)="onFileSelected($event, 'communicant')"
+              accept="image/*,.pdf"
+              class="file-input file-input-bordered file-input-warning w-full"
+            />
+            @if(selectedCommunicantCertificate) {
+            <label class="label">
+              <span class="label-text-alt text-success"
+                >Selected: {{ selectedCommunicantCertificate }}</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptismal date <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="communicantBaptismPlace"
+              placeholder="Enter baptismal place"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('communicantBaptismPlace')?.invalid &&
+                communionForm.get('communicantBaptismPlace')?.touched
+              "
+            />
+            @if(communionForm.get('communicantBaptismPlace')?.invalid &&
+            communionForm.get('communicantBaptismPlace')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Baptismal place is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name of parish where communicant was baptized
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              placeholder="Enter parish name"
+              class="input input-bordered w-full"
+            />
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Step 2: Mother's Information -->
+        @if(currentStep === 2) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Mother's Information
+          </h3>
+
+          <!-- Mother's surname is shown on the image but not in a required field list. 
+               I'll include it for completeness based on the pattern -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              placeholder="Enter mother's surname"
+              class="input input-bordered w-full"
+            />
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's first names <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherFirstNames"
+              placeholder="Enter mother's first names"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherFirstNames')?.invalid &&
+                communionForm.get('motherFirstNames')?.touched
+              "
+            />
+            @if(communionForm.get('motherFirstNames')?.invalid &&
+            communionForm.get('motherFirstNames')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's first names are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="motherDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherDOB')?.invalid &&
+                communionForm.get('motherDOB')?.touched
+              "
+            />
+            @if(communionForm.get('motherDOB')?.invalid &&
+            communionForm.get('motherDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's place of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherPlaceOfBirth"
+              placeholder="Enter place of birth"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherPlaceOfBirth')?.invalid &&
+                communionForm.get('motherPlaceOfBirth')?.touched
+              "
+            />
+            @if(communionForm.get('motherPlaceOfBirth')?.invalid &&
+            communionForm.get('motherPlaceOfBirth')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's place of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother baptized? <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="motherBaptized"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="motherBaptized"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(communionForm.get('motherBaptized')?.invalid &&
+            communionForm.get('motherBaptized')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          @if(communionForm.get('motherBaptized')?.value === 'Yes') {
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's baptism date <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="motherBaptismDate"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherBaptismDate')?.invalid &&
+                communionForm.get('motherBaptismDate')?.touched
+              "
+            />
+            @if(communionForm.get('motherBaptismDate')?.invalid &&
+            communionForm.get('motherBaptismDate')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's baptism date is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptismal place of mother
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherBaptismPlace"
+              placeholder="Enter baptismal place"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherBaptismPlace')?.invalid &&
+                communionForm.get('motherBaptismPlace')?.touched
+              "
+            />
+            @if(communionForm.get('motherBaptismPlace')?.invalid &&
+            communionForm.get('motherBaptismPlace')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's baptismal place is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's baptismal certificate</span
+              >
+            </label>
+            <input
+              type="file"
+              (change)="onFileSelected($event, 'mother')"
+              accept="image/*,.pdf"
+              class="file-input file-input-bordered file-input-warning w-full"
+            />
+            @if(selectedMotherCertificate) {
+            <label class="label">
+              <span class="label-text-alt text-success"
+                >Selected: {{ selectedMotherCertificate }}</span
+              >
+            </label>
+            }
+          </div>
+          }
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's nationality <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherNationality"
+              placeholder="Enter nationality"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherNationality')?.invalid &&
+                communionForm.get('motherNationality')?.touched
+              "
+            />
+            @if(communionForm.get('motherNationality')?.invalid &&
+            communionForm.get('motherNationality')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's nationality is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherAddress')?.invalid &&
+                communionForm.get('motherAddress')?.touched
+              "
+            />
+            @if(communionForm.get('motherAddress')?.invalid &&
+            communionForm.get('motherAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and address of mother
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherPostalCity')?.invalid &&
+                communionForm.get('motherPostalCity')?.touched
+              "
+            />
+            @if(communionForm.get('motherPostalCity')?.invalid &&
+            communionForm.get('motherPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mobile phone mother <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="motherPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherPhone')?.invalid &&
+                communionForm.get('motherPhone')?.touched
+              "
+            />
+            @if(communionForm.get('motherPhone')?.invalid &&
+            communionForm.get('motherPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's email address
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="motherEmail"
+              placeholder="mother.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('motherEmail')?.invalid &&
+                communionForm.get('motherEmail')?.touched
+              "
+            />
+            @if(communionForm.get('motherEmail')?.invalid &&
+            communionForm.get('motherEmail')?.touched) {
+            <label class="label">
+              @if(communionForm.get('motherEmail')?.hasError('required')) {
+              <span class="label-text-alt text-error">
+                Mother's email is required
+              </span>
+              } @else if(communionForm.get('motherEmail')?.hasError('email')) {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address
+              </span>
+              }
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 3: Father's Information -->
+        @if(currentStep === 3) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Father's Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherSurname"
+              placeholder="Enter father's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherSurname')?.invalid &&
+                communionForm.get('fatherSurname')?.touched
+              "
+            />
+            @if(communionForm.get('fatherSurname')?.invalid &&
+            communionForm.get('fatherSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's first names <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherFirstNames"
+              placeholder="Enter father's first names"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherFirstNames')?.invalid &&
+                communionForm.get('fatherFirstNames')?.touched
+              "
+            />
+            @if(communionForm.get('fatherFirstNames')?.invalid &&
+            communionForm.get('fatherFirstNames')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's first names are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="fatherDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherDOB')?.invalid &&
+                communionForm.get('fatherDOB')?.touched
+              "
+            />
+            @if(communionForm.get('fatherDOB')?.invalid &&
+            communionForm.get('fatherDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's place of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherPlaceOfBirth"
+              placeholder="Enter place of birth"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherPlaceOfBirth')?.invalid &&
+                communionForm.get('fatherPlaceOfBirth')?.touched
+              "
+            />
+            @if(communionForm.get('fatherPlaceOfBirth')?.invalid &&
+            communionForm.get('fatherPlaceOfBirth')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's place of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father baptized?</span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="fatherBaptized"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="fatherBaptized"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(communionForm.get('fatherBaptized')?.invalid &&
+            communionForm.get('fatherBaptized')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          @if(communionForm.get('fatherBaptized')?.value === 'Yes') {
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's baptism date <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="fatherBaptismDate"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherBaptismDate')?.invalid &&
+                communionForm.get('fatherBaptismDate')?.touched
+              "
+            />
+            @if(communionForm.get('fatherBaptismDate')?.invalid &&
+            communionForm.get('fatherBaptismDate')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's baptism date is required</span
+              >
+            </label>
+            }
+          </div>
+          }
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's nationality <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherNationality"
+              placeholder="Enter nationality"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherNationality')?.invalid &&
+                communionForm.get('fatherNationality')?.touched
+              "
+            />
+            @if(communionForm.get('fatherNationality')?.invalid &&
+            communionForm.get('fatherNationality')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's nationality is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherAddress')?.invalid &&
+                communionForm.get('fatherAddress')?.touched
+              "
+            />
+            @if(communionForm.get('fatherAddress')?.invalid &&
+            communionForm.get('fatherAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city father
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherPostalCity')?.invalid &&
+                communionForm.get('fatherPostalCity')?.touched
+              "
+            />
+            @if(communionForm.get('fatherPostalCity')?.invalid &&
+            communionForm.get('fatherPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mobile phone father <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="fatherPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherPhone')?.invalid &&
+                communionForm.get('fatherPhone')?.touched
+              "
+            />
+            @if(communionForm.get('fatherPhone')?.invalid &&
+            communionForm.get('fatherPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's email address
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="fatherEmail"
+              placeholder="father.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('fatherEmail')?.invalid &&
+                communionForm.get('fatherEmail')?.touched
+              "
+            />
+            @if(communionForm.get('fatherEmail')?.invalid &&
+            communionForm.get('fatherEmail')?.touched) {
+            <label class="label">
+              @if(communionForm.get('fatherEmail')?.hasError('required')) {
+              <span class="label-text-alt text-error">
+                Father's email is required
+              </span>
+              } @else if(communionForm.get('fatherEmail')?.hasError('email')) {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address
+              </span>
+
+              }
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 4: Godparents Information -->
+        @if(currentStep === 4) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Godparents Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents Name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsName"
+              placeholder="Enter godparent's name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('godparentsName')?.invalid &&
+                communionForm.get('godparentsName')?.touched
+              "
+            />
+            @if(communionForm.get('godparentsName')?.invalid &&
+            communionForm.get('godparentsName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsSurname"
+              placeholder="Enter godparent's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('godparentsSurname')?.invalid &&
+                communionForm.get('godparentsSurname')?.touched
+              "
+            />
+            @if(communionForm.get('godparentsSurname')?.invalid &&
+            communionForm.get('godparentsSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="godparentsDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('godparentsDOB')?.invalid &&
+                communionForm.get('godparentsDOB')?.touched
+              "
+            />
+            @if(communionForm.get('godparentsDOB')?.invalid &&
+            communionForm.get('godparentsDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents Phone Number
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="godparentsPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('godparentsPhone')?.invalid &&
+                communionForm.get('godparentsPhone')?.touched
+              "
+            />
+            @if(communionForm.get('godparentsPhone')?.invalid &&
+            communionForm.get('godparentsPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('godparentsAddress')?.invalid &&
+                communionForm.get('godparentsAddress')?.touched
+              "
+            />
+            @if(communionForm.get('godparentsAddress')?.invalid &&
+            communionForm.get('godparentsAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city of godparents
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                communionForm.get('godparentsPostalCity')?.invalid &&
+                communionForm.get('godparentsPostalCity')?.touched
+              "
+            />
+            @if(communionForm.get('godparentsPostalCity')?.invalid &&
+            communionForm.get('godparentsPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Are his godparents Catholic?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="godparentsCatholic"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="godparentsCatholic"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(communionForm.get('godparentsCatholic')?.invalid &&
+            communionForm.get('godparentsCatholic')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Upload baptism certificate of godparent(s) here</span
+              >
+            </label>
+            <input
+              type="file"
+              (change)="onFileSelected($event, 'godparents')"
+              accept="image/*,.pdf"
+              class="file-input file-input-bordered file-input-warning w-full"
+            />
+            @if(selectedGodparentsCertificate) {
+            <label class="label">
+              <span class="label-text-alt text-success"
+                >Selected: {{ selectedGodparentsCertificate }}</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 5: Privacy & Additional Information -->
+        @if(currentStep === 5) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Privacy Statement
+          </h3>
+
+          <div class="bg-amber-50 p-6 rounded-lg">
+            <h4 class="font-bold text-lg text-gray-800 mb-3">
+              Privacy Statement Roman Catholic Parishes and General Regulations
+              for the Protection of Personal Data Parishes 2018.
+            </h4>
+            <p class="text-sm text-gray-700 mb-3">
+              A Privacy Statement applies to the General Data Protection
+              Regulation (GDPR), and the aforementioned regulations have been
+              drawn up. The Privacy Statement and the General Regulations are
+              available on the website and can be downloaded.
+            </p>
+            <p class="text-sm text-gray-700 mb-3">
+              Below you will find a number of matters (in abbreviated,
+              simplified versions) that are important to you and for which we
+              request your consent (in advance). If you have any doubts about
+              the explanation in the abbreviated version, please always refer to
+              the full Privacy Statement and/or the General Regulations on our
+              website.
+            </p>
+            <div class="mt-4 space-y-3">
+              <div>
+                <p class="font-semibold text-gray-800">Data General</p>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="text-sm text-gray-700">
+                  The applicant(s) agree(s) to the terms of the Privacy
+                  Statement.
+                </p>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="text-sm text-gray-700">
+                  If you do not agree, the application cannot be processed.
+                </p>
+              </div>
+              <p class="text-sm text-gray-700">
+                The information you provide may be used for parish
+                administration and will be stored digitally or on paper (in
+                registers) for this purpose. You can request access to this
+                information. Requesting the deletion of this information is
+                generally not possible because it is necessary for the proper
+                functioning of a parish. The procedure for registration and
+                deregistration (2013) applies to requests to be removed from the
+                parish registers/administration.
+              </p>
+              <p class="text-sm text-gray-700">
+                Your information will always be treated confidentially and will
+                never be provided to external institutions/agencies/third
+                parties without your permission.
+              </p>
+              <p class="text-sm text-gray-700 mb-3">
+                Below you can indicate whether or not you agree with the GDPR
+                above and your request will be processed (regardless of your
+                answer).
+              </p>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Do you agree with our parish's privacy policy?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="space-y-3">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="agree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes! I agree</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="disagree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No! I don't agree</span>
+              </label>
+            </div>
+            @if(communionForm.get('privacyAgreement')?.invalid &&
+            communionForm.get('privacyAgreement')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please agree to privacy policy to continue</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="bg-gray-100 p-6 rounded-lg">
+            <h4 class="font-bold text-lg text-gray-800 mb-2">Costs</h4>
+            <p class="text-gray-700">
+              The cost of preparing for Holy Communion is 75.00 euros per
+              communicant.
+            </p>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >New field <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="additionalField"
+              placeholder="Enter additional information"
+              class="input input-bordered w-full"
+            />
+          </div>
+        </div>
+        }
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for your First Holy Communion registration! We will
+            contact you soon with preparation details.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your request. Please try again.</span
+          >
+        </div>
+        }
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          @if(currentStep > 1) {
+          <button
+            type="button"
+            class="btn btn-outline btn-warning"
+            (click)="previousStep()"
+          >
+            Previous
+          </button>
+          } @else {
+          <div></div>
+          } @if(currentStep < 5) {
+          <button
+            type="button"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            (click)="nextStep()"
+          >
+            Next
+          </button>
+          } @else {
+          <button
+            type="submit"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            [disabled]="communionForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Request }
+          </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

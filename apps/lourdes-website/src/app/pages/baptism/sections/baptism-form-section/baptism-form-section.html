@@ -1,0 +1,1102 @@
+<!-- Baptism Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Baptism Request Form
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to request baptism for yourself or your child.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <!-- Stepper -->
+      <ul class="steps steps-horizontal w-full mb-8">
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 1
+          }"
+        >
+          Sender
+        </li>
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 2
+          }"
+        >
+          Recipient
+        </li>
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 3
+          }"
+        >
+          Parents
+        </li>
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 4
+          }"
+        >
+          Godparents
+        </li>
+        <li
+          class="step"
+          [ngClass]="{
+            'step-warning': currentStep >= 5
+          }"
+        >
+          Date & Privacy
+        </li>
+      </ul>
+
+      <form [formGroup]="baptismForm" (ngSubmit)="onSubmit()">
+        <!-- Step 1: Sender Information -->
+        @if(currentStep === 1) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Sender</h3>
+
+          <!-- Sender's Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sender's name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="senderFirstName"
+              placeholder="Enter sender's first name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('senderFirstName')?.invalid &&
+                baptismForm.get('senderFirstName')?.touched
+              "
+            />
+            @if(baptismForm.get('senderFirstName')?.invalid &&
+            baptismForm.get('senderFirstName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Sender's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Sender's Last Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sender's last name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="senderLastName"
+              placeholder="Enter sender's last name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('senderLastName')?.invalid &&
+                baptismForm.get('senderLastName')?.touched
+              "
+            />
+            @if(baptismForm.get('senderLastName')?.invalid &&
+            baptismForm.get('senderLastName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Sender's last name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Mobile Phone -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mobile phone sender <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="senderPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('senderPhone')?.invalid &&
+                baptismForm.get('senderPhone')?.touched
+              "
+            />
+            @if(baptismForm.get('senderPhone')?.invalid &&
+            baptismForm.get('senderPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Phone number is required
+              </span>
+            </label>
+            }
+          </div>
+
+          <!-- Email -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sender's email address
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="senderEmail"
+              placeholder="your.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('senderEmail')?.invalid &&
+                baptismForm.get('senderEmail')?.touched
+              "
+            />
+            @if(baptismForm.get('senderEmail')?.invalid &&
+            baptismForm.get('senderEmail')?.touched) {
+            <label class="label">
+              @if(baptismForm.get('senderEmail')?.hasError('required')) {
+              <span class="label-text-alt text-error"> Email is required </span>
+              } @else if(baptismForm.get('senderEmail')?.hasError('email')) {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address
+              </span>
+              }
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 2: Recipient Information -->
+        @if(currentStep === 2) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Recipient Information
+          </h3>
+
+          <!-- Which Sacrament -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Which sacrament are you requesting?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="space-y-3">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="sacramentType"
+                  value="children"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >Baptism for children up to and including 6 years old</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="sacramentType"
+                  value="adults"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Baptism for adults</span>
+              </label>
+            </div>
+            @if(baptismForm.get('sacramentType')?.invalid &&
+            baptismForm.get('sacramentType')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Please select a sacrament type
+              </span>
+            </label>
+            }
+          </div>
+
+          <!-- Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name of the person who will receive the sacrament
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="recipientName"
+              placeholder="Enter name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientName')?.invalid &&
+                baptismForm.get('recipientName')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientName')?.invalid &&
+            baptismForm.get('recipientName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Name is required</span>
+            </label>
+            }
+          </div>
+
+          <!-- Surname -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Surname of the person who will receive the sacrament
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="recipientSurname"
+              placeholder="Enter surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientSurname')?.invalid &&
+                baptismForm.get('recipientSurname')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientSurname')?.invalid &&
+            baptismForm.get('recipientSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Surname is required</span>
+            </label>
+            }
+          </div>
+
+          <!-- First Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >First name of the person who is to receive the sacrament
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="recipientFirstName"
+              placeholder="Enter first name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientFirstName')?.invalid &&
+                baptismForm.get('recipientFirstName')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientFirstName')?.invalid &&
+            baptismForm.get('recipientFirstName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >First name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Address -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Address of the person who will receive the sacrament
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="recipientAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientAddress')?.invalid &&
+                baptismForm.get('recipientAddress')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientAddress')?.invalid &&
+            baptismForm.get('recipientAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Address is required</span>
+            </label>
+            }
+          </div>
+
+          <!-- Postal Code and City -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city of the person who will receive the
+                sacrament <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="recipientPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientPostalCity')?.invalid &&
+                baptismForm.get('recipientPostalCity')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientPostalCity')?.invalid &&
+            baptismForm.get('recipientPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Date of birth of the person who will receive the sacrament
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="recipientDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientDOB')?.invalid &&
+                baptismForm.get('recipientDOB')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientDOB')?.invalid &&
+            baptismForm.get('recipientDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Place of Birth -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Place of birth of the person to receive the sacrament
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="recipientPlaceOfBirth"
+              placeholder="Enter place of birth"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientPlaceOfBirth')?.invalid &&
+                baptismForm.get('recipientPlaceOfBirth')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientPlaceOfBirth')?.invalid &&
+            baptismForm.get('recipientPlaceOfBirth')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Place of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Nationality -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Nationality of the person receiving the sacrament
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="recipientNationality"
+              placeholder="Enter nationality"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('recipientNationality')?.invalid &&
+                baptismForm.get('recipientNationality')?.touched
+              "
+            />
+            @if(baptismForm.get('recipientNationality')?.invalid &&
+            baptismForm.get('recipientNationality')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Nationality is required</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 3: Parents Information -->
+        @if(currentStep === 3) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Parents Information
+          </h3>
+
+          <!-- Mother's Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name of the mother of the person who is to receive the
+                sacrament <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherName"
+              placeholder="Enter mother's name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('motherName')?.invalid &&
+                baptismForm.get('motherName')?.touched
+              "
+            />
+            @if(baptismForm.get('motherName')?.invalid &&
+            baptismForm.get('motherName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Father's Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name of the father of the person who is to receive the
+                sacrament <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherName"
+              placeholder="Enter father's name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('fatherName')?.invalid &&
+                baptismForm.get('fatherName')?.touched
+              "
+            />
+            @if(baptismForm.get('fatherName')?.invalid &&
+            baptismForm.get('fatherName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Father's Surname -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Surname of the father of the person who is to receive the
+                sacrament <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherSurname"
+              placeholder="Enter father's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('fatherSurname')?.invalid &&
+                baptismForm.get('fatherSurname')?.touched
+              "
+            />
+            @if(baptismForm.get('fatherSurname')?.invalid &&
+            baptismForm.get('fatherSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's surname is required</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 4: Godparents Information -->
+        @if(currentStep === 4) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Godparents Information
+          </h3>
+
+          <!-- Godparents' Name -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsName"
+              placeholder="Enter godparent's name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('godparentsName')?.invalid &&
+                baptismForm.get('godparentsName')?.touched
+              "
+            />
+            @if(baptismForm.get('godparentsName')?.invalid &&
+            baptismForm.get('godparentsName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Godparents' Surname -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsSurname"
+              placeholder="Enter godparent's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('godparentsSurname')?.invalid &&
+                baptismForm.get('godparentsSurname')?.touched
+              "
+            />
+            @if(baptismForm.get('godparentsSurname')?.invalid &&
+            baptismForm.get('godparentsSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Godparents' Date of Birth -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="godparentsDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('godparentsDOB')?.invalid &&
+                baptismForm.get('godparentsDOB')?.touched
+              "
+            />
+            @if(baptismForm.get('godparentsDOB')?.invalid &&
+            baptismForm.get('godparentsDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Godparents' Phone Number -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents Phone Number
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="godparentsPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('godparentsPhone')?.invalid &&
+                baptismForm.get('godparentsPhone')?.touched
+              "
+            />
+            @if(baptismForm.get('godparentsPhone')?.invalid &&
+            baptismForm.get('godparentsPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Godparents' Address -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Godparents' address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('godparentsAddress')?.invalid &&
+                baptismForm.get('godparentsAddress')?.touched
+              "
+            />
+            @if(baptismForm.get('godparentsAddress')?.invalid &&
+            baptismForm.get('godparentsAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Godparent's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Godparents' Postal Code and City -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city of godparents
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="godparentsPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                baptismForm.get('godparentsPostalCity')?.invalid &&
+                baptismForm.get('godparentsPostalCity')?.touched
+              "
+            />
+            @if(baptismForm.get('godparentsPostalCity')?.invalid &&
+            baptismForm.get('godparentsPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Are Godparents Catholic -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Are his godparents Catholic?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="godparentsCatholic"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="godparentsCatholic"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(baptismForm.get('godparentsCatholic')?.invalid &&
+            baptismForm.get('godparentsCatholic')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 5: Privacy & Date Selection -->
+        @if(currentStep === 5) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Privacy & Date Selection
+          </h3>
+
+          <!-- Privacy Statement -->
+          <div class="bg-amber-50 p-6 rounded-lg">
+            <h4 class="font-bold text-lg text-gray-800 mb-3">
+              Privacy Statement Roman Catholic Parishes
+            </h4>
+            <p class="text-sm text-gray-700 mb-3">
+              and General Regulations for the Protection of Personal Data
+              Parishes 2018
+            </p>
+            <p class="text-sm text-gray-700 mb-3">
+              In connection with the General Data Protection Regulation (GDPR),
+              a Privacy Statement applies and the above-mentioned regulations
+              have been drawn up. The Privacy Statement and the General
+              Regulations are available on the website and can be downloaded.
+            </p>
+            <p class="text-sm text-gray-700 mb-3">
+              You will automatically receive the Privacy Statement as an
+              attachment with this copy confirmation.
+            </p>
+            <p class="text-sm text-gray-700 mb-3">
+              Below you will find a number of matters (in abbreviated,
+              simplified versions) that are important to you and for which we
+              request your permission in advance. If you have any doubts about
+              the explanation in the abbreviated version, we always refer you to
+              the full Privacy Statement and/or the General Regulations.
+            </p>
+            <div class="mt-4 space-y-3">
+              <div>
+                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="text-sm text-gray-700">
+                  The applicant(s) agree(s) to the provisions of the Privacy
+                  Statement.
+                </p>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="text-sm text-gray-700">
+                  If you do not agree, the application cannot be processed.
+                </p>
+              </div>
+              <p class="text-sm text-gray-700">
+                The information you provide may be used for parish
+                administration and will be stored digitally or on paper (in
+                registers) for this purpose. A request to view this data is
+                possible. Requesting the deletion of this data is generally not
+                possible because it is necessary for the proper functioning of a
+                parish church.
+              </p>
+            </div>
+          </div>
+
+          <!-- Privacy Agreement -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Do you agree with our parish's privacy policy?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="space-y-3">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="agree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes! I agree</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="disagree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No! I don't agree</span>
+              </label>
+            </div>
+            @if(baptismForm.get('privacyAgreement')?.invalid &&
+            baptismForm.get('privacyAgreement')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please agree to privacy policy to continue</span
+              >
+            </label>
+            }
+          </div>
+
+          <!-- Baptism Date Selection -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptismal sacraments take place on the second Saturday of the
+                month. Select a date below:
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="space-y-2 max-h-64 overflow-y-auto">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="preparation"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Baptism Date Preparation Date</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2025-11-08"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >November 8, 2025 October 28, 2025</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2025-12-13"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >December 13, 2025 November 25, 2025</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-01-10"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >January 10, 2026 December 23, 2025</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-02-14"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >February 14, 2026 January 27, 2026</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-03-14"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">March 14, 2026 February 24, 2026</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-04-11"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">April 11, 2026 March 24, 2026</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-05-09"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">May 9, 2026 April 28, 2026</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-06-13"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">June 13, 2026 May 26, 2026</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-07-11"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">July 11, 2025 June 23, 2026</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-08-08"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">August 8, 2026 July 28, 2026</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-09-12"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >September 12, 2026 August 25, 2026</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-10-10"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >October 10, 2026 September 22, 2026</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-11-14"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >November 14, 2026 October 27, 2026</span
+                >
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="baptismDate"
+                  value="2026-12-12"
+                  class="radio radio-warning"
+                />
+                <span class="label-text"
+                  >December 12, 2026 November 24, 2026</span
+                >
+              </label>
+            </div>
+            @if(baptismForm.get('baptismDate')?.invalid &&
+            baptismForm.get('baptismDate')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select a baptism date</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for your baptism request! We will contact you soon to
+            discuss the preparations.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your request. Please try again.</span
+          >
+        </div>
+        }
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          @if(currentStep > 1) {
+          <button
+            type="button"
+            class="btn btn-outline btn-warning"
+            (click)="previousStep()"
+          >
+            Previous
+          </button>
+          } @else {
+          <div></div>
+          } @if(currentStep < 5) {
+          <button
+            type="button"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            (click)="nextStep()"
+          >
+            Next
+          </button>
+          } @else {
+          <button
+            type="submit"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            [disabled]="baptismForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Request }
+          </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,1455 @@
+<!-- Confirmation Form Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Confirmation Registration Form
+      </h2>
+      <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
+      <p class="text-lg text-gray-700">
+        Fill out the form below to register for Confirmation.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <!-- Stepper -->
+      <ul class="steps steps-horizontal w-full mb-8">
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 1 }">
+          Confirmand
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 2 }">
+          Mother
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 3 }">
+          Father
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 4 }">
+          Sponsor
+        </li>
+        <li class="step" [ngClass]="{ 'step-warning': currentStep >= 5 }">
+          Privacy
+        </li>
+      </ul>
+
+      <form [formGroup]="confirmationForm" (ngSubmit)="onSubmit()">
+        <!-- Step 1: Confirmand Information -->
+        @if(currentStep === 1) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Confirmand Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name of confirmand <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="confirmandName"
+              placeholder="Enter name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandName')?.invalid &&
+                confirmationForm.get('confirmandName')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandName')?.invalid &&
+            confirmationForm.get('confirmandName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Name is required</span>
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Confirmand's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="confirmandSurname"
+              placeholder="Enter surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandSurname')?.invalid &&
+                confirmationForm.get('confirmandSurname')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandSurname')?.invalid &&
+            confirmationForm.get('confirmandSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error">Surname is required</span>
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Confirmand's first name
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="confirmandFirstName"
+              placeholder="Enter first name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandFirstName')?.invalid &&
+                confirmationForm.get('confirmandFirstName')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandFirstName')?.invalid &&
+            confirmationForm.get('confirmandFirstName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >First name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Date and place of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="confirmandDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandDOB')?.invalid &&
+                confirmationForm.get('confirmandDOB')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandDOB')?.invalid &&
+            confirmationForm.get('confirmandDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Gender <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="confirmandGender"
+                  value="Boy"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Boy</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="confirmandGender"
+                  value="Girl"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Girl</span>
+              </label>
+            </div>
+            @if(confirmationForm.get('confirmandGender')?.invalid &&
+            confirmationForm.get('confirmandGender')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select gender</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Nationality of confirmand
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="confirmandNationality"
+              placeholder="Enter nationality"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandNationality')?.invalid &&
+                confirmationForm.get('confirmandNationality')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandNationality')?.invalid &&
+            confirmationForm.get('confirmandNationality')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Nationality is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptized? <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="confirmandBaptized"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="confirmandBaptized"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(confirmationForm.get('confirmandBaptized')?.invalid &&
+            confirmationForm.get('confirmandBaptized')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          @if(confirmationForm.get('confirmandBaptized')?.value === 'Yes') {
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >If yes, please provide date
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="confirmandBaptismDate"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandBaptismDate')?.invalid &&
+                confirmationForm.get('confirmandBaptismDate')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandBaptismDate')?.invalid &&
+            confirmationForm.get('confirmandBaptismDate')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Baptism date is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptismal certificate</span
+              >
+            </label>
+            <input
+              type="file"
+              (change)="onFileSelected($event, 'confirmand')"
+              accept="image/*,.pdf"
+              class="file-input file-input-bordered file-input-warning w-full"
+            />
+            @if(selectedConfirmandCertificate) {
+            <label class="label">
+              <span class="label-text-alt text-success"
+                >Selected: {{ selectedConfirmandCertificate }}</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptismal place <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="confirmandBaptismPlace"
+              placeholder="Enter baptismal place"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandBaptismPlace')?.invalid &&
+                confirmationForm.get('confirmandBaptismPlace')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandBaptismPlace')?.invalid &&
+            confirmationForm.get('confirmandBaptismPlace')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Baptismal place is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Name of parish where confirmand was baptized
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="confirmandParishName"
+              placeholder="Enter parish name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('confirmandParishName')?.invalid &&
+                confirmationForm.get('confirmandParishName')?.touched
+              "
+            />
+            @if(confirmationForm.get('confirmandParishName')?.invalid &&
+            confirmationForm.get('confirmandParishName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Parish name is required</span
+              >
+            </label>
+            }
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Step 2: Mother's Information -->
+        @if(currentStep === 2) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Mother's Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherSurname"
+              placeholder="Enter mother's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherSurname')?.invalid &&
+                confirmationForm.get('motherSurname')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherSurname')?.invalid &&
+            confirmationForm.get('motherSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's first names <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherFirstNames"
+              placeholder="Enter mother's first names"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherFirstNames')?.invalid &&
+                confirmationForm.get('motherFirstNames')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherFirstNames')?.invalid &&
+            confirmationForm.get('motherFirstNames')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's first names are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="motherDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherDOB')?.invalid &&
+                confirmationForm.get('motherDOB')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherDOB')?.invalid &&
+            confirmationForm.get('motherDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's place of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherPlaceOfBirth"
+              placeholder="Enter place of birth"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherPlaceOfBirth')?.invalid &&
+                confirmationForm.get('motherPlaceOfBirth')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherPlaceOfBirth')?.invalid &&
+            confirmationForm.get('motherPlaceOfBirth')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's place of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother baptized? <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="motherBaptized"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="motherBaptized"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(confirmationForm.get('motherBaptized')?.invalid &&
+            confirmationForm.get('motherBaptized')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          @if(confirmationForm.get('motherBaptized')?.value === 'Yes') {
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's baptism date <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="motherBaptismDate"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherBaptismDate')?.invalid &&
+                confirmationForm.get('motherBaptismDate')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherBaptismDate')?.invalid &&
+            confirmationForm.get('motherBaptismDate')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's baptism date is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Baptismal place of mother
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherBaptismPlace"
+              placeholder="Enter baptismal place"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherBaptismPlace')?.invalid &&
+                confirmationForm.get('motherBaptismPlace')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherBaptismPlace')?.invalid &&
+            confirmationForm.get('motherBaptismPlace')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's baptismal place is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's baptismal certificate</span
+              >
+            </label>
+            <input
+              type="file"
+              (change)="onFileSelected($event, 'mother')"
+              accept="image/*,.pdf"
+              class="file-input file-input-bordered file-input-warning w-full"
+            />
+            @if(selectedMotherCertificate) {
+            <label class="label">
+              <span class="label-text-alt text-success"
+                >Selected: {{ selectedMotherCertificate }}</span
+              >
+            </label>
+            }
+          </div>
+          }
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's nationality <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherNationality"
+              placeholder="Enter nationality"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherNationality')?.invalid &&
+                confirmationForm.get('motherNationality')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherNationality')?.invalid &&
+            confirmationForm.get('motherNationality')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's nationality is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherAddress')?.invalid &&
+                confirmationForm.get('motherAddress')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherAddress')?.invalid &&
+            confirmationForm.get('motherAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city of mother
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="motherPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherPostalCity')?.invalid &&
+                confirmationForm.get('motherPostalCity')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherPostalCity')?.invalid &&
+            confirmationForm.get('motherPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mobile phone mother <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="motherPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherPhone')?.invalid &&
+                confirmationForm.get('motherPhone')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherPhone')?.invalid &&
+            confirmationForm.get('motherPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Mother's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mother's email address
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="motherEmail"
+              placeholder="mother.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('motherEmail')?.invalid &&
+                confirmationForm.get('motherEmail')?.touched
+              "
+            />
+            @if(confirmationForm.get('motherEmail')?.invalid &&
+            confirmationForm.get('motherEmail')?.touched) {
+            <label class="label">
+              @if(confirmationForm.get('motherEmail')?.hasError('required')) {
+              <span class="label-text-alt text-error"></span>
+              } @else if(confirmationForm.get('motherEmail')?.hasError('email'))
+              {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address
+              </span>
+              }
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 3: Father's Information -->
+        @if(currentStep === 3) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Father's Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherSurname"
+              placeholder="Enter father's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherSurname')?.invalid &&
+                confirmationForm.get('fatherSurname')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherSurname')?.invalid &&
+            confirmationForm.get('fatherSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's first names <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherFirstNames"
+              placeholder="Enter father's first names"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherFirstNames')?.invalid &&
+                confirmationForm.get('fatherFirstNames')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherFirstNames')?.invalid &&
+            confirmationForm.get('fatherFirstNames')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's first names are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="fatherDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherDOB')?.invalid &&
+                confirmationForm.get('fatherDOB')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherDOB')?.invalid &&
+            confirmationForm.get('fatherDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's place of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherPlaceOfBirth"
+              placeholder="Enter place of birth"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherPlaceOfBirth')?.invalid &&
+                confirmationForm.get('fatherPlaceOfBirth')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherPlaceOfBirth')?.invalid &&
+            confirmationForm.get('fatherPlaceOfBirth')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's place of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father baptized? <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="fatherBaptized"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="fatherBaptized"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(confirmationForm.get('fatherBaptized')?.invalid &&
+            confirmationForm.get('fatherBaptized')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          @if(confirmationForm.get('fatherBaptized')?.value === 'Yes') {
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's baptism date <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="fatherBaptismDate"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherBaptismDate')?.invalid &&
+                confirmationForm.get('fatherBaptismDate')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherBaptismDate')?.invalid &&
+            confirmationForm.get('fatherBaptismDate')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's baptism date is required</span
+              >
+            </label>
+            }
+          </div>
+          }
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's nationality <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherNationality"
+              placeholder="Enter nationality"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherNationality')?.invalid &&
+                confirmationForm.get('fatherNationality')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherNationality')?.invalid &&
+            confirmationForm.get('fatherNationality')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's nationality is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherAddress')?.invalid &&
+                confirmationForm.get('fatherAddress')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherAddress')?.invalid &&
+            confirmationForm.get('fatherAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city father
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="fatherPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherPostalCity')?.invalid &&
+                confirmationForm.get('fatherPostalCity')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherPostalCity')?.invalid &&
+            confirmationForm.get('fatherPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Mobile phone father <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="fatherPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherPhone')?.invalid &&
+                confirmationForm.get('fatherPhone')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherPhone')?.invalid &&
+            confirmationForm.get('fatherPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Father's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Father's email address
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="email"
+              formControlName="fatherEmail"
+              placeholder="father.email@example.com"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('fatherEmail')?.invalid &&
+                confirmationForm.get('fatherEmail')?.touched
+              "
+            />
+            @if(confirmationForm.get('fatherEmail')?.invalid &&
+            confirmationForm.get('fatherEmail')?.touched) {
+            <label class="label">
+              @if(confirmationForm.get('fatherEmail')?.hasError('required')) {
+              <span class="label-text-alt text-error"></span>
+              } @else if(confirmationForm.get('fatherEmail')?.hasError('email'))
+              {
+              <span class="label-text-alt text-error">
+                Please enter a valid email address
+              </span>
+              }
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 4: Sponsor Information -->
+        @if(currentStep === 4) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Sponsor Information
+          </h3>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sponsor Name <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="sponsorName"
+              placeholder="Enter sponsor's name"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('sponsorName')?.invalid &&
+                confirmationForm.get('sponsorName')?.touched
+              "
+            />
+            @if(confirmationForm.get('sponsorName')?.invalid &&
+            confirmationForm.get('sponsorName')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Sponsor's name is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sponsor's surname <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="sponsorSurname"
+              placeholder="Enter sponsor's surname"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('sponsorSurname')?.invalid &&
+                confirmationForm.get('sponsorSurname')?.touched
+              "
+            />
+            @if(confirmationForm.get('sponsorSurname')?.invalid &&
+            confirmationForm.get('sponsorSurname')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Sponsor's surname is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sponsor's date of birth
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="date"
+              formControlName="sponsorDOB"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('sponsorDOB')?.invalid &&
+                confirmationForm.get('sponsorDOB')?.touched
+              "
+            />
+            @if(confirmationForm.get('sponsorDOB')?.invalid &&
+            confirmationForm.get('sponsorDOB')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Sponsor's date of birth is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sponsor Phone Number <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="tel"
+              formControlName="sponsorPhone"
+              placeholder="+31 6 1234 5678"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('sponsorPhone')?.invalid &&
+                confirmationForm.get('sponsorPhone')?.touched
+              "
+            />
+            @if(confirmationForm.get('sponsorPhone')?.invalid &&
+            confirmationForm.get('sponsorPhone')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Sponsor's phone number is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Sponsor's address <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="sponsorAddress"
+              placeholder="Street name and number"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('sponsorAddress')?.invalid &&
+                confirmationForm.get('sponsorAddress')?.touched
+              "
+            />
+            @if(confirmationForm.get('sponsorAddress')?.invalid &&
+            confirmationForm.get('sponsorAddress')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Sponsor's address is required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Postal code and city of sponsor
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="sponsorPostalCity"
+              placeholder="Zip code and city"
+              class="input input-bordered w-full"
+              [class.input-error]="
+                confirmationForm.get('sponsorPostalCity')?.invalid &&
+                confirmationForm.get('sponsorPostalCity')?.touched
+              "
+            />
+            @if(confirmationForm.get('sponsorPostalCity')?.invalid &&
+            confirmationForm.get('sponsorPostalCity')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Postal code and city are required</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Is the sponsor Catholic?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="flex gap-6">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="sponsorCatholic"
+                  value="Yes"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="sponsorCatholic"
+                  value="No"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No</span>
+              </label>
+            </div>
+            @if(confirmationForm.get('sponsorCatholic')?.invalid &&
+            confirmationForm.get('sponsorCatholic')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please select an option</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Upload baptism certificate of sponsor here</span
+              >
+            </label>
+            <input
+              type="file"
+              (change)="onFileSelected($event, 'sponsor')"
+              accept="image/*,.pdf"
+              class="file-input file-input-bordered file-input-warning w-full"
+            />
+            @if(selectedSponsorCertificate) {
+            <label class="label">
+              <span class="label-text-alt text-success"
+                >Selected: {{ selectedSponsorCertificate }}</span
+              >
+            </label>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Step 5: Privacy & Additional Information -->
+        @if(currentStep === 5) {
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">
+            Privacy Statement
+          </h3>
+
+          <div class="bg-amber-50 p-6 rounded-lg">
+            <h4 class="font-bold text-lg text-gray-800 mb-3">
+              Privacy Statement Roman Catholic Parishes and General Regulations
+              for the Protection of Personal Data Parishes 2018.
+            </h4>
+            <p class="text-sm text-gray-700 mb-3">
+              A Privacy Statement applies to the General Data Protection
+              Regulation (GDPR), and the aforementioned regulations have been
+              drawn up. The Privacy Statement and the General Regulations are
+              available on the website and can be downloaded.
+            </p>
+            <p class="text-sm text-gray-700 mb-3">
+              Below you will find a number of matters (in abbreviated,
+              simplified versions) that are important to you and for which we
+              request your consent (in advance). If you have any doubts about
+              the explanation in the abbreviated version, please always refer to
+              the full Privacy Statement and/or the General Regulations on our
+              website.
+            </p>
+            <div class="mt-4 space-y-3">
+              <div>
+                <p class="font-semibold text-gray-800">Data General</p>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="text-sm text-gray-700">
+                  The applicant(s) agree(s) to the terms of the Privacy
+                  Statement.
+                </p>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="text-sm text-gray-700">
+                  If you do not agree, the application cannot be processed.
+                </p>
+              </div>
+              <p class="text-sm text-gray-700">
+                The information you provide may be used for parish
+                administration and will be stored digitally or on paper (in
+                registers) for this purpose. You can request access to this
+                information. Requesting the deletion of this information is
+                generally not possible because it is necessary for the proper
+                functioning of a parish. The procedure for registration and
+                deregistration (2013) applies to requests to be removed from the
+                parish registers/administration.
+              </p>
+              <p class="text-sm text-gray-700">
+                Your information will always be treated confidentially and will
+                never be provided to external institutions/agencies/third
+                parties without your permission.
+              </p>
+              <p class="text-sm text-gray-700 mb-3">
+                Below you can indicate whether or not you agree with the GDPR
+                above and your request will be processed (regardless of your
+                answer).
+              </p>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Do you agree with our parish's privacy policy?
+                <span class="text-red-600">*</span></span
+              >
+            </label>
+            <div class="space-y-3">
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="agree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">Yes! I agree</span>
+              </label>
+              <label class="cursor-pointer flex items-center gap-2">
+                <input
+                  type="radio"
+                  formControlName="privacyAgreement"
+                  value="disagree"
+                  class="radio radio-warning"
+                />
+                <span class="label-text">No! I don't agree</span>
+              </label>
+            </div>
+            @if(confirmationForm.get('privacyAgreement')?.invalid &&
+            confirmationForm.get('privacyAgreement')?.touched) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Please agree to privacy policy to continue</span
+              >
+            </label>
+            }
+          </div>
+
+          <div class="bg-gray-100 p-6 rounded-lg">
+            <h4 class="font-bold text-lg text-gray-800 mb-2">Costs</h4>
+            <p class="text-gray-700">
+              The cost of preparing for Confirmation is 75.00 euros per
+              confirmand.
+            </p>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-gray-700"
+                >Additional information</span
+              >
+            </label>
+            <input
+              type="text"
+              formControlName="additionalField"
+              placeholder="Enter additional information (optional)"
+              class="input input-bordered w-full"
+            />
+          </div>
+        </div>
+        }
+
+        <!-- Success Message -->
+        @if(submitSuccess) {
+        <div class="alert alert-success mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >Thank you for your Confirmation registration! We will contact you
+            soon with preparation details.</span
+          >
+        </div>
+        }
+
+        <!-- Error Message -->
+        @if(submitError) {
+        <div class="alert alert-error mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            >There was an error submitting your request. Please try again.</span
+          >
+        </div>
+        }
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          @if(currentStep > 1) {
+          <button
+            type="button"
+            class="btn btn-outline btn-warning"
+            (click)="previousStep()"
+          >
+            Previous
+          </button>
+          } @else {
+          <div></div>
+          } @if(currentStep < 5) {
+          <button
+            type="button"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            (click)="nextStep()"
+          >
+            Next
+          </button>
+          } @else {
+          <button
+            type="submit"
+            class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+            [disabled]="confirmationForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span class="loading loading-spinner"></span>
+            Submitting... } @else { Submit Request }
+          </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
