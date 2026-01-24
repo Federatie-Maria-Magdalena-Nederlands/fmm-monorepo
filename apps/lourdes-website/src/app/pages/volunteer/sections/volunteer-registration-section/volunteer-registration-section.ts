@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { Volunteer } from '@fmm/shared/models';
+import { JoinUsSubmissionService } from '../../../../shared/services/join-us-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -26,6 +28,7 @@ export class VolunteerRegistrationSection {
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
+  private joinUsService = inject(JoinUsSubmissionService);
 
   public volunteerOptions: VolunteerOption[] = [
     {
@@ -113,7 +116,7 @@ export class VolunteerRegistrationSection {
     volunteerForArray.markAsTouched();
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.volunteerForm.invalid) {
       this.volunteerForm.markAllAsTouched();
       return;
@@ -123,11 +126,14 @@ export class VolunteerRegistrationSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', this.volunteerForm.value);
+    try {
+      const formData: Volunteer = this.volunteerForm.value;
+      const submissionId = await this.joinUsService.submitForm(
+        'volunteer',
+        formData,
+      );
 
-      // Simulate successful submission
+      console.log('Volunteer form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.volunteerForm.reset();
@@ -150,6 +156,15 @@ export class VolunteerRegistrationSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting volunteer form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

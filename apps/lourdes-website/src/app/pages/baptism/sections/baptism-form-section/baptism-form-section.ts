@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { Baptism } from '@fmm/shared/models';
+import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,11 +18,12 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './baptism-form-section.html',
 })
 export class BaptismFormSection {
-  public baptismForm: FormGroup;
+  public baptismForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
+  private sacramentService = inject(SacramentSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.baptismForm = this.formBuilder.group({
@@ -195,7 +198,7 @@ export class BaptismFormSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.baptismForm.invalid) {
       this.baptismForm.markAllAsTouched();
       return;
@@ -214,11 +217,14 @@ export class BaptismFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', this.baptismForm.value);
+    try {
+      const formData: Baptism = this.baptismForm.value;
+      const submissionId = await this.sacramentService.submitForm(
+        'baptism',
+        formData,
+      );
 
-      // Simulate successful submission
+      console.log('Baptism form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.baptismForm.reset();
@@ -228,6 +234,15 @@ export class BaptismFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting baptism form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

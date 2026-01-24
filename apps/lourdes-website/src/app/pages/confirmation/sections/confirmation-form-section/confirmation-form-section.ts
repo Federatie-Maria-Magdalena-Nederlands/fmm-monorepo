@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { Confirmation } from '@fmm/shared/models';
+import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,7 +18,7 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './confirmation-form-section.html',
 })
 export class ConfirmationFormSection {
-  public confirmationForm: FormGroup;
+  public confirmationForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
@@ -25,6 +27,7 @@ export class ConfirmationFormSection {
   public selectedMotherCertificate = '';
   public selectedFatherCertificate = '';
   public selectedSponsorCertificate = '';
+  private sacramentService = inject(SacramentSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.confirmationForm = this.formBuilder.group({
@@ -347,7 +350,7 @@ export class ConfirmationFormSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.confirmationForm.invalid) {
       this.confirmationForm.markAllAsTouched();
       return;
@@ -365,9 +368,14 @@ export class ConfirmationFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    setTimeout(() => {
-      console.log('Form submitted:', this.confirmationForm.value);
+    try {
+      const formData: Confirmation = this.confirmationForm.value;
+      const submissionId = await this.sacramentService.submitForm(
+        'confirmation',
+        formData,
+      );
 
+      console.log('Confirmation form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.confirmationForm.reset();
@@ -380,6 +388,14 @@ export class ConfirmationFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting confirmation form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

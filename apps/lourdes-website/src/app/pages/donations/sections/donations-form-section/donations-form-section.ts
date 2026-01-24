@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { Donations } from '@fmm/shared/models';
+import { DonationSubmissionService } from '../../../../shared/services/donation-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,11 +18,12 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './donations-form-section.html',
 })
 export class DonationsFormSection {
-  public donationForm: FormGroup;
+  public donationForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
+  private donationService = inject(DonationSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.donationForm = this.formBuilder.group({
@@ -143,7 +146,7 @@ export class DonationsFormSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.donationForm.invalid) {
       this.donationForm.markAllAsTouched();
       return;
@@ -153,11 +156,11 @@ export class DonationsFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', this.donationForm.value);
+    try {
+      const formData: Donations = this.donationForm.value;
+      const submissionId = await this.donationService.submitForm(formData);
 
-      // Simulate successful submission
+      console.log('Donation form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.donationForm.reset();
@@ -167,6 +170,15 @@ export class DonationsFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting donation form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }

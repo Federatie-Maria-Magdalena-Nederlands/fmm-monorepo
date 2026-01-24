@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { MassIntentions } from '@fmm/shared/models';
+import { MassIntentionSubmissionService } from '../../../../shared/services/mass-intention-submission.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -15,12 +17,13 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './mass-intentions-form-section.html',
 })
 export class MassIntentionsFormSection {
-  public massIntentionForm: FormGroup;
+  public massIntentionForm: FormGroup<any>;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
   public selectedFileName = '';
   public selectedFile: File | null = null;
+  private massIntentionService = inject(MassIntentionSubmissionService);
 
   constructor(private formBuilder: FormBuilder) {
     this.massIntentionForm = this.formBuilder.group({
@@ -45,7 +48,7 @@ export class MassIntentionsFormSection {
     }
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.massIntentionForm.invalid) {
       this.massIntentionForm.markAllAsTouched();
       return;
@@ -55,15 +58,15 @@ export class MassIntentionsFormSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    // Simulate API call
-    setTimeout(() => {
-      const formData = {
+    try {
+      const formData: MassIntentions = {
         ...this.massIntentionForm.value,
         proofOfPayment: this.selectedFile ? this.selectedFile.name : null,
       };
-      console.log('Form submitted:', formData);
 
-      // Simulate successful submission
+      const submissionId = await this.massIntentionService.submitForm(formData);
+
+      console.log('Mass intention form submitted successfully:', submissionId);
       this.isSubmitting = false;
       this.submitSuccess = true;
       this.massIntentionForm.reset();
@@ -82,6 +85,15 @@ export class MassIntentionsFormSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting mass intention form:', error);
+      this.isSubmitting = false;
+      this.submitError = true;
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        this.submitError = false;
+      }, 5000);
+    }
   }
 }
