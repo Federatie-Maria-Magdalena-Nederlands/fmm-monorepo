@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs:
-  build_and_deploy:
+  build_and_deploy_lourdes_website:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,4 +17,18 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FEDERATIE_MARIA_MAGDALENA }}
           channelId: live
+          target: lourdes-website-hosting
+          projectId: federatie-maria-magdalena
+
+  build_and_deploy_lourdes_admin_app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci && npx nx run lourdes-admin-app:build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FEDERATIE_MARIA_MAGDALENA }}
+          channelId: live
+          target: lourdes-admin-app-hosting
           projectId: federatie-maria-magdalena

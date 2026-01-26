@@ -1,0 +1,9 @@
+{
+  "name": "lourdes-admin-app-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/lourdes-admin-app-e2e/src",
+  "implicitDependencies": ["lourdes-admin-app"],
+  "// targets": "to see all targets run: nx show project lourdes-admin-app-e2e --web",
+  "targets": {}
+}
