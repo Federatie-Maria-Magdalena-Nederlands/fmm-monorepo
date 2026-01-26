@@ -1,0 +1,141 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Activities</h1>
+        <p class="text-gray-600">Manage church activities and events</p>
+      </div>
+      <button class="btn btn-primary" (click)="createNew()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Create New Activity
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="card bg-white shadow-md rounded-xl mb-6">
+      <div class="card-body p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Status Filter -->
+          <div>
+            <label class="label">
+              <span class="label-text font-semibold">Filter by Status</span>
+            </label>
+            <select
+              class="select select-bordered w-full"
+              [(ngModel)]="selectedStatus"
+              (change)="onFilterChange()">
+              @for (option of statusOptions; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <label class="label">
+              <span class="label-text font-semibold">Search</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Search activities..."
+              class="input input-bordered w-full"
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    <!-- Activities Grid -->
+    @if (!loading && filteredActivities.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (activity of filteredActivities; track activity.id) {
+          <div class="card bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" (click)="viewDetails(activity)">
+            @if (activity.image) {
+              <figure class="h-48 overflow-hidden">
+                <img [src]="activity.image" [alt]="activity.title" class="w-full h-full object-cover" />
+              </figure>
+            } @else {
+              <figure class="h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </figure>
+            }
+            <div class="card-body p-6">
+              <div class="flex items-start justify-between mb-2">
+                <h2 class="card-title text-lg font-bold text-gray-900 flex-1">{{ activity.title }}</h2>
+                <span class="badge" [ngClass]="getStatusClass(activity.status)">
+                  {{ activity.status || 'draft' }}
+                </span>
+              </div>
+              <p class="text-sm text-gray-600 mb-4">{{ truncateText(activity.description) }}</p>
+              @if (activity.date || activity.time) {
+                <div class="flex items-center gap-2 mb-3 text-sm text-amber-700 bg-amber-50 px-3 py-2 rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span class="font-semibold">
+                    @if (activity.date) {
+                      {{ formatDate(activity.date) }}
+                    }
+                    @if (activity.time) {
+                      <span class="ml-2">{{ activity.time }}</span>
+                    }
+                  </span>
+                </div>
+              }
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <span>Created: {{ formatDate(activity.createdAt) }}</span>
+                <button class="btn btn-sm btn-outline btn-primary">
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && filteredActivities.length === 0) {
+      <div class="card bg-white shadow-md rounded-xl">
+        <div class="card-body p-12 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-16 w-16 mx-auto text-gray-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">No Activities Found</h3>
+          <p class="text-gray-600 mb-4">
+            @if (searchTerm || selectedStatus !== 'all') {
+              Try adjusting your filters to see more results.
+            } @else {
+              Get started by creating your first activity.
+            }
+          </p>
+          <button class="btn btn-primary" (click)="createNew()">
+            Create New Activity
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

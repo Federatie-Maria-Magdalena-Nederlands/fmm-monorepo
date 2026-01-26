@@ -1,0 +1,302 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-5xl mx-auto">
+    <!-- Back Button and Title -->
+    <div class="mb-6">
+      <button class="btn btn-ghost btn-sm mb-4" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Activities
+      </button>
+      <h1 class="text-3xl font-bold text-gray-900">
+        @if (isNewActivity) {
+          Create New Activity
+        } @else {
+          Edit Activity
+        }
+      </h1>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    <!-- Activity Form -->
+    @if (!loading) {
+      <form [formGroup]="activityForm" (ngSubmit)="saveActivity()">
+        <!-- Info Card -->
+        @if (!isNewActivity && activity) {
+          <div class="card bg-white shadow-md rounded-xl mb-6">
+            <div class="card-body p-6">
+              <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Activity ID</p>
+                  <p class="text-sm font-mono text-gray-900">{{ activityId.substring(0, 8) }}...</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Created At</p>
+                  <p class="text-sm text-gray-900">{{ formatDate(activity.createdAt) }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Event Date</p>
+                  <p class="text-sm text-gray-900">{{ activity.date ? formatDate(activity.date) : 'Not set' }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Event Time</p>
+                  <p class="text-sm text-gray-900">{{ activity.time || 'Not set' }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Status</p>
+                  <span class="badge" [ngClass]="getStatusClass(activity.status)">
+                    {{ activity.status || 'draft' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Main Content Card -->
+        <div class="card bg-white shadow-md rounded-xl mb-6">
+          <div class="card-body p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">Activity Details</h3>
+
+            <!-- Title Field -->
+            <div class="form-control mb-4">
+              <label class="label">
+                <span class="label-text font-semibold">Title *</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter activity title"
+                class="input input-bordered w-full"
+                formControlName="title" />
+              @if (activityForm.get('title')?.invalid && activityForm.get('title')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">Title is required</span>
+                </label>
+              }
+            </div>
+
+            <!-- Description Field -->
+            <div class="form-control mb-4">
+              <label class="label">
+                <span class="label-text font-semibold">Description *</span>
+              </label>
+              <textarea
+                placeholder="Enter a brief description"
+                class="textarea textarea-bordered w-full h-24"
+                formControlName="description"></textarea>
+              @if (activityForm.get('description')?.invalid && activityForm.get('description')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">Description is required</span>
+                </label>
+              }
+            </div>
+
+            <!-- Image Upload Field -->
+            <div class="form-control mb-4">
+              <label class="label">
+                <span class="label-text font-semibold">Activity Image</span>
+              </label>
+              
+              <!-- File Input -->
+              <input
+                type="file"
+                accept="image/*"
+                class="file-input file-input-bordered w-full"
+                (change)="onFileSelected($event)" />
+              
+              <!-- Image Preview -->
+              @if (imagePreview) {
+                <div class="mt-4 relative">
+                  <img [src]="imagePreview" alt="Preview" class="w-full max-w-md rounded-lg border border-gray-300" />
+                  @if (uploading) {
+                    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
+                      <span class="loading loading-spinner loading-lg text-white"></span>
+                    </div>
+                  }
+                </div>
+              }
+              
+              <label class="label">
+                <span class="label-text-alt">Upload an image for the activity</span>
+              </label>
+            </div>
+
+            <!-- Date and Time Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <!-- Date Field -->
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-semibold">Date *</span>
+                </label>
+                <input
+                  type="date"
+                  class="input input-bordered w-full"
+                  formControlName="date" />
+                @if (activityForm.get('date')?.invalid && activityForm.get('date')?.touched) {
+                  <label class="label">
+                    <span class="label-text-alt text-error">Date is required</span>
+                  </label>
+                }
+              </div>
+
+              <!-- Time Field -->
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text font-semibold">Time *</span>
+                </label>
+                <input
+                  type="time"
+                  class="input input-bordered w-full"
+                  formControlName="time" />
+                @if (activityForm.get('time')?.invalid && activityForm.get('time')?.touched) {
+                  <label class="label">
+                    <span class="label-text-alt text-error">Time is required</span>
+                  </label>
+                }
+              </div>
+            </div>
+
+            <!-- WYSIWYG Editor -->
+            <div class="form-control mb-4">
+              <label class="label">
+                <span class="label-text font-semibold">Body Content *</span>
+              </label>
+              
+              <!-- Editor Toolbar -->
+              <div class="editor-toolbar bg-gray-100 border border-gray-300 rounded-t-lg p-2 flex flex-wrap gap-1">
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('bold')" title="Bold">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z" />
+                  </svg>
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('italic')" title="Italic">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('underline')" title="Underline">
+                  <span class="font-bold underline">U</span>
+                </button>
+                <div class="divider divider-horizontal mx-0"></div>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('formatBlock', 'h1')" title="Heading 1">
+                  H1
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('formatBlock', 'h2')" title="Heading 2">
+                  H2
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('formatBlock', 'h3')" title="Heading 3">
+                  H3
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('formatBlock', 'p')" title="Paragraph">
+                  P
+                </button>
+                <div class="divider divider-horizontal mx-0"></div>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('insertUnorderedList')" title="Bullet List">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('insertOrderedList')" title="Numbered List">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                  </svg>
+                </button>
+                <div class="divider divider-horizontal mx-0"></div>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="insertLink()" title="Insert Link">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" (click)="execCommand('removeFormat')" title="Clear Formatting">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Content Editable Area -->
+              <div
+                #bodyEditor
+                class="wysiwyg-editor"
+                contenteditable="true"
+                (input)="onBodyInput($event)"></div>
+              
+              @if (activityForm.get('body')?.invalid && activityForm.get('body')?.touched) {
+                <label class="label">
+                  <span class="label-text-alt text-error">Body content is required</span>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions Card -->
+        <div class="card bg-white shadow-md rounded-xl">
+          <div class="card-body p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Actions</h3>
+            <div class="flex flex-wrap gap-3">
+              <button type="submit" class="btn btn-primary" [disabled]="activityForm.invalid || saving">
+                @if (saving) {
+                  <span class="loading loading-spinner loading-sm mr-2"></span>
+                }
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                @if (isNewActivity) {
+                  Create Activity
+                } @else {
+                  Save Changes
+                }
+              </button>
+
+              @if (!isNewActivity && activity) {
+                @if (activity.status === 'draft') {
+                  <button type="button" class="btn btn-success" (click)="publishActivity()" [disabled]="saving">
+                    @if (saving) {
+                      <span class="loading loading-spinner loading-sm mr-2"></span>
+                    }
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Publish Activity
+                  </button>
+                } @else {
+                  <button type="button" class="btn btn-warning" (click)="unpublishActivity()" [disabled]="saving">
+                    @if (saving) {
+                      <span class="loading loading-spinner loading-sm mr-2"></span>
+                    }
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Unpublish Activity
+                  </button>
+                }
+                
+                <button type="button" class="btn btn-error" (click)="deleteActivity()" [disabled]="saving">
+                  @if (saving) {
+                    <span class="loading loading-spinner loading-sm mr-2"></span>
+                  }
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Delete Activity
+                </button>
+              }
+
+              <button type="button" class="btn btn-outline" (click)="goBack()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+  </div>
+</div>

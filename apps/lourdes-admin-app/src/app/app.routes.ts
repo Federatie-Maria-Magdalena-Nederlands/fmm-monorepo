@@ -98,6 +98,20 @@ export const appRoutes: Route[] = [
     canActivate: [authGuard],
   },
   {
+    path: 'activities',
+    loadComponent: () =>
+      import('./pages/activities-page/activities/activities').then((m) => m.Activities),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'activities/:id',
+    loadComponent: () =>
+      import('./pages/activities-page/activity-detail/activity-detail').then(
+        (m) => m.ActivityDetail
+      ),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',

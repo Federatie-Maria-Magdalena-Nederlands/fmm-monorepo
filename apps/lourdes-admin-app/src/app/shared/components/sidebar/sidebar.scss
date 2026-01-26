@@ -61,6 +61,26 @@
   &:hover:not(.active) {
     @apply bg-gray-50;
   }
+
+  &.dropdown-trigger {
+    @apply justify-between;
+  }
+}
+
+.submenu {
+  @apply mt-1 ml-4 space-y-1;
+}
+
+.submenu-item {
+  @apply flex items-center px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-all duration-200 text-sm;
+  
+  &.active {
+    @apply bg-amber-50 text-amber-700;
+    
+    .menu-icon {
+      @apply text-amber-600;
+    }
+  }
 }
 
 .menu-icon {
