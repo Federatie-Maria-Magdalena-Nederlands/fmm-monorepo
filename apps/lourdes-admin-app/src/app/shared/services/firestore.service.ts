@@ -90,7 +90,6 @@ export class FirestoreService {
   private readonly DONATIONS_COLLECTION = 'donations-submissions';
   private readonly VOLUNTEERS_COLLECTION = 'join-us-submissions';
   private readonly CONTACT_US_COLLECTION = 'contact-us-submissions';
-  private readonly MEMBERS_COLLECTION = 'members-submissions';
 
   constructor() {
     this.db = getFirestore(firebaseApp);
@@ -175,6 +174,25 @@ export class FirestoreService {
     }
 
     return null;
+  }
+
+  /**
+   * Update sacrament submission status
+   */
+  async updateSacramentStatus(id: string, status: 'approved' | 'rejected'): Promise<void> {
+    const docRef = doc(this.db, this.COLLECTION_NAME, id);
+    await updateDoc(docRef, {
+      status,
+      processedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update notes for a sacrament submission
+   */
+  async updateSacramentNotes(id: string, notes: string): Promise<void> {
+    const docRef = doc(this.db, this.COLLECTION_NAME, id);
+    await updateDoc(docRef, { notes });
   }
 
   /**
@@ -265,8 +283,25 @@ export class FirestoreService {
   }
 
   /**
-   * Get all donation submissions
+   * Update mass intention status
    */
+  async updateMassIntentionStatus(id: string, status: 'approved' | 'rejected' | 'completed'): Promise<void> {
+    const docRef = doc(this.db, this.MASS_INTENTIONS_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      processedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update notes for a mass intention submission
+   */
+  async updateMassIntentionNotes(id: string, notes: string): Promise<void> {
+    const docRef = doc(this.db, this.MASS_INTENTIONS_COLLECTION, id);
+    await updateDoc(docRef, { notes });
+  }
+
+  // === DONATIONS METHODS ===
   async getAllDonations(): Promise<DonationSubmission[]> {
     const collectionRef = collection(this.db, this.DONATIONS_COLLECTION);
     const q = query(collectionRef, orderBy('submittedAt', 'desc'));
@@ -325,8 +360,25 @@ export class FirestoreService {
   }
 
   /**
-   * Get all volunteer submissions
+   * Update donation status
    */
+  async updateDonationStatus(id: string, status: 'approved' | 'rejected'): Promise<void> {
+    const docRef = doc(this.db, this.DONATIONS_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      processedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update notes for a donation submission
+   */
+  async updateDonationNotes(id: string, notes: string): Promise<void> {
+    const docRef = doc(this.db, this.DONATIONS_COLLECTION, id);
+    await updateDoc(docRef, { notes });
+  }
+
+  // === VOLUNTEERS METHODS ===
   async getAllVolunteers(): Promise<VolunteerSubmission[]> {
     const collectionRef = collection(this.db, this.VOLUNTEERS_COLLECTION);
     const q = query(
@@ -393,8 +445,25 @@ export class FirestoreService {
   }
 
   /**
-   * Get all contact us submissions
+   * Update volunteer status
    */
+  async updateVolunteerStatus(id: string, status: 'approved' | 'rejected'): Promise<void> {
+    const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      processedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update notes for a volunteer submission
+   */
+  async updateVolunteerNotes(id: string, notes: string): Promise<void> {
+    const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
+    await updateDoc(docRef, { notes });
+  }
+
+  // === CONTACT US METHODS ===
   async getAllContactUs(): Promise<ContactUsSubmission[]> {
     const collectionRef = collection(this.db, this.CONTACT_US_COLLECTION);
     const q = query(collectionRef, orderBy('submittedAt', 'desc'));
@@ -479,7 +548,7 @@ export class FirestoreService {
    * Get members by status
    */
   async getMembersByStatus(status: string): Promise<MemberSubmission[]> {
-    const collectionRef = collection(this.db, this.MEMBERS_COLLECTION);
+    const collectionRef = collection(this.db, this.VOLUNTEERS_COLLECTION);
     const q = query(
       collectionRef,
       where('status', '==', status),
@@ -503,7 +572,7 @@ export class FirestoreService {
    * Update member status
    */
   async updateMemberStatus(id: string, status: 'approved' | 'rejected'): Promise<void> {
-    const docRef = doc(this.db, this.MEMBERS_COLLECTION, id);
+    const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
     await updateDoc(docRef, {
       status,
       processedAt: new Date(),
@@ -514,7 +583,7 @@ export class FirestoreService {
    * Update notes for a member submission
    */
   async updateMemberNotes(id: string, notes: string): Promise<void> {
-    const docRef = doc(this.db, this.MEMBERS_COLLECTION, id);
+    const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
     await updateDoc(docRef, { notes });
   }
 }

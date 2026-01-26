@@ -20,6 +20,7 @@ export class VolunteerDetail implements OnInit {
 
   public volunteer: VolunteerSubmission | null = null;
   public loading = true;
+  public processing = false;
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
@@ -43,6 +44,38 @@ export class VolunteerDetail implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/volunteers']);
+  }
+
+  async approveSubmission(): Promise<void> {
+    if (!this.volunteer || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateVolunteerStatus(this.volunteer.id, 'approved');
+      this.volunteer.status = 'approved';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error approving volunteer:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
+  }
+
+  async rejectSubmission(): Promise<void> {
+    if (!this.volunteer || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateVolunteerStatus(this.volunteer.id, 'rejected');
+      this.volunteer.status = 'rejected';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error rejecting volunteer:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
   }
 
   formatDate(date: any): string {

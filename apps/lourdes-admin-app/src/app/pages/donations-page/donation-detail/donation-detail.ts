@@ -20,6 +20,7 @@ export class DonationDetail implements OnInit {
 
   public donation: DonationSubmission | null = null;
   public loading = true;
+  public processing = false;
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
@@ -43,6 +44,38 @@ export class DonationDetail implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/donations']);
+  }
+
+  async approveSubmission(): Promise<void> {
+    if (!this.donation || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateDonationStatus(this.donation.id, 'approved');
+      this.donation.status = 'approved';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error approving donation:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
+  }
+
+  async rejectSubmission(): Promise<void> {
+    if (!this.donation || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateDonationStatus(this.donation.id, 'rejected');
+      this.donation.status = 'rejected';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error rejecting donation:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
   }
 
   formatDate(date: any): string {
