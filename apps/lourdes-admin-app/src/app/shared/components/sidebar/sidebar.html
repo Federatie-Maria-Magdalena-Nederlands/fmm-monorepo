@@ -15,19 +15,54 @@
 
   <nav class="sidebar-nav">
     <ul class="menu-list">
-      @for (item of menuItems; track item.route) {
+      @for (item of menuItems; track item.label) {
         <li>
-          <a 
-            [routerLink]="item.route" 
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: true}"
-            class="menu-item"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="item.icon" />
-            </svg>
-            <span class="menu-label">{{ item.label }}</span>
-          </a>
+          @if (item.children && item.children.length > 0) {
+            <!-- Dropdown menu item -->
+            <div class="menu-item dropdown-trigger" (click)="toggleDropdown(item.label)">
+              <div class="flex items-center flex-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="item.icon" />
+                </svg>
+                <span class="menu-label">{{ item.label }}</span>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform" [class.rotate-180]="isExpanded(item.label)" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <!-- Submenu -->
+            @if (isExpanded(item.label)) {
+              <ul class="submenu">
+                @for (child of item.children; track child.route) {
+                  <li>
+                    <a 
+                      [routerLink]="child.route" 
+                      routerLinkActive="active"
+                      class="submenu-item"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="child.icon" />
+                      </svg>
+                      <span class="menu-label">{{ child.label }}</span>
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          } @else {
+            <!-- Regular menu item -->
+            <a 
+              [routerLink]="item.route" 
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}"
+              class="menu-item"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="item.icon" />
+              </svg>
+              <span class="menu-label">{{ item.label }}</span>
+            </a>
+          }
         </li>
       }
     </ul>

@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+.wysiwyg-editor {
+  @apply min-h-[400px] p-4 border border-gray-300 rounded-lg bg-white overflow-y-auto;
+  
+  &:focus {
+    @apply outline-none ring-2 ring-amber-500;
+  }
+
+  // Style content
+  :deep(h1) {
+    @apply text-3xl font-bold mb-4;
+  }
+
+  :deep(h2) {
+    @apply text-2xl font-bold mb-3;
+  }
+
+  :deep(h3) {
+    @apply text-xl font-bold mb-2;
+  }
+
+  :deep(p) {
+    @apply mb-4;
+  }
+
+  :deep(ul) {
+    @apply list-disc ml-6 mb-4;
+  }
+
+  :deep(ol) {
+    @apply list-decimal ml-6 mb-4;
+  }
+
+  :deep(a) {
+    @apply text-amber-600 underline hover:text-amber-700;
+  }
+
+  :deep(blockquote) {
+    @apply border-l-4 border-gray-300 pl-4 italic my-4;
+  }
+}
+
+.editor-toolbar {
+  button {
+    @apply transition-colors;
+    
+    &:hover:not(:disabled) {
+      @apply bg-gray-200;
+    }
+
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
+    }
+  }
+}

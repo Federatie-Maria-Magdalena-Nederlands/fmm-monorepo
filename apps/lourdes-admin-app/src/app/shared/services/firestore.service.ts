@@ -6,12 +6,14 @@ import {
   getDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
   query,
   orderBy,
   where,
   Timestamp,
   getFirestore,
 } from 'firebase/firestore';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 
@@ -80,6 +82,19 @@ export interface MemberSubmission {
   notes?: string;
 }
 
+export interface Activity {
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  body: string;
+  date?: Date | Timestamp;
+  time?: string;
+  status?: 'draft' | 'published';
+  createdAt: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -90,6 +105,7 @@ export class FirestoreService {
   private readonly DONATIONS_COLLECTION = 'donations-submissions';
   private readonly VOLUNTEERS_COLLECTION = 'join-us-submissions';
   private readonly CONTACT_US_COLLECTION = 'contact-us-submissions';
+  private readonly ACTIVITIES_COLLECTION = 'activities';
 
   constructor() {
     this.db = getFirestore(firebaseApp);
@@ -585,5 +601,124 @@ export class FirestoreService {
   async updateMemberNotes(id: string, notes: string): Promise<void> {
     const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
     await updateDoc(docRef, { notes });
+  }
+
+  // === ACTIVITIES METHODS ===
+  
+  /**
+   * Get all activities
+   */
+  async getAllActivities(): Promise<Activity[]> {
+    const collectionRef = collection(this.db, this.ACTIVITIES_COLLECTION);
+    const q = query(collectionRef, orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    const activities: Activity[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      activities.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as Activity);
+    });
+
+    return activities;
+  }
+
+  /**
+   * Get a single activity by ID
+   */
+  async getActivityById(id: string): Promise<Activity | null> {
+    const docRef = doc(this.db, this.ACTIVITIES_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      } as Activity;
+    }
+
+    return null;
+  }
+
+  /**
+   * Get activities by status
+   */
+  async getActivitiesByStatus(status: string): Promise<Activity[]> {
+    const collectionRef = collection(this.db, this.ACTIVITIES_COLLECTION);
+    const q = query(
+      collectionRef,
+      where('status', '==', status),
+      orderBy('createdAt', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const activities: Activity[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      activities.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as Activity);
+    });
+
+    return activities;
+  }
+
+  /**
+   * Update activity status
+   */
+  async updateActivityStatus(id: string, status: 'draft' | 'published'): Promise<void> {
+    const docRef = doc(this.db, this.ACTIVITIES_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update an activity
+   */
+  async updateActivity(id: string, data: Partial<Activity>): Promise<void> {
+    const docRef = doc(this.db, this.ACTIVITIES_COLLECTION, id);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Delete an activity
+   */
+  async deleteActivity(id: string): Promise<void> {
+    // Get the activity first to retrieve the image URL
+    const activity = await this.getActivityById(id);
+    
+    // Delete image from storage if it exists
+    if (activity?.image) {
+      try {
+        const storage = getStorage();
+        // Extract the path from the Firebase Storage URL
+        // URL format: https://firebasestorage.googleapis.com/v0/b/{bucket}/o/{path}?alt=media&token={token}
+        const imageUrl = activity.image;
+        if (imageUrl.includes('firebase')) {
+          const pathStart = imageUrl.indexOf('/o/') + 3;
+          const pathEnd = imageUrl.indexOf('?');
+          if (pathStart > 2 && pathEnd > pathStart) {
+            const encodedPath = imageUrl.substring(pathStart, pathEnd);
+            const imagePath = decodeURIComponent(encodedPath);
+            const imageRef = ref(storage, imagePath);
+            await deleteObject(imageRef);
+          }
+        }
+      } catch (error) {
+        console.error('Error deleting image from storage:', error);
+        // Continue with document deletion even if image deletion fails
+      }
+    }
+    
+    // Delete the Firestore document
+    const docRef = doc(this.db, this.ACTIVITIES_COLLECTION, id);
+    await deleteDoc(docRef);
   }
 }
