@@ -49,15 +49,21 @@
             <div class="card-body p-6">
               <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-bold text-gray-900">{{ group.title }}</h3>
-                @if (group.title === 'Personal Information') {
+                @if (group.title === 'Personal Information' && volunteer.status === 'pending') {
                   <div class="flex space-x-2">
-                    <button class="btn btn-sm btn-outline btn-success">
+                    <button class="btn btn-sm btn-outline btn-success" (click)="approveSubmission()" [disabled]="processing">
+                      @if (processing) {
+                        <span class="loading loading-spinner loading-sm mr-1"></span>
+                      }
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                       </svg>
                       Approve
                     </button>
-                    <button class="btn btn-sm btn-outline btn-error">
+                    <button class="btn btn-sm btn-outline btn-error" (click)="rejectSubmission()" [disabled]="processing">
+                      @if (processing) {
+                        <span class="loading loading-spinner loading-sm mr-1"></span>
+                      }
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                       </svg>

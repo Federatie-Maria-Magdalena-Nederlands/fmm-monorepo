@@ -21,6 +21,7 @@ export class MassIntentionDetail implements OnInit {
   public submission: MassIntentionSubmission | null = null;
   public loading = true;
   public error = false;
+  public processing = false;
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
@@ -52,6 +53,54 @@ export class MassIntentionDetail implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/mass-intentions']);
+  }
+
+  async approveSubmission(): Promise<void> {
+    if (!this.submission || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateMassIntentionStatus(this.submission.id, 'approved');
+      this.submission.status = 'approved';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error approving submission:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
+  }
+
+  async rejectSubmission(): Promise<void> {
+    if (!this.submission || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateMassIntentionStatus(this.submission.id, 'rejected');
+      this.submission.status = 'rejected';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error rejecting submission:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
+  }
+
+  async markComplete(): Promise<void> {
+    if (!this.submission || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateMassIntentionStatus(this.submission.id, 'completed');
+      this.submission.status = 'completed';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error marking as complete:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
   }
 
   formatDate(date: any): string {

@@ -22,6 +22,7 @@ export class SacramentDetail implements OnInit {
   public submission: SacramentSubmission | null = null;
   public loading = true;
   public error = false;
+  public processing = false;
 
   async ngOnInit(): Promise<void> {
     const type = this.route.snapshot.paramMap.get('type') as SacramentType;
@@ -54,6 +55,38 @@ export class SacramentDetail implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/sacraments']);
+  }
+
+  async approveSubmission(): Promise<void> {
+    if (!this.submission || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateSacramentStatus(this.submission.id, 'approved');
+      this.submission.status = 'approved';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error approving submission:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
+  }
+
+  async rejectSubmission(): Promise<void> {
+    if (!this.submission || this.processing) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.updateSacramentStatus(this.submission.id, 'rejected');
+      this.submission.status = 'rejected';
+      this.cd.detectChanges();
+    } catch (error) {
+      console.error('Error rejecting submission:', error);
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
   }
 
   formatSacramentType(type: SacramentType): string {
