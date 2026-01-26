@@ -1,0 +1,135 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-6 flex justify-between items-center">
+      <button class="btn btn-ghost btn-sm" (click)="backToList()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Messages
+      </button>
+    </div>
+
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    @if (!loading && submission) {
+      <!-- Submission Info Card -->
+      <div class="card bg-white shadow-md rounded-xl mb-6">
+        <div class="card-body p-6">
+          <h2 class="card-title text-2xl mb-4">Contact Us Message Details</h2>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <p class="text-sm text-gray-600">Submission ID</p>
+              <p class="font-mono text-sm">{{ submission.id }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Submitted At</p>
+              <p class="font-semibold">{{ formatDate(submission.submittedAt) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Data Card -->
+      <div class="card bg-white shadow-md rounded-xl mb-6">
+        <div class="card-body p-6">
+          <h3 class="text-xl font-semibold mb-6">Message Information</h3>
+
+          @for (group of getFormDataGroups(); track group.title) {
+            <div class="mb-6">
+              <h4 class="text-lg font-semibold mb-4 text-primary border-b pb-2">
+                {{ group.title }}
+              </h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @for (field of group.fields; track field.key) {
+                  <div>
+                    <p class="text-sm text-gray-600 mb-1">{{ field.key }}</p>
+                    @if (field.key === 'Message') {
+                      <p class="whitespace-pre-wrap col-span-2">{{ field.value }}</p>
+                    } @else {
+                      <p class="font-semibold">{{ field.value }}</p>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Notes Card -->
+      <div class="card bg-white shadow-md rounded-xl mb-6">
+        <div class="card-body p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Admin Notes</h3>
+            @if (!showNotesEdit) {
+              <button class="btn btn-sm btn-outline btn-primary" (click)="toggleNotesEdit()">
+                Edit Notes
+              </button>
+            }
+          </div>
+
+          @if (!showNotesEdit) {
+            <div class="p-4 bg-gray-50 rounded-lg min-h-[100px]">
+              <p class="text-gray-700 whitespace-pre-wrap">
+                {{ submission.notes || 'No notes added yet.' }}
+              </p>
+            </div>
+          } @else {
+            <div>
+              <textarea
+                class="textarea textarea-bordered w-full h-32"
+                placeholder="Add notes about this contact message..."
+                [(ngModel)]="notes"></textarea>
+              <div class="flex gap-2 mt-4">
+                <button
+                  class="btn btn-primary"
+                  (click)="saveNotes()"
+                  [disabled]="savingNotes">
+                  @if (savingNotes) {
+                    <span class="loading loading-spinner loading-sm"></span>
+                  }
+                  Save Notes
+                </button>
+                <button
+                  class="btn btn-ghost"
+                  (click)="cancelNotesEdit()"
+                  [disabled]="savingNotes">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (!loading && !submission) {
+      <div class="card bg-white shadow-md rounded-xl">
+        <div class="card-body p-12 text-center">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Message Not Found</h3>
+          <p class="text-gray-600 mb-4">
+            The contact message you're looking for could not be found.
+          </p>
+          <button class="btn btn-primary" (click)="backToList()">
+            Back to Messages
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
