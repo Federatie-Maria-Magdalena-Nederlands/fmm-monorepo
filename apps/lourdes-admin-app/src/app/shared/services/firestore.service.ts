@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  updateDoc,
   query,
   orderBy,
   where,
@@ -63,6 +64,22 @@ export interface VolunteerSubmission {
   notes?: string;
 }
 
+export interface ContactUsSubmission {
+  id: string;
+  formData: Record<string, any>;
+  submittedAt: Date | Timestamp;
+  notes?: string;
+}
+
+export interface MemberSubmission {
+  id: string;
+  formData: Record<string, any>;
+  submittedAt: Date | Timestamp;
+  status?: 'pending' | 'approved' | 'rejected';
+  processedAt?: Date | Timestamp;
+  notes?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -72,6 +89,8 @@ export class FirestoreService {
   private readonly MASS_INTENTIONS_COLLECTION = 'mass-intentions-submissions';
   private readonly DONATIONS_COLLECTION = 'donations-submissions';
   private readonly VOLUNTEERS_COLLECTION = 'join-us-submissions';
+  private readonly CONTACT_US_COLLECTION = 'contact-us-submissions';
+  private readonly MEMBERS_COLLECTION = 'members-submissions';
 
   constructor() {
     this.db = getFirestore(firebaseApp);
@@ -371,5 +390,131 @@ export class FirestoreService {
     });
 
     return submissions;
+  }
+
+  /**
+   * Get all contact us submissions
+   */
+  async getAllContactUs(): Promise<ContactUsSubmission[]> {
+    const collectionRef = collection(this.db, this.CONTACT_US_COLLECTION);
+    const q = query(collectionRef, orderBy('submittedAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    const submissions: ContactUsSubmission[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      submissions.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as ContactUsSubmission);
+    });
+
+    return submissions;
+  }
+
+  /**
+   * Get a single contact us by ID
+   */
+  async getContactUsById(id: string): Promise<ContactUsSubmission | null> {
+    const docRef = doc(this.db, this.CONTACT_US_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      } as ContactUsSubmission;
+    }
+
+    return null;
+  }
+
+  /**
+   * Update notes for a contact us submission
+   */
+  async updateContactUsNotes(id: string, notes: string): Promise<void> {
+    const docRef = doc(this.db, this.CONTACT_US_COLLECTION, id);
+    await updateDoc(docRef, { notes });
+  }
+
+  /**
+   * Get all member submissions
+   */
+  async getAllMembers(): Promise<MemberSubmission[]> {
+    const collectionRef = collection(this.db, this.VOLUNTEERS_COLLECTION);
+    const q = query(
+      collectionRef,
+      where('type', '==', 'church-member')
+    );
+    const querySnapshot = await getDocs(q);
+    const submissions: MemberSubmission[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      submissions.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as MemberSubmission);
+    });
+
+    return submissions;
+  }
+
+  /**
+   * Get a single member by ID
+   */
+  async getMemberById(id: string): Promise<MemberSubmission | null> {
+    const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      } as MemberSubmission;
+    }
+
+    return null;
+  }
+
+  /**
+   * Get members by status
+   */
+  async getMembersByStatus(status: string): Promise<MemberSubmission[]> {
+    const collectionRef = collection(this.db, this.MEMBERS_COLLECTION);
+    const q = query(
+      collectionRef,
+      where('status', '==', status),
+      orderBy('submittedAt', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const submissions: MemberSubmission[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      submissions.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as MemberSubmission);
+    });
+
+    return submissions;
+  }
+
+  /**
+   * Update member status
+   */
+  async updateMemberStatus(id: string, status: 'approved' | 'rejected'): Promise<void> {
+    const docRef = doc(this.db, this.MEMBERS_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      processedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update notes for a member submission
+   */
+  async updateMemberNotes(id: string, notes: string): Promise<void> {
+    const docRef = doc(this.db, this.MEMBERS_COLLECTION, id);
+    await updateDoc(docRef, { notes });
   }
 }

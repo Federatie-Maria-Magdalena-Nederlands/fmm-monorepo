@@ -1,92 +1,54 @@
-<div class="min-h-screen bg-gray-50">
-  <!-- Main Content Area -->
-  <div class="content-wrapper">
-    <!-- Page Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <button 
-              (click)="goBack()"
-              class="btn btn-circle btn-ghost"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <div>
-              <h1 class="text-2xl font-bold text-gray-900">Mass Intention Details</h1>
-              <p class="text-sm text-gray-600 mt-1">View complete mass intention information</p>
-            </div>
-          </div>
-        </div>
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-5xl mx-auto">
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
       </div>
-    </header>
+    }
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Loading State -->
-      @if (loading) {
-        <div class="flex justify-center items-center py-20">
-          <span class="loading loading-spinner loading-lg text-amber-600"></span>
-        </div>
-      }
+    <!-- Content -->
+    @if (!loading && submission) {
+      <!-- Header -->
+      <div class="mb-6">
+        <button class="btn btn-ghost btn-sm mb-4" (click)="goBack()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Mass Intentions
+        </button>
+        <h1 class="text-3xl font-bold text-gray-900">Mass Intention Details</h1>
+      </div>
 
-      <!-- Error State -->
-      @if (!loading && error) {
+      <div class="space-y-6">
+        <!-- Info Card -->
         <div class="card bg-white shadow-md rounded-xl">
-          <div class="card-body p-12 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 class="text-xl font-semibold text-gray-700 mb-2">Mass intention not found</h3>
-            <p class="text-gray-500 mb-6">The mass intention you're looking for doesn't exist or has been deleted.</p>
-            <button 
-              (click)="goBack()"
-              class="btn bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white border-0"
-            >
-              Back to List
-            </button>
-          </div>
-        </div>
-      }
-
-      <!-- Submission Details -->
-      @if (!loading && !error && submission) {
-        <div class="space-y-6">
-          <!-- Header Card -->
-          <div class="card bg-white shadow-md rounded-xl">
-            <div class="card-body p-6">
-              <div class="flex justify-between items-start">
-                <div class="flex items-center space-x-4">
-                  <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-700 rounded-xl flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Mass Intention Request</h2>
-                    <p class="text-sm text-gray-600 mt-1">Submitted on {{ formatDate(submission.submittedAt) }}</p>
-                    @if (submission.processedAt) {
-                      <p class="text-xs text-gray-500 mt-1">Processed on {{ formatDate(submission.processedAt) }}</p>
-                    }
-                  </div>
-                </div>
-                <div class="text-right">
-                  <span class="badge badge-lg" [ngClass]="getStatusClass(submission.status)">
-                    {{ getStatusLabel(submission.status) }}
-                  </span>
-                  <p class="text-xs text-gray-500 mt-2">ID: {{ submission.id }}</p>
-                </div>
+          <div class="card-body p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Application ID</p>
+                <p class="font-mono text-sm font-semibold">{{ submission.id }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Submitted At</p>
+                <p class="font-semibold">{{ formatDate(submission.submittedAt) }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Status</p>
+                <span class="badge" [ngClass]="getStatusClass(submission.status)">
+                  {{ submission.status || 'pending' }}
+                </span>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Form Data Card -->
-          <div class="card bg-white shadow-md rounded-xl">
-            <div class="card-body p-6">
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-gray-900">Request Information</h3>
+        <!-- Form Data Card -->
+        <div class="card bg-white shadow-md rounded-xl">
+          <div class="card-body p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-xl font-bold text-gray-900">Request Information</h3>
+              @if (submission.status === 'pending') {
                 <div class="flex space-x-2">
                   <button class="btn btn-sm btn-outline btn-success">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -100,14 +62,17 @@
                     </svg>
                     Reject
                   </button>
-                  <button class="btn btn-sm btn-outline btn-info">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Mark Complete
-                  </button>
                 </div>
-              </div>
+              }
+              @if (submission.status === 'approved') {
+                <button class="btn btn-sm btn-outline btn-info">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Mark Complete
+                </button>
+              }
+            </div>
 
               <div class="grid grid-cols-1 gap-4">
                 @for (entry of getFormDataEntries(); track entry.key) {
@@ -134,26 +99,26 @@
           @if (submission.notes) {
             <div class="card bg-white shadow-md rounded-xl">
               <div class="card-body p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Admin Notes</h3>
-                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Notes</h3>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                   <p class="text-sm text-gray-800">{{ submission.notes }}</p>
                 </div>
               </div>
             </div>
           }
 
-          <!-- Actions -->
+          <!-- Actions Card -->
           <div class="card bg-white shadow-md rounded-xl">
             <div class="card-body p-6">
               <h3 class="text-xl font-bold text-gray-900 mb-4">Actions</h3>
-              <div class="flex space-x-3">
-                <button class="btn bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0">
+              <div class="flex flex-wrap gap-3">
+                <button class="btn btn-outline btn-primary">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
                   </svg>
                   Download PDF
                 </button>
-                <button class="btn btn-outline">
+                <button class="btn btn-outline btn-info">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -170,6 +135,34 @@
           </div>
         </div>
       }
-    </main>
+
+      <!-- Error State -->
+      @if (!loading && !submission) {
+        <div class="card bg-white shadow-md rounded-xl">
+          <div class="card-body p-12 text-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-16 w-16 mx-auto text-red-400 mb-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Mass Intention Not Found</h3>
+            <p class="text-gray-600 mb-6">The requested mass intention could not be found.</p>
+            <button class="btn btn-primary" (click)="goBack()">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Mass Intentions
+            </button>
+          </div>
+        </div>
+      }
+    </div>
   </div>
-</div>
+

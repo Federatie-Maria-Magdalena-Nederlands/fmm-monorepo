@@ -1,0 +1,187 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-5xl mx-auto">
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    <!-- Content -->
+    @if (!loading && submission) {
+      <!-- Header -->
+      <div class="mb-6">
+        <button class="btn btn-ghost btn-sm mb-4" (click)="backToList()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Members
+        </button>
+        <h1 class="text-3xl font-bold text-gray-900">Member Registration Details</h1>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Info Card -->
+        <div class="card bg-white shadow-md rounded-xl">
+          <div class="card-body p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Application ID</p>
+                <p class="font-mono text-sm font-semibold">{{ submission.id }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Submitted At</p>
+                <p class="font-semibold">{{ formatDate(submission.submittedAt) }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 mb-1">Status</p>
+                <span class="badge" [ngClass]="getStatusBadgeClass(submission.status)">
+                  {{ submission.status || 'pending' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Data Cards (Grouped) -->
+        @for (group of getFormDataGroups(); track group.title) {
+          <div class="card bg-white shadow-md rounded-xl">
+            <div class="card-body p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-900">{{ group.title }}</h3>
+                @if (group.title === 'Personal Information' && submission.status === 'pending') {
+                  <div class="flex space-x-2">
+                    <button class="btn btn-sm btn-outline btn-success" (click)="approveSubmission()" [disabled]="processing">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Approve
+                    </button>
+                    <button class="btn btn-sm btn-outline btn-error" (click)="rejectSubmission()" [disabled]="processing">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      Reject
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <div class="grid grid-cols-1 gap-4">
+                @for (entry of group.fields; track entry.key) {
+                  <div class="form-data-item">
+                    <label class="text-sm font-semibold text-gray-700 mb-1 block">
+                      {{ entry.key }}
+                    </label>
+                    @if (isLongValue(entry.value)) {
+                      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <pre class="text-sm text-gray-800 whitespace-pre-wrap">{{ entry.value }}</pre>
+                      </div>
+                    } @else {
+                      <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+                        <p class="text-sm text-gray-800">{{ entry.value }}</p>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Notes Card -->
+        @if (submission.notes) {
+          <div class="card bg-white shadow-md rounded-xl">
+            <div class="card-body p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-4">Notes</h3>
+              <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <p class="text-sm text-gray-800">{{ submission.notes }}</p>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Actions Card -->
+        <div class="card bg-white shadow-md rounded-xl">
+          <div class="card-body p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Actions</h3>
+            <div class="flex flex-wrap gap-3">
+              <button class="btn btn-outline btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                </svg>
+                Download PDF
+              </button>
+              <button class="btn btn-outline btn-info">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Send Email
+              </button>
+              @if (!showNotesEdit) {
+                <button class="btn btn-outline btn-warning" (click)="toggleNotesEdit()">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Edit Notes
+                </button>
+              } @else {
+                <button class="btn btn-outline btn-success" (click)="saveNotes()" [disabled]="savingNotes">
+                  @if (savingNotes) {
+                    <span class="loading loading-spinner loading-sm mr-2"></span>
+                  }
+                  Save Notes
+                </button>
+                <button class="btn btn-outline btn-ghost" (click)="cancelNotesEdit()" [disabled]="savingNotes">
+                  Cancel
+                </button>
+              }
+              <button class="btn btn-outline btn-error">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete
+              </button>
+            </div>
+            @if (showNotesEdit) {
+              <div class="mt-4">
+                <textarea
+                  class="textarea textarea-bordered w-full h-32"
+                  placeholder="Add notes about this member registration..."
+                  [(ngModel)]="notes"></textarea>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (!loading && !submission) {
+      <div class="card bg-white shadow-md rounded-xl">
+        <div class="card-body p-12 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-16 w-16 mx-auto text-red-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Member Registration Not Found</h3>
+          <p class="text-gray-600 mb-6">The requested member registration could not be found.</p>
+          <button class="btn btn-primary" (click)="backToList()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Members
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

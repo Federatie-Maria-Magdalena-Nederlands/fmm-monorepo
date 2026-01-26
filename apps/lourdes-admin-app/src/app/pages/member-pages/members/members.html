@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Members</h1>
+      <p class="text-gray-600">View and manage member registrations</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="card bg-white shadow-md rounded-xl mb-6">
+      <div class="card-body p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="label">
+              <span class="label-text font-semibold">Status</span>
+            </label>
+            <select
+              class="select select-bordered w-full"
+              [(ngModel)]="selectedStatus"
+              (change)="onStatusChange()">
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label class="label">
+              <span class="label-text font-semibold">Search</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Search members..."
+              class="input input-bordered w-full"
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    <!-- Members Table -->
+    @if (!loading && filteredSubmissions.length > 0) {
+      <div class="card bg-white shadow-md rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead class="bg-gray-100">
+              <tr>
+                <th>ID</th>
+                <th>Submitted At</th>
+                <th>Preview</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (submission of filteredSubmissions; track submission.id) {
+                <tr class="hover:bg-gray-50 cursor-pointer" (click)="viewDetails(submission)">
+                  <td class="font-mono text-sm">{{ submission.id.substring(0, 8) }}...</td>
+                  <td>{{ formatDate(submission.submittedAt) }}</td>
+                  <td>
+                    <div class="space-y-1">
+                      @for (field of getPreviewData(submission.formData); track field.key) {
+                        <div class="text-sm">
+                          <span class="font-semibold">{{ field.key }}:</span>
+                          <span class="text-gray-600 ml-1">{{ field.value }}</span>
+                        </div>
+                      }
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusBadgeClass(submission.status)">
+                      {{ submission.status || 'pending' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline btn-primary">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && filteredSubmissions.length === 0) {
+      <div class="card bg-white shadow-md rounded-xl">
+        <div class="card-body p-12 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-16 w-16 mx-auto text-gray-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">No Members Found</h3>
+          <p class="text-gray-600">
+            @if (searchTerm || selectedStatus !== 'all') {
+              Try adjusting your filters to see more results.
+            } @else {
+              No member registrations have been received yet.
+            }
+          </p>
+        </div>
+      </div>
+    }
+  </div>
+</div>

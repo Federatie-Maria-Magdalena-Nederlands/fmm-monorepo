@@ -70,6 +70,34 @@ export const appRoutes: Route[] = [
     canActivate: [authGuard],
   },
   {
+    path: 'contact-us',
+    loadComponent: () =>
+      import('./pages/contact-us-page/contact-us/contact-us').then((m) => m.ContactUs),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'contact-us/:id',
+    loadComponent: () =>
+      import('./pages/contact-us-page/contact-us-detail/contact-us-detail').then(
+        (m) => m.ContactUsDetail
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'members',
+    loadComponent: () =>
+      import('./pages/member-pages/members/members').then((m) => m.Members),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'members/:id',
+    loadComponent: () =>
+      import('./pages/member-pages/member-detail/member-detail').then(
+        (m) => m.MemberDetail
+      ),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
