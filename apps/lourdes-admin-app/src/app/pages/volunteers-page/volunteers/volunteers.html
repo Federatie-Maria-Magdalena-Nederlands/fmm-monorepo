@@ -1,0 +1,128 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Volunteers</h1>
+      <p class="text-gray-600">Manage and review volunteer applications</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="card bg-white shadow-md rounded-xl mb-6">
+      <div class="card-body p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Status Filter -->
+          <div>
+            <label class="label">
+              <span class="label-text font-semibold">Filter by Status</span>
+            </label>
+            <select
+              class="select select-bordered w-full"
+              [(ngModel)]="selectedStatus"
+              (change)="onFilterChange()">
+              @for (option of statusOptions; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <label class="label">
+              <span class="label-text font-semibold">Search</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Search volunteers..."
+              class="input input-bordered w-full"
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    <!-- Volunteers Table -->
+    @if (!loading && filteredVolunteers.length > 0) {
+      <div class="card bg-white shadow-md rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead class="bg-gray-100">
+              <tr>
+                <th>ID</th>
+                <th>Submitted At</th>
+                <th>Preview</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (volunteer of filteredVolunteers; track volunteer.id) {
+                <tr class="hover:bg-gray-50 cursor-pointer" (click)="viewDetails(volunteer)">
+                  <td class="font-mono text-sm">{{ volunteer.id.substring(0, 8) }}...</td>
+                  <td>{{ formatDate(volunteer.submittedAt) }}</td>
+                  <td>
+                    <div class="space-y-1">
+                      @for (field of getPreviewData(volunteer.formData); track field.key) {
+                        <div class="text-sm">
+                          <span class="font-semibold">{{ field.key }}:</span>
+                          <span class="text-gray-600 ml-1">{{ field.value }}</span>
+                        </div>
+                      }
+                    </div>
+                  </td>
+                  <td>
+                    <span
+                      class="badge"
+                      [ngClass]="getStatusClass(volunteer.status)">
+                      {{ volunteer.status || 'pending' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-outline btn-primary">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && filteredVolunteers.length === 0) {
+      <div class="card bg-white shadow-md rounded-xl">
+        <div class="card-body p-12 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-16 w-16 mx-auto text-gray-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">No Volunteers Found</h3>
+          <p class="text-gray-600">
+            @if (searchTerm || selectedStatus !== 'all') {
+              Try adjusting your filters to see more results.
+            } @else {
+              No volunteer applications have been received yet.
+            }
+          </p>
+        </div>
+      </div>
+    }
+  </div>
+</div>

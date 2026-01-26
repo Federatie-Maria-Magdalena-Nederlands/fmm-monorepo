@@ -3,7 +3,9 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "hosting": {
+  "hosting": [
+    {
+    "site": "lourdes-website-app",
     "public": "dist/apps/lourdes-website/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
@@ -12,5 +14,17 @@
         "destination": "/index.html"
       }
     ]
+  },
+  {
+    "site": "lourdes-admin-app",
+    "public": "dist/apps/lourdes-admin-app/browser",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
+]
 }
