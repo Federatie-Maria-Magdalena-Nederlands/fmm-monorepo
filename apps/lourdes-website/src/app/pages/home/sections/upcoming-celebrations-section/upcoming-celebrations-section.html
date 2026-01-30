@@ -15,140 +15,74 @@
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto"></div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div
-        class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <div
-          class="h-48 bg-gradient-to-br from-red-200 to-green-200 flex items-center justify-center overflow-hidden relative"
-          style="
-            background-image: url('/assets/images/christmas.jpg');
-            background-size: cover;
-            background-position: center;
-          "
-        >
-          <div class="absolute inset-0 bg-black/20"></div>
-        </div>
-        <div class="p-6">
-          <div class="flex items-center mb-4">
-            <span class="text-3xl font-bold text-amber-600 mr-4">25</span>
-            <div>
-              <p class="text-sm text-gray-600 font-medium">December</p>
-              <p class="text-sm text-gray-600 font-medium">Sunday</p>
-            </div>
-          </div>
-          <h3 class="text-xl font-bold text-gray-800 mb-2">
-            Christmas Celebration
-          </h3>
-          <p class="text-gray-700 mb-4 text-sm leading-relaxed">
-            Join us for a special Christmas service with carols, prayers, and
-            celebration of the birth of Jesus Christ.
-          </p>
-          <p class="text-sm text-amber-600 font-semibold">
-            10:00 AM - Main Chapel
-          </p>
-        </div>
-      </div>
 
-      <div
-        class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <div
-          class="h-48 bg-gradient-to-br from-blue-200 to-yellow-200 flex items-center justify-center overflow-hidden relative"
-          style="
-            background-image: url('/assets/images/newyear.jpg');
-            background-size: cover;
-            background-position: center;
-          "
-        >
-          <div class="absolute inset-0 bg-black/20"></div>
-        </div>
-        <div class="p-6">
-          <div class="flex items-center mb-4">
-            <span class="text-3xl font-bold text-amber-600 mr-4">01</span>
-            <div>
-              <p class="text-sm text-gray-600 font-medium">January</p>
-              <p class="text-sm text-gray-600 font-medium">Sunday</p>
-            </div>
-          </div>
-          <h3 class="text-xl font-bold text-gray-800 mb-2">
-            New Year Thanksgiving
-          </h3>
-          <p class="text-gray-700 mb-4 text-sm leading-relaxed">
-            Start the new year with gratitude and reflection. A special service
-            to thank God for blessings and set intentions.
-          </p>
-          <p class="text-sm text-amber-600 font-semibold">
-            10:00 AM - Main Chapel
-          </p>
-        </div>
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
       </div>
+    }
 
-      <div
-        class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <div
-          class="h-48 bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center overflow-hidden relative"
-          style="
-            background-image: url('/assets/images/easter.jpg');
-            background-size: cover;
-            background-position: center;
-          "
-        >
-          <div class="absolute inset-0 bg-black/20"></div>
-        </div>
-        <div class="p-6">
-          <div class="flex items-center mb-4">
-            <span class="text-3xl font-bold text-amber-600 mr-4">09</span>
-            <div>
-              <p class="text-sm text-gray-600 font-medium">April</p>
-              <p class="text-sm text-gray-600 font-medium">Sunday</p>
+    <!-- Activities Grid -->
+    @if (!loading && activities.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @for (activity of activities; track activity.id) {
+          <div
+            class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+          >
+            <div
+              class="h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center overflow-hidden relative"
+              [style.background-image]="activity.image ? 'url(' + activity.image + ')' : 'none'"
+              [style.background-size]="'cover'"
+              [style.background-position]="'center'"
+            >
+              @if (activity.image) {
+                <div class="absolute inset-0 bg-black/20"></div>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              }
+            </div>
+            <div class="p-6">
+              @if (activity.date) {
+                <div class="flex items-center mb-4">
+                  <span class="text-3xl font-bold text-amber-600 mr-4">{{ formatDate(activity.date).day }}</span>
+                  <div>
+                    <p class="text-sm text-gray-600 font-medium">{{ formatDate(activity.date).month }}</p>
+                    <p class="text-sm text-gray-600 font-medium">{{ formatDate(activity.date).dayOfWeek }}</p>
+                  </div>
+                </div>
+              }
+              <h3 class="text-xl font-bold text-gray-800 mb-2">
+                {{ activity.title }}
+              </h3>
+              <p class="text-gray-700 mb-4 text-sm leading-relaxed">
+                {{ truncateText(activity.description) }}
+              </p>
+              @if (activity.time) {
+                <p class="text-sm text-amber-600 font-semibold">
+                  {{ activity.time }}
+                </p>
+              }
             </div>
           </div>
-          <h3 class="text-xl font-bold text-gray-800 mb-2">Easter Service</h3>
-          <p class="text-gray-700 mb-4 text-sm leading-relaxed">
-            Celebrate the resurrection of Christ with special music,
-            testimonies, and communion service.
-          </p>
-          <p class="text-sm text-amber-600 font-semibold">
-            8:00 AM & 10:30 AM - Main Chapel
-          </p>
-        </div>
+        }
       </div>
+    }
 
-      <div
-        class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-      >
-        <div
-          class="h-48 bg-gradient-to-br from-green-200 to-blue-200 flex items-center justify-center overflow-hidden relative"
-          style="
-            background-image: url('/assets/images/pentecost.jpg');
-            background-size: cover;
-            background-position: center;
-          "
-        >
-          <div class="absolute inset-0 bg-black/20"></div>
-        </div>
-        <div class="p-6">
-          <div class="flex items-center mb-4">
-            <span class="text-3xl font-bold text-amber-600 mr-4">15</span>
-            <div>
-              <p class="text-sm text-gray-600 font-medium">May</p>
-              <p class="text-sm text-gray-600 font-medium">Sunday</p>
-            </div>
-          </div>
-          <h3 class="text-xl font-bold text-gray-800 mb-2">
-            Pentecost Celebration
-          </h3>
-          <p class="text-gray-700 mb-4 text-sm leading-relaxed">
-            Commemorate the coming of the Holy Spirit with prayer, worship, and
-            spiritual renewal.
-          </p>
-          <p class="text-sm text-amber-600 font-semibold">
-            10:00 AM - Main Chapel
-          </p>
+    <!-- Empty State -->
+    @if (!loading && activities.length === 0) {
+      <div class="text-center py-12">
+        <div class="bg-white rounded-2xl shadow-xl p-8 inline-block">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">No Activities Yet</h3>
+          <p class="text-gray-600">Check back soon for upcoming celebrations and events.</p>
         </div>
       </div>
-    </div>
+    }
+
   </div>
 </section>

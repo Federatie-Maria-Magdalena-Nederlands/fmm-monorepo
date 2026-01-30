@@ -1,0 +1,340 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Celebrations</h1>
+        <p class="text-gray-600">Manage church celebrations and masses</p>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline btn-primary" (click)="openBulkModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Bulk Create
+        </button>
+        <button class="btn btn-primary" (click)="createNew()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Create New Celebration
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card bg-white shadow-md rounded-xl mb-6">
+      <div class="card-body p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Status Filter -->
+          <div>
+            <label class="label">
+              <span class="label-text font-semibold">Filter by Status</span>
+            </label>
+            <select
+              class="select select-bordered w-full"
+              [(ngModel)]="selectedStatus"
+              (change)="onFilterChange()">
+              @for (option of statusOptions; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <label class="label">
+              <span class="label-text font-semibold">Search</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Search celebrations..."
+              class="input input-bordered w-full"
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="flex justify-center items-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    }
+
+    <!-- Celebrations List -->
+    @if (!loading && filteredCelebrations.length > 0) {
+      <div class="space-y-4">
+        @for (celebration of filteredCelebrations; track celebration.id) {
+          <div class="card bg-white shadow-md rounded-xl hover:shadow-lg transition-shadow cursor-pointer" (click)="viewDetails(celebration)">
+            <div class="card-body p-6">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-3">
+                    <div class="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-3 text-white">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 class="text-xl font-bold text-gray-900">{{ celebration.celebrationType }}</h2>
+                      <p class="text-sm text-gray-600">{{ celebration.church }}</p>
+                    </div>
+                    <span class="badge ml-auto" [ngClass]="getStatusClass(celebration.status)">
+                      {{ celebration.status || 'draft' }}
+                    </span>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div class="flex items-center gap-2 text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <div>
+                        <p class="text-gray-500 text-xs">Date</p>
+                        <p class="font-semibold text-gray-900">
+                          @if (celebration.date) {
+                            {{ formatDate(celebration.date) }}
+                          } @else {
+                            Not set
+                          }
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <div>
+                        <p class="text-gray-500 text-xs">Time</p>
+                        <p class="font-semibold text-gray-900">{{ celebration.time || 'Not set' }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <div>
+                        <p class="text-gray-500 text-xs">Location</p>
+                        <p class="font-semibold text-gray-900">{{ celebration.location }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      <div>
+                        <p class="text-gray-500 text-xs">Celebrant</p>
+                        <p class="font-semibold text-gray-900">{{ celebration.celebrant }}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  @if (celebration.liturgicalCalendar) {
+                    <div class="flex items-center gap-2 mb-3 text-sm text-amber-700 bg-amber-50 px-3 py-2 rounded-lg w-fit">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                      <span class="font-semibold">{{ celebration.liturgicalCalendar }}</span>
+                    </div>
+                  }
+
+                  @if (celebration.specialNotes) {
+                    <div class="text-sm text-gray-600 italic">
+                      <span class="font-semibold">Notes:</span> {{ celebration.specialNotes }}
+                    </div>
+                  }
+                </div>
+
+                <div class="ml-4">
+                  <button class="btn btn-sm btn-outline btn-primary">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && filteredCelebrations.length === 0) {
+      <div class="card bg-white shadow-md rounded-xl">
+        <div class="card-body p-12 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-16 w-16 mx-auto text-gray-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">No Celebrations Found</h3>
+          <p class="text-gray-600 mb-4">
+            @if (searchTerm || selectedStatus !== 'all') {
+              Try adjusting your filters to see more results.
+            } @else {
+              Get started by creating your first celebration.
+            }
+          </p>
+          <button class="btn btn-primary" (click)="createNew()">
+            Create New Celebration
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Bulk Create Modal -->
+  @if (showBulkModal) {
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- Modal Header -->
+        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900">Bulk Create Celebrations</h2>
+            <p class="text-sm text-gray-600 mt-1">Add multiple celebrations at once</p>
+          </div>
+          <button class="btn btn-ghost btn-circle" (click)="closeBulkModal()" [disabled]="savingBulk">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="flex-1 overflow-y-auto p-6">
+          <form [formGroup]="bulkForm">
+            <div formArrayName="celebrations" class="space-y-6">
+              @for (celebration of celebrationForms.controls; track $index; let idx = $index) {
+                <div class="card bg-gray-50 shadow-md rounded-xl" [formGroupName]="idx">
+                  <div class="card-body p-6">
+                    <div class="flex items-center justify-between mb-4">
+                      <h3 class="text-lg font-bold text-gray-900">Celebration {{ idx + 1 }}</h3>
+                      @if (celebrationForms.length > 1) {
+                        <button type="button" class="btn btn-ghost btn-sm text-error" (click)="removeCelebrationForm(idx)">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                          Remove
+                        </button>
+                      }
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <!-- Date -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Date *</span>
+                        </label>
+                        <input type="date" class="input input-bordered input-sm" formControlName="date" />
+                      </div>
+
+                      <!-- Time -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Time *</span>
+                        </label>
+                        <input type="time" class="input input-bordered input-sm" formControlName="time" />
+                      </div>
+
+                      <!-- Church -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Church *</span>
+                        </label>
+                        <input type="text" placeholder="Enter church name" class="input input-bordered input-sm" formControlName="church" />
+                      </div>
+
+                      <!-- Location -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Location *</span>
+                        </label>
+                        <input type="text" placeholder="Enter location" class="input input-bordered input-sm" formControlName="location" />
+                      </div>
+
+                      <!-- Celebrant -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Celebrant *</span>
+                        </label>
+                        <input type="text" placeholder="Enter celebrant name" class="input input-bordered input-sm" formControlName="celebrant" />
+                      </div>
+
+                      <!-- Celebration Type -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Celebration Type *</span>
+                        </label>
+                        <input type="text" placeholder="e.g., Sunday Mass" class="input input-bordered input-sm" formControlName="celebrationType" />
+                      </div>
+
+                      <!-- Liturgical Calendar -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Liturgical Calendar</span>
+                        </label>
+                        <input type="text" placeholder="Optional" class="input input-bordered input-sm" formControlName="liturgicalCalendar" />
+                      </div>
+
+                      <!-- Special Notes -->
+                      <div class="form-control">
+                        <label class="label">
+                          <span class="label-text font-semibold">Special Notes</span>
+                        </label>
+                        <input type="text" placeholder="Optional" class="input input-bordered input-sm" formControlName="specialNotes" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Add Another Button -->
+            <div class="mt-4">
+              <button type="button" class="btn btn-outline btn-sm" (click)="addCelebrationForm()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Another Celebration
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="p-6 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+          <p class="text-sm text-gray-600">
+            <span class="font-semibold">{{ celebrationForms.length }}</span> celebration(s) to create
+          </p>
+          <div class="flex gap-3">
+            <button class="btn btn-outline" (click)="closeBulkModal()" [disabled]="savingBulk">
+              Cancel
+            </button>
+            <button class="btn btn-primary" (click)="saveBulkCelebrations()" [disabled]="bulkForm.invalid || savingBulk">
+              @if (savingBulk) {
+                <span class="loading loading-spinner loading-sm mr-2"></span>
+              }
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              Save All Celebrations
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

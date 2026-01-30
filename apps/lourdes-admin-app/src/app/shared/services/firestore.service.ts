@@ -95,6 +95,46 @@ export interface Activity {
   updatedAt?: Date | Timestamp;
 }
 
+export interface LiveCelebration {
+  id: string;
+  title: string;
+  description: string;
+  date?: Date | Timestamp;
+  time?: string;
+  liveStreamUrl: string;
+  status?: 'draft' | 'published';
+  createdAt: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
+}
+
+export interface Blog {
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  body: string;
+  date?: Date | Timestamp;
+  time?: string;
+  status?: 'draft' | 'published';
+  createdAt: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
+}
+
+export interface Celebration {
+  id: string;
+  date?: Date | Timestamp;
+  church: string;
+  location: string;
+  time?: string;
+  celebrant: string;
+  celebrationType: string;
+  liturgicalCalendar?: string;
+  specialNotes?: string;
+  status?: 'draft' | 'published';
+  createdAt: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -106,6 +146,9 @@ export class FirestoreService {
   private readonly VOLUNTEERS_COLLECTION = 'join-us-submissions';
   private readonly CONTACT_US_COLLECTION = 'contact-us-submissions';
   private readonly ACTIVITIES_COLLECTION = 'activities';
+  private readonly LIVE_CELEBRATIONS_COLLECTION = 'live-celebrations';
+  private readonly BLOGS_COLLECTION = 'blogs';
+  private readonly CELEBRATIONS_COLLECTION = 'celebrations';
 
   constructor() {
     this.db = getFirestore(firebaseApp);
@@ -719,6 +762,308 @@ export class FirestoreService {
     
     // Delete the Firestore document
     const docRef = doc(this.db, this.ACTIVITIES_COLLECTION, id);
+    await deleteDoc(docRef);
+  }
+
+  // === LIVE CELEBRATIONS METHODS ===
+  
+  /**
+   * Get all live celebrations
+   */
+  async getAllLiveCelebrations(): Promise<LiveCelebration[]> {
+    const collectionRef = collection(this.db, this.LIVE_CELEBRATIONS_COLLECTION);
+    const q = query(collectionRef, orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    const celebrations: LiveCelebration[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      celebrations.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as LiveCelebration);
+    });
+
+    return celebrations;
+  }
+
+  /**
+   * Get a single live celebration by ID
+   */
+  async getLiveCelebrationById(id: string): Promise<LiveCelebration | null> {
+    const docRef = doc(this.db, this.LIVE_CELEBRATIONS_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      } as LiveCelebration;
+    }
+
+    return null;
+  }
+
+  /**
+   * Get live celebrations by status
+   */
+  async getLiveCelebrationsByStatus(status: string): Promise<LiveCelebration[]> {
+    const collectionRef = collection(this.db, this.LIVE_CELEBRATIONS_COLLECTION);
+    const q = query(
+      collectionRef,
+      where('status', '==', status),
+      orderBy('createdAt', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const celebrations: LiveCelebration[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      celebrations.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as LiveCelebration);
+    });
+
+    return celebrations;
+  }
+
+  /**
+   * Update live celebration status
+   */
+  async updateLiveCelebrationStatus(id: string, status: 'draft' | 'published'): Promise<void> {
+    const docRef = doc(this.db, this.LIVE_CELEBRATIONS_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update a live celebration
+   */
+  async updateLiveCelebration(id: string, data: Partial<LiveCelebration>): Promise<void> {
+    const docRef = doc(this.db, this.LIVE_CELEBRATIONS_COLLECTION, id);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Delete a live celebration
+   */
+  async deleteLiveCelebration(id: string): Promise<void> {
+    const docRef = doc(this.db, this.LIVE_CELEBRATIONS_COLLECTION, id);
+    await deleteDoc(docRef);
+  }
+
+  // ==================== Blog Methods ====================
+
+  /**
+   * Get all blogs
+   */
+  async getAllBlogs(): Promise<Blog[]> {
+    const collectionRef = collection(this.db, this.BLOGS_COLLECTION);
+    const q = query(collectionRef, orderBy('createdAt', 'desc'));
+    
+    const querySnapshot = await getDocs(q);
+    const blogs: Blog[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      blogs.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as Blog);
+    });
+
+    return blogs;
+  }
+
+  /**
+   * Get blog by ID
+   */
+  async getBlogById(id: string): Promise<Blog | null> {
+    const docRef = doc(this.db, this.BLOGS_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      } as Blog;
+    }
+    
+    return null;
+  }
+
+  /**
+   * Get blogs by status
+   */
+  async getBlogsByStatus(status: 'draft' | 'published'): Promise<Blog[]> {
+    const collectionRef = collection(this.db, this.BLOGS_COLLECTION);
+    const q = query(
+      collectionRef,
+      where('status', '==', status),
+      orderBy('createdAt', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const blogs: Blog[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      blogs.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as Blog);
+    });
+
+    return blogs;
+  }
+
+  /**
+   * Update blog status
+   */
+  async updateBlogStatus(id: string, status: 'draft' | 'published'): Promise<void> {
+    const docRef = doc(this.db, this.BLOGS_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update a blog
+   */
+  async updateBlog(id: string, data: Partial<Blog>): Promise<void> {
+    const docRef = doc(this.db, this.BLOGS_COLLECTION, id);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Delete a blog (including its image from storage)
+   */
+  async deleteBlog(id: string): Promise<void> {
+    // First get the blog to check if it has an image
+    const blog = await this.getBlogById(id);
+    
+    // Delete the image from storage if it exists
+    if (blog?.image) {
+      try {
+        const storage = getStorage();
+        // Extract the path from the URL
+        const imageUrl = blog.image;
+        const baseUrl = 'https://firebasestorage.googleapis.com/v0/b/';
+        if (imageUrl.startsWith(baseUrl)) {
+          const pathStart = imageUrl.indexOf('/o/') + 3;
+          const pathEnd = imageUrl.indexOf('?');
+          const imagePath = decodeURIComponent(imageUrl.substring(pathStart, pathEnd));
+          
+          const imageRef = ref(storage, imagePath);
+          await deleteObject(imageRef);
+        }
+      } catch (error) {
+        console.error('Error deleting blog image:', error);
+      }
+    }
+    
+    // Delete the blog document
+    const docRef = doc(this.db, this.BLOGS_COLLECTION, id);
+    await deleteDoc(docRef);
+  }
+
+  // ==================== Celebration Methods ====================
+
+  /**
+   * Get all celebrations
+   */
+  async getAllCelebrations(): Promise<Celebration[]> {
+    const collectionRef = collection(this.db, this.CELEBRATIONS_COLLECTION);
+    const q = query(collectionRef, orderBy('date', 'desc'));
+    
+    const querySnapshot = await getDocs(q);
+    const celebrations: Celebration[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      celebrations.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as Celebration);
+    });
+
+    return celebrations;
+  }
+
+  /**
+   * Get celebration by ID
+   */
+  async getCelebrationById(id: string): Promise<Celebration | null> {
+    const docRef = doc(this.db, this.CELEBRATIONS_COLLECTION, id);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      } as Celebration;
+    }
+    
+    return null;
+  }
+
+  /**
+   * Get celebrations by status
+   */
+  async getCelebrationsByStatus(status: 'draft' | 'published'): Promise<Celebration[]> {
+    const collectionRef = collection(this.db, this.CELEBRATIONS_COLLECTION);
+    const q = query(
+      collectionRef,
+      where('status', '==', status),
+      orderBy('date', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const celebrations: Celebration[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      celebrations.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as Celebration);
+    });
+
+    return celebrations;
+  }
+
+  /**
+   * Update celebration status
+   */
+  async updateCelebrationStatus(id: string, status: 'draft' | 'published'): Promise<void> {
+    const docRef = doc(this.db, this.CELEBRATIONS_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Update a celebration
+   */
+  async updateCelebration(id: string, data: Partial<Celebration>): Promise<void> {
+    const docRef = doc(this.db, this.CELEBRATIONS_COLLECTION, id);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: new Date(),
+    });
+  }
+
+  /**
+   * Delete a celebration
+   */
+  async deleteCelebration(id: string): Promise<void> {
+    const docRef = doc(this.db, this.CELEBRATIONS_COLLECTION, id);
     await deleteDoc(docRef);
   }
 }

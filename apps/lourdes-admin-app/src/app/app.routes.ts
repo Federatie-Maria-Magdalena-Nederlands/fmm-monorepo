@@ -112,6 +112,48 @@ export const appRoutes: Route[] = [
     canActivate: [authGuard],
   },
   {
+    path: 'celebrations',
+    loadComponent: () =>
+      import('./pages/celebrations-page/celebrations/celebrations').then((m) => m.Celebrations),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'celebrations/:id',
+    loadComponent: () =>
+      import('./pages/celebrations-page/celebration-detail/celebration-detail').then(
+        (m) => m.CelebrationDetail
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'live-celebrations',
+    loadComponent: () =>
+      import('./pages/live-celebrations-page/live-celebrations/live-celebrations').then((m) => m.LiveCelebrations),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'live-celebrations/:id',
+    loadComponent: () =>
+      import('./pages/live-celebrations-page/live-celebration-detail/live-celebration-detail').then(
+        (m) => m.LiveCelebrationDetail
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'blogs',
+    loadComponent: () =>
+      import('./pages/blogs-page/blogs/blogs').then((m) => m.Blogs),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'blogs/:id',
+    loadComponent: () =>
+      import('./pages/blogs-page/blog-detail/blog-detail').then(
+        (m) => m.BlogDetail
+      ),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
