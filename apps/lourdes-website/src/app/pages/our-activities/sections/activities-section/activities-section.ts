@@ -1,57 +1,98 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { SparkIcon } from '../../../../shared/components/icons/spark-icon';
+import {
+  Firestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  Timestamp,
+} from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { environment } from '../../../../../environments/environment';
 
-const COMPONENTS = [AbstractBackground, SparkIcon];
+// Initialize Firebase app
+const firebaseApp = initializeApp(environment.firebase);
+
+interface Activity {
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  body: string;
+  date?: Date | Timestamp;
+  time?: string;
+  status?: 'draft' | 'published';
+  createdAt: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
+}
+
+const COMPONENTS = [AbstractBackground, SparkIcon, CommonModule];
 
 @Component({
   selector: 'app-activities-section',
   imports: [...COMPONENTS],
   templateUrl: './activities-section.html',
 })
-export class ActivitiesSection {
-  public activities: Activity[] = [
-    {
-      title: 'Sunday Mass',
-      description:
-        'Join us for our weekly celebration of the Eucharist. Experience the beauty of worship and community as we gather to praise and give thanks.',
-      image: 'assets/images/mass.jpg',
-      schedule: 'Every Sunday at 10:00 AM',
-    },
-    {
-      title: 'Bible Study',
-      description:
-        'Deepen your understanding of Scripture through guided study and group discussions. All ages and experience levels welcome.',
-      image: 'assets/images/bible-study.jpg',
-      schedule: 'Wednesdays at 7:00 PM',
-    },
-    {
-      title: 'Youth Group',
-      description:
-        'A vibrant community for young people to grow in faith, build friendships, and serve others through various activities and events.',
-      image: 'assets/images/youth-group.jpg',
-      schedule: 'Fridays at 6:00 PM',
-    },
-    {
-      title: 'Community Outreach',
-      description:
-        'Serve those in need through our various outreach programs. Make a difference in the lives of others while living out our faith.',
-      image: 'assets/images/outreach.jpg',
-      schedule: 'Monthly Events',
-    },
-    {
-      title: 'Prayer Groups',
-      description:
-        'Join fellow parishioners in communal prayer and reflection. Experience the power of praying together as a community.',
-      image: 'assets/images/prayer.jpg',
-      schedule: 'Tuesdays & Thursdays',
-    },
-    {
-      title: 'Choir Practice',
-      description:
-        'Lift your voice in praise! Join our parish choir and help lead worship through beautiful music and song.',
-      image: 'assets/images/choir.jpg',
-      schedule: 'Thursdays at 7:30 PM',
-    },
-  ];
+export class ActivitiesSection implements OnInit {
+  private db: Firestore;
+  public activities: Activity[] = [];
+  public loading = true;
+
+  constructor() {
+    this.db = getFirestore(firebaseApp);
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.loadActivities();
+  }
+
+  async loadActivities(): Promise<void> {
+    this.loading = true;
+    try {
+      const collectionRef = collection(this.db, 'activities');
+      const q = query(
+        collectionRef,
+        where('status', '==', 'published'),
+      );
+
+      const querySnapshot = await getDocs(q);
+      this.activities = [];
+
+      querySnapshot.forEach((docSnapshot) => {
+        this.activities.push({
+          id: docSnapshot.id,
+          ...docSnapshot.data(),
+        } as Activity);
+      });
+    } catch (error) {
+      console.error('Error loading activities:', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  formatSchedule(activity: Activity): string {
+    if (!activity.date && !activity.time) return '';
+    
+    let schedule = '';
+    
+    if (activity.date) {
+      const d = activity.date instanceof Date ? activity.date : (activity.date as Timestamp).toDate();
+      schedule = d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    
+    if (activity.time) {
+      schedule += schedule ? ` at ${activity.time}` : activity.time;
+    }
+    
+    return schedule;
+  }
+
+  truncateText(text: string, maxLength: number = 120): string {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  }
 }

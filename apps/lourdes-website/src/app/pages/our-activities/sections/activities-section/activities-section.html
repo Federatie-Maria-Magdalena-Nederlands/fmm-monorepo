@@ -19,34 +19,54 @@
     </p>
 
     <!-- Activities Cards List -->
+    @if (loading) {
+    <div class="flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-amber-600"></div>
+    </div>
+    }
+    
+    @if (!loading && activities.length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      @for(activity of activities; track activity.title) {
+      @for(activity of activities; track activity.id) {
       <div
         class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300"
       >
         <figure class="h-48 overflow-hidden">
+          @if (activity.image) {
           <img
             [src]="activity.image"
             [alt]="activity.title"
             class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
           />
+          } @else {
+          <div class="w-full h-full bg-gradient-to-br from-amber-200 to-orange-200 flex items-center justify-center">
+            <app-spark-icon></app-spark-icon>
+          </div>
+          }
         </figure>
         <div class="card-body">
           <h3 class="card-title text-xl font-bold text-gray-800">
             {{activity.title}}
           </h3>
           <p class="text-gray-600 text-sm leading-relaxed">
-            {{activity.description}}
+            {{truncateText(activity.description)}}
           </p>
-          @if(activity.schedule) {
+          @if(formatSchedule(activity)) {
           <div class="mt-4 flex items-center gap-2 text-sm text-amber-700">
             <app-spark-icon></app-spark-icon>
-            <span class="font-semibold">{{activity.schedule}}</span>
+            <span class="font-semibold">{{formatSchedule(activity)}}</span>
           </div>
           }
         </div>
       </div>
       }
     </div>
+    }
+    
+    @if (!loading && activities.length === 0) {
+    <div class="text-center py-20">
+      <p class="text-gray-600 text-lg">No activities available at the moment. Please check back later!</p>
+    </div>
+    }
   </div>
 </section>
