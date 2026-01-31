@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { SparkIcon } from '../../../../shared/components/icons/spark-icon';
+import { FirebaseService } from '../../../../shared/services/firebase.service';
 import {
   Firestore,
   collection,
@@ -10,12 +11,6 @@ import {
   where,
   Timestamp,
 } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { environment } from '../../../../../environments/environment';
-
-// Initialize Firebase app
-const firebaseApp = initializeApp(environment.firebase);
 
 interface Activity {
   id: string;
@@ -39,11 +34,11 @@ const COMPONENTS = [AbstractBackground, SparkIcon, CommonModule];
 })
 export class ActivitiesSection implements OnInit {
   private db: Firestore;
-  public activities: Activity[] = [];
-  public loading = true;
+  public activities = signal<Activity[]>([]);
+  public loading = signal(true);
 
-  constructor() {
-    this.db = getFirestore(firebaseApp);
+  constructor(private firebaseService: FirebaseService) {
+    this.db = this.firebaseService.getDatabase();
   }
 
   async ngOnInit(): Promise<void> {
@@ -51,7 +46,7 @@ export class ActivitiesSection implements OnInit {
   }
 
   async loadActivities(): Promise<void> {
-    this.loading = true;
+    this.loading.set(true);
     try {
       const collectionRef = collection(this.db, 'activities');
       const q = query(
@@ -60,18 +55,20 @@ export class ActivitiesSection implements OnInit {
       );
 
       const querySnapshot = await getDocs(q);
-      this.activities = [];
+      const activities: Activity[] = [];
 
       querySnapshot.forEach((docSnapshot) => {
-        this.activities.push({
+        activities.push({
           id: docSnapshot.id,
           ...docSnapshot.data(),
         } as Activity);
       });
+      
+      this.activities.set(activities);
     } catch (error) {
       console.error('Error loading activities:', error);
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 

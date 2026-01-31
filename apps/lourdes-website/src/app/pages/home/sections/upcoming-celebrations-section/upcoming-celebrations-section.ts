@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FirebaseService } from '../../../../shared/services/firebase.service';
 import {
   Firestore,
   collection,
@@ -9,12 +10,6 @@ import {
   limit,
   Timestamp,
 } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { environment } from '../../../../../environments/environment';
-
-// Initialize Firebase app
-const firebaseApp = initializeApp(environment.firebase);
 
 interface Activity {
   id: string;
@@ -36,11 +31,11 @@ interface Activity {
 })
 export class UpcomingCelebrationsSection implements OnInit {
   private db: Firestore;
-  public activities: Activity[] = [];
-  public loading = true;
+  public activities = signal<Activity[]>([]);
+  public loading = signal(true);
 
-  constructor() {
-    this.db = getFirestore(firebaseApp);
+  constructor(private firebaseService: FirebaseService) {
+    this.db = this.firebaseService.getDatabase();
   }
 
   async ngOnInit(): Promise<void> {
@@ -48,7 +43,7 @@ export class UpcomingCelebrationsSection implements OnInit {
   }
 
   async loadActivities(): Promise<void> {
-    this.loading = true;
+    this.loading.set(true);
     try {
       const collectionRef = collection(this.db, 'activities');
       const q = query(
@@ -58,18 +53,20 @@ export class UpcomingCelebrationsSection implements OnInit {
       );
 
       const querySnapshot = await getDocs(q);
-      this.activities = [];
+      const activities: Activity[] = [];
 
       querySnapshot.forEach((docSnapshot) => {
-        this.activities.push({
+        activities.push({
           id: docSnapshot.id,
           ...docSnapshot.data(),
         } as Activity);
       });
+      
+      this.activities.set(activities);
     } catch (error) {
       console.error('Error loading activities:', error);
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 
