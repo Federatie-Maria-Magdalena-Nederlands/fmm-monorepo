@@ -762,4 +762,20 @@ export class SacramentDetail implements OnInit {
   isLongValue(value: string): boolean {
     return value.length > 100;
   }
+
+  sendEmail(): void {
+    if (!this.submission?.formData) return;
+
+    // Try multiple possible email field names
+    const email = this.submission.formData['email'] || 
+                  this.submission.formData['emailAddress'] || 
+                  this.submission.formData['senderEmail'];
+    
+    if (email) {
+      // Open Gmail compose with the email address
+      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`, '_blank');
+    } else {
+      console.error('No email address found in submission');
+    }
+  }
 }

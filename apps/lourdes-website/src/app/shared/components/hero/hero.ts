@@ -1,19 +1,27 @@
-import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef, inject } from '@angular/core';
+import { Router, RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-hero',
   templateUrl: './hero.html',
+  imports: [RouterModule],
 })
 export class Hero implements AfterViewInit {
   @ViewChild('heroVideo', { static: false }) heroVideo:
     | ElementRef<HTMLVideoElement>
     | undefined;
 
+  public router = inject(Router);
+
   ngAfterViewInit() {
     // Wait a bit for DOM to be fully ready
     setTimeout(() => {
       this.playVideo();
     }, 500);
+  }
+
+  public joinUs() {
+    this.router.navigate(['/church-member']);
   }
 
   private playVideo() {
