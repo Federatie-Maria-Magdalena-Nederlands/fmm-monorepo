@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { Wedding } from '@fmm/shared/models';
 import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
+
+declare const grecaptcha: any;
 
 const COMPONENTS = [AbstractBackground];
 
@@ -17,7 +19,7 @@ const COMPONENTS = [AbstractBackground];
   imports: [...COMPONENTS, ReactiveFormsModule, CommonModule],
   templateUrl: './wedding-form-section.html',
 })
-export class WeddingFormSection {
+export class WeddingFormSection implements AfterViewInit {
   public weddingForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
@@ -25,7 +27,16 @@ export class WeddingFormSection {
   public submitError = false;
   private sacramentService = inject(SacramentSubmissionService);
 
-  constructor(private formBuilder: FormBuilder) {
+  // reCAPTCHA properties
+  recaptchaSiteKey = '6LfGVlwsAAAAAMhClqyjfucayhuUpV_wHiwulx8k';
+  recaptchaToken: string | null = null;
+  isBrowser: boolean;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.weddingForm = this.formBuilder.group({
       // Step 1: Bride Information
       brideName: ['', Validators.required],
@@ -64,6 +75,20 @@ export class WeddingFormSection {
       // Step 3: Privacy
       privacyAgreement: ['', Validators.required],
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      this.loadRecaptchaScript();
+    }
+  }
+
+  private loadRecaptchaScript(): void {
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/enterprise.js?render=${this.recaptchaSiteKey}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
   public nextStep(): void {
@@ -200,6 +225,16 @@ export class WeddingFormSection {
     this.submitError = false;
 
     try {
+      // Execute reCAPTCHA v3
+      this.recaptchaToken = await grecaptcha.enterprise.execute(
+        this.recaptchaSiteKey,
+        { action: 'submit_wedding' }
+      );
+
+      if (!this.recaptchaToken) {
+        throw new Error('reCAPTCHA verification failed');
+      }
+
       const formData: Wedding = this.weddingForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'wedding',

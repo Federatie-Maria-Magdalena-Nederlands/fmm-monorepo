@@ -15,6 +15,7 @@
     "@nx/angular": "^22.3.3",
     "@tailwindcss/postcss": "^4.1.18",
     "firebase": "^12.8.0",
+    "ngx-turnstile": "^0.2.5",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.18"

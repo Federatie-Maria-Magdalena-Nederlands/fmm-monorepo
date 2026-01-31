@@ -1,13 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { isPlatformBrowser } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { MassIntentions } from '@fmm/shared/models';
 import { MassIntentionSubmissionService } from '../../../../shared/services/mass-intention-submission.service';
+
+declare const grecaptcha: any;
 
 const COMPONENTS = [AbstractBackground];
 
@@ -16,7 +19,7 @@ const COMPONENTS = [AbstractBackground];
   imports: [...COMPONENTS, ReactiveFormsModule],
   templateUrl: './mass-intentions-form-section.html',
 })
-export class MassIntentionsFormSection {
+export class MassIntentionsFormSection implements AfterViewInit {
   public massIntentionForm: FormGroup<any>;
   public isSubmitting = false;
   public submitSuccess = false;
@@ -25,7 +28,16 @@ export class MassIntentionsFormSection {
   public selectedFile: File | null = null;
   private massIntentionService = inject(MassIntentionSubmissionService);
 
-  constructor(private formBuilder: FormBuilder) {
+  // reCAPTCHA properties
+  recaptchaSiteKey = '6LfGVlwsAAAAAMhClqyjfucayhuUpV_wHiwulx8k';
+  recaptchaToken: string | null = null;
+  isBrowser: boolean;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.massIntentionForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
@@ -38,6 +50,20 @@ export class MassIntentionsFormSection {
       intention: ['', [Validators.required, Validators.minLength(10)]],
       moneyTransferred: [''],
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      this.loadRecaptchaScript();
+    }
+  }
+
+  private loadRecaptchaScript(): void {
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/enterprise.js?render=${this.recaptchaSiteKey}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
   public onFileSelected(event: Event): void {
@@ -59,6 +85,16 @@ export class MassIntentionsFormSection {
     this.submitError = false;
 
     try {
+      // Execute reCAPTCHA v3
+      this.recaptchaToken = await grecaptcha.enterprise.execute(
+        this.recaptchaSiteKey,
+        { action: 'submit_mass_intention' }
+      );
+
+      if (!this.recaptchaToken) {
+        throw new Error('reCAPTCHA verification failed');
+      }
+
       const formData: MassIntentions = {
         ...this.massIntentionForm.value,
         proofOfPayment: this.selectedFile ? this.selectedFile.name : null,

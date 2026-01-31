@@ -1,19 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { SparkIcon } from '../../../../shared/components/icons/spark-icon';
 import { LocationIcon } from '../../../../shared/components/icons/location-icon';
+import { FirebaseService } from '../../../../shared/services/firebase.service';
+import {
+  Firestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  // orderBy,
+  Timestamp,
+} from 'firebase/firestore';
 
-const COMPONENTS = [AbstractBackground, SparkIcon, LocationIcon];
+const COMPONENTS = [AbstractBackground, SparkIcon, LocationIcon, CommonModule];
 
 interface Celebration {
-  date: string;
+  id: string;
+  date?: Date | Timestamp;
+  church: string;
   location: string;
-  time: string;
+  time?: string;
   celebrant: string;
   celebrationType: string;
-  liturgicalCalendar: string;
+  liturgicalCalendar?: string;
   specialNotes?: string;
-  isHighlighted?: boolean;
+  status?: 'draft' | 'published';
+  createdAt: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
 }
 
 interface WeeklySchedule {
@@ -26,7 +41,11 @@ interface WeeklySchedule {
   imports: [...COMPONENTS],
   templateUrl: './celebrations-section.html',
 })
-export class CelebrationsSection {
+export class CelebrationsSection implements OnInit {
+  private db: Firestore;
+  public celebrations = signal<Celebration[]>([]);
+  public loading = signal(true);
+
   public weeklySchedule: WeeklySchedule[] = [
     { day: 'Monday', time: '9:00 AM' },
     { day: 'Tuesday', time: '9:00 AM' },
@@ -37,124 +56,50 @@ export class CelebrationsSection {
     { day: 'Sunday', time: '9:30 am' },
   ];
 
-  public celebrations: Celebration[] = [
-    {
-      date: 'Sunday, January 4',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor Frans Wijnen',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-      specialNotes: 'Opening Mass',
-      isHighlighted: true,
-    },
-    {
-      date: 'Monday, January 5',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor François',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-    },
-    {
-      date: 'Tuesday, January 6',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor François',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-    },
-    {
-      date: 'Thursday, January 8',
-      location: 'St. Location',
-      time: '09:00',
-      celebrant: 'Pastor François',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-    },
-    {
-      date: 'Friday, January 9',
-      location: 'Broekerk',
-      time: '18:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-    },
-    {
-      date: 'Saturday, January 10',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-    },
-    {
-      date: 'Sunday, January 11',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-      specialNotes: 'New Year for the Youth',
-      isHighlighted: true,
-    },
-    {
-      date: 'Monday, January 12',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-    },
-    {
-      date: 'Tuesday, January 13',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-      specialNotes: '1st week after New Year',
-      isHighlighted: true,
-    },
-    {
-      date: 'Wednesday, January 14',
-      location: 'Broekerk',
-      time: '18:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-      specialNotes: '1st week after New Year',
-      isHighlighted: true,
-    },
-    {
-      date: 'Thursday, January 15',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-      specialNotes: '1st week after New Year',
-      isHighlighted: true,
-    },
-    {
-      date: 'Friday, January 16',
-      location: 'Broekerk',
-      time: '09:00',
-      celebrant: 'Pastor Cyril',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-      specialNotes: '1st week after New Year',
-      isHighlighted: true,
-    },
-    {
-      date: 'Saturday, January 17',
-      location: 'St. Location',
-      time: '09:00',
-      celebrant: 'Pastor Clariodo',
-      celebrationType: 'Holy Mass',
-      liturgicalCalendar: 'Eucharistic celebration',
-      specialNotes: '1st week after New Year',
-      isHighlighted: true,
-    },
-  ];
+  constructor(private firebaseService: FirebaseService) {
+    this.db = this.firebaseService.getDatabase();
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.loadCelebrations();
+  }
+
+  async loadCelebrations(): Promise<void> {
+    this.loading.set(true);
+    try {
+      const collectionRef = collection(this.db, 'celebrations');
+      const q = query(
+        collectionRef,
+        where('status', '==', 'published'),
+        // orderBy('date', 'asc')
+      );
+
+      const querySnapshot = await getDocs(q);
+      const celebrations: Celebration[] = [];
+
+      querySnapshot.forEach((docSnapshot) => {
+        celebrations.push({
+          id: docSnapshot.id,
+          ...docSnapshot.data(),
+        } as Celebration);
+      });
+      
+      this.celebrations.set(celebrations);
+    } catch (error) {
+      console.error('Error loading celebrations:', error);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  formatDate(date: any): string {
+    if (!date) return '';
+    
+    const d = date instanceof Date ? date : (date as Timestamp).toDate();
+    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  }
+
+  isHighlighted(celebration: Celebration): boolean {
+    return !!celebration.specialNotes;
+  }
 }
