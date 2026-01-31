@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -17,15 +18,25 @@ const COMPONENTS = [AbstractBackground];
   imports: [...COMPONENTS, ReactiveFormsModule, CommonModule],
   templateUrl: './donations-form-section.html',
 })
-export class DonationsFormSection {
+export class DonationsFormSection implements AfterViewInit {
   public donationForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
   private donationService = inject(DonationSubmissionService);
+  
+  // reCAPTCHA properties
+  public recaptchaSiteKey = '6LfGVlwsAAAAAMhClqyjfucayhuUpV_wHiwulx8k'; // Test key - replace with your actual key
+  public recaptchaToken: string | null = null;
+  private isBrowser: boolean;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    
     this.donationForm = this.formBuilder.group({
       // Step 1: Personal Information
       firstName: ['', [Validators.required, Validators.minLength(2)]],
@@ -63,6 +74,27 @@ export class DonationsFormSection {
       }
       customAmountControl?.updateValueAndValidity();
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      this.loadRecaptchaScript();
+    }
+  }
+
+  private loadRecaptchaScript(): void {
+    if (typeof window !== 'undefined') {
+      // Check if script already exists
+      const existingScript = document.getElementById('recaptcha-script');
+      if (existingScript) return;
+
+      const script = document.createElement('script');
+      script.id = 'recaptcha-script';
+      script.src = 'https://www.google.com/recaptcha/enterprise.js?render=6LfGVlwsAAAAAMhClqyjfucayhuUpV_wHiwulx8k';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
   }
 
   public nextStep(): void {
@@ -157,6 +189,19 @@ export class DonationsFormSection {
     this.submitError = false;
 
     try {
+      // Execute reCAPTCHA v3 to get token
+      if (typeof (window as any).grecaptcha !== 'undefined' && (window as any).grecaptcha.enterprise) {
+        this.recaptchaToken = await (window as any).grecaptcha.enterprise.execute(
+          this.recaptchaSiteKey,
+          { action: 'submit_donation' }
+        );
+      }
+
+      // Validate reCAPTCHA token was obtained
+      if (!this.recaptchaToken) {
+        throw new Error('Failed to obtain reCAPTCHA token');
+      }
+
       const formData: Donations = this.donationForm.value;
       const submissionId = await this.donationService.submitForm(formData);
 
@@ -165,6 +210,7 @@ export class DonationsFormSection {
       this.submitSuccess = true;
       this.donationForm.reset();
       this.currentStep = 1;
+      this.recaptchaToken = null;
 
       // Hide success message after 5 seconds
       setTimeout(() => {

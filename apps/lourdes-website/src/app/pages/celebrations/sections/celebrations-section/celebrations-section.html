@@ -81,6 +81,13 @@
 
       <!-- Desktop Celebrations Table -->
       <div class="xl:col-span-9">
+        @if (loading()) {
+        <div class="flex justify-center items-center py-20">
+          <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-amber-600"></div>
+        </div>
+        }
+        
+        @if (!loading() && celebrations().length > 0) {
         <div
           class="hidden lg:block overflow-x-auto bg-white rounded-lg shadow-xl"
         >
@@ -125,16 +132,16 @@
               </tr>
             </thead>
             <tbody>
-              @for(celebration of celebrations; track $index) {
+              @for(celebration of celebrations(); track celebration.id) {
               <tr
-                [class.bg-yellow-50]="celebration.isHighlighted"
-                [class.hover:bg-yellow-100]="celebration.isHighlighted"
-                [class.hover:bg-gray-50]="!celebration.isHighlighted"
+                [class.bg-yellow-50]="isHighlighted(celebration)"
+                [class.hover:bg-yellow-100]="isHighlighted(celebration)"
+                [class.hover:bg-gray-50]="!isHighlighted(celebration)"
               >
                 <td
                   class="font-semibold text-gray-800 py-4 px-4 border border-gray-300"
                 >
-                  {{ celebration.date }}
+                  {{ formatDate(celebration.date) }}
                 </td>
                 <td class="text-center py-4 px-4 border border-gray-300">
                   {{ celebration.location }}
@@ -159,8 +166,8 @@
                   @if(celebration.specialNotes) {
                   <span
                     class="text-sm"
-                    [class.text-red-600]="celebration.isHighlighted"
-                    [class.font-semibold]="celebration.isHighlighted"
+                    [class.text-red-600]="isHighlighted(celebration)"
+                    [class.font-semibold]="isHighlighted(celebration)"
                     >{{ celebration.specialNotes }}</span
                   >
                   }
@@ -170,21 +177,35 @@
             </tbody>
           </table>
         </div>
+        }
+        
+        @if (!loading() && celebrations().length === 0) {
+        <div class="text-center py-20">
+          <p class="text-gray-600 text-lg">No celebrations scheduled at the moment. Please check back later!</p>
+        </div>
+        }
       </div>
     </div>
 
     <!-- Mobile Card View -->
+    @if (loading()) {
+    <div class="lg:hidden flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-amber-600"></div>
+    </div>
+    }
+    
+    @if (!loading() && celebrations().length > 0) {
     <div class="lg:hidden space-y-4">
-      @for(celebration of celebrations; track $index) {
+      @for(celebration of celebrations(); track celebration.id) {
       <div
         class="card bg-base-100 shadow-lg"
-        [class.border-2]="celebration.isHighlighted"
-        [class.border-yellow-400]="celebration.isHighlighted"
-        [class.bg-yellow-50]="celebration.isHighlighted"
+        [class.border-2]="isHighlighted(celebration)"
+        [class.border-yellow-400]="isHighlighted(celebration)"
+        [class.bg-yellow-50]="isHighlighted(celebration)"
       >
         <div class="card-body">
           <div class="flex justify-between items-start mb-3">
-            <h3 class="card-title text-lg">{{ celebration.date }}</h3>
+            <h3 class="card-title text-lg">{{ formatDate(celebration.date) }}</h3>
             <span class="badge badge-primary">{{ celebration.time }}</span>
           </div>
 
@@ -212,8 +233,8 @@
               <span class="font-semibold w-32 text-gray-600">Notes:</span>
               <span
                 class="text-sm"
-                [class.text-red-600]="celebration.isHighlighted"
-                [class.font-semibold]="celebration.isHighlighted"
+                [class.text-red-600]="isHighlighted(celebration)"
+                [class.font-semibold]="isHighlighted(celebration)"
                 >{{ celebration.specialNotes }}</span
               >
             </div>
@@ -223,6 +244,13 @@
       </div>
       }
     </div>
+    }
+    
+    @if (!loading() && celebrations().length === 0) {
+    <div class="lg:hidden text-center py-20">
+      <p class="text-gray-600 text-lg">No celebrations scheduled at the moment. Please check back later!</p>
+    </div>
+    }
 
     <!-- Legend -->
     <div class="mt-8 p-6 bg-gray-50 rounded-lg">

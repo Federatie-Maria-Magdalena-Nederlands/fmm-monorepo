@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { Confirmation } from '@fmm/shared/models';
 import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
+
+declare const grecaptcha: any;
 
 const COMPONENTS = [AbstractBackground];
 
@@ -17,7 +19,7 @@ const COMPONENTS = [AbstractBackground];
   imports: [...COMPONENTS, ReactiveFormsModule, CommonModule],
   templateUrl: './confirmation-form-section.html',
 })
-export class ConfirmationFormSection {
+export class ConfirmationFormSection implements AfterViewInit {
   public confirmationForm: FormGroup<any>;
   public currentStep = 1;
   public isSubmitting = false;
@@ -29,7 +31,16 @@ export class ConfirmationFormSection {
   public selectedSponsorCertificate = '';
   private sacramentService = inject(SacramentSubmissionService);
 
-  constructor(private formBuilder: FormBuilder) {
+  // reCAPTCHA properties
+  recaptchaSiteKey = '6LfGVlwsAAAAAMhClqyjfucayhuUpV_wHiwulx8k';
+  recaptchaToken: string | null = null;
+  isBrowser: boolean;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.confirmationForm = this.formBuilder.group({
       // Step 1: Confirmand Information
       confirmandName: ['', Validators.required],
@@ -164,6 +175,20 @@ export class ConfirmationFormSection {
           break;
       }
     }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      this.loadRecaptchaScript();
+    }
+  }
+
+  private loadRecaptchaScript(): void {
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/enterprise.js?render=${this.recaptchaSiteKey}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
   public nextStep(): void {
@@ -369,6 +394,16 @@ export class ConfirmationFormSection {
     this.submitError = false;
 
     try {
+      // Execute reCAPTCHA v3
+      this.recaptchaToken = await grecaptcha.enterprise.execute(
+        this.recaptchaSiteKey,
+        { action: 'submit_confirmation' }
+      );
+
+      if (!this.recaptchaToken) {
+        throw new Error('reCAPTCHA verification failed');
+      }
+
       const formData: Confirmation = this.confirmationForm.value;
       const submissionId = await this.sacramentService.submitForm(
         'confirmation',
