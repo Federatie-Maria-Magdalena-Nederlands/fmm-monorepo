@@ -185,4 +185,16 @@ export class VolunteerDetail implements OnInit {
   isLongValue(value: string): boolean {
     return value.length > 100;
   }
+
+  sendEmail(): void {
+    if (!this.volunteer?.formData) return;
+
+    const email = this.volunteer.formData['email'] || this.volunteer.formData['emailAddress'];
+    if (email) {
+      // Open Gmail compose with the email address
+      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`, '_blank');
+    } else {
+      console.error('No email address found in submission');
+    }
+  }
 }
