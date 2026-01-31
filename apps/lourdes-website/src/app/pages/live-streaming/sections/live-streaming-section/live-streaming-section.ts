@@ -1,73 +1,125 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { SparkIcon } from '../../../../shared/components/icons/spark-icon';
+import { FirebaseService } from '../../../../shared/services/firebase.service';
+import {
+  Firestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  limit,
+  Timestamp,
+} from 'firebase/firestore';
 
-const COMPONENTS = [AbstractBackground, SparkIcon];
-
-interface StreamingEvent {
+interface LiveCelebration {
+  id: string;
   title: string;
   description: string;
-  date: string;
-  url: string;
-  isLive?: boolean;
+  date?: Date | Timestamp;
+  time?: string;
+  liveStreamUrl: string;
+  status?: 'draft' | 'published';
+  createdAt: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
 }
+
+const COMPONENTS = [AbstractBackground, SparkIcon, CommonModule];
 
 @Component({
   selector: 'app-live-streaming-section',
   imports: [...COMPONENTS],
   templateUrl: './live-streaming-section.html',
 })
-export class LiveStreamingSection {
+export class LiveStreamingSection implements OnInit {
+  private db: Firestore;
   public youtubeChannelUrl = 'https://www.youtube.com/@LourdesParish';
+  public liveCelebrations = signal<LiveCelebration[]>([]);
+  public loading = signal(true);
 
-  public streamingEvents: StreamingEvent[] = [
-    {
-      title: 'Sunday Holy Mass',
-      description:
-        'Join us for our weekly celebration of the Eucharist. Experience the beauty of worship and community from the comfort of your home.',
-      date: 'Every Sunday at 10:00 AM',
-      url: 'https://www.youtube.com/@LourdesParish/live',
-      isLive: false,
-    },
-    {
-      title: 'Evening Prayer Service',
-      description:
-        'End your day with peaceful prayer and reflection. A beautiful service of evening prayer and meditation.',
-      date: 'Wednesdays at 7:00 PM',
-      url: 'https://www.youtube.com/@LourdesParish/streams',
-      isLive: false,
-    },
-    {
-      title: 'Special Feast Day Celebration',
-      description:
-        'Join us for special celebrations of important feast days and holy days throughout the liturgical year.',
-      date: 'Varies by Calendar',
-      url: 'https://www.youtube.com/@LourdesParish/streams',
-      isLive: false,
-    },
-    {
-      title: 'Christmas Eve Mass',
-      description:
-        'Celebrate the birth of our Savior with this special midnight Mass on Christmas Eve.',
-      date: 'December 24, 2026 at 11:00 PM',
-      url: 'https://www.youtube.com/@LourdesParish/streams',
-      isLive: false,
-    },
-    {
-      title: 'Easter Sunday Service',
-      description:
-        'Rejoice in the resurrection with our joyful Easter Sunday celebration and worship service.',
-      date: 'April 18, 2026 at 10:00 AM',
-      url: 'https://www.youtube.com/@LourdesParish/streams',
-      isLive: false,
-    },
-    {
-      title: 'Pentecost Celebration',
-      description:
-        'Celebrate the coming of the Holy Spirit with special prayers, hymns, and worship.',
-      date: 'May 31, 2026 at 10:00 AM',
-      url: 'https://www.youtube.com/@LourdesParish/streams',
-      isLive: false,
-    },
-  ];
+  constructor(private firebaseService: FirebaseService) {
+    this.db = this.firebaseService.getDatabase();
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.loadLiveCelebrations();
+  }
+
+  async loadLiveCelebrations(): Promise<void> {
+    this.loading.set(true);
+    try {
+      const collectionRef = collection(this.db, 'live-celebrations');
+      const q = query(
+        collectionRef,
+        where('status', '==', 'published'),
+        limit(20)
+      );
+
+      const querySnapshot = await getDocs(q);
+      const celebrations: LiveCelebration[] = [];
+
+      querySnapshot.forEach((docSnapshot) => {
+        celebrations.push({
+          id: docSnapshot.id,
+          ...docSnapshot.data(),
+        } as LiveCelebration);
+      });
+      
+      this.liveCelebrations.set(celebrations);
+    } catch (error) {
+      console.error('Error loading live celebrations:', error);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  formatSchedule(celebration: LiveCelebration): string {
+    if (!celebration.date && !celebration.time) return '';
+    
+    let schedule = '';
+    
+    if (celebration.date) {
+      const d = celebration.date instanceof Date ? celebration.date : (celebration.date as Timestamp).toDate();
+      schedule = d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    
+    if (celebration.time) {
+      schedule += schedule ? ` at ${celebration.time}` : celebration.time;
+    }
+    
+    return schedule;
+  }
+
+  truncateText(text: string, maxLength: number = 120): string {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  }
+
+  isLive(celebration: LiveCelebration): boolean {
+    // Check if the celebration is happening now
+    if (!celebration.date) return false;
+    
+    const now = new Date();
+    const celebrationDate = celebration.date instanceof Date ? celebration.date : (celebration.date as Timestamp).toDate();
+    
+    // Check if it's the same day
+    const isSameDay = celebrationDate.toDateString() === now.toDateString();
+    
+    if (!isSameDay) return false;
+    
+    // If there's a time, check if it's within 1 hour before or 2 hours after
+    if (celebration.time) {
+      const [hours, minutes] = celebration.time.split(':').map(Number);
+      const celebrationTime = new Date(celebrationDate);
+      celebrationTime.setHours(hours, minutes, 0);
+      
+      const timeDiff = now.getTime() - celebrationTime.getTime();
+      const hoursDiff = timeDiff / (1000 * 60 * 60);
+      
+      // Live if within 1 hour before or 2 hours after the scheduled time
+      return hoursDiff >= -1 && hoursDiff <= 2;
+    }
+    
+    return isSameDay;
+  }
 }

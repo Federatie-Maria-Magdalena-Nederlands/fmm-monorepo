@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { initializeApp, FirebaseApp } from 'firebase/app';
+import { initializeApp, FirebaseApp, getApps } from 'firebase/app';
 import {
   getFirestore,
   Firestore,
@@ -27,7 +27,13 @@ export class FirebaseService {
   private db: Firestore;
 
   constructor() {
-    this.app = initializeApp(environment.firebase);
+    // Check if Firebase is already initialized
+    const apps = getApps();
+    if (apps.length > 0) {
+      this.app = apps[0];
+    } else {
+      this.app = initializeApp(environment.firebase);
+    }
     this.db = getFirestore(this.app);
   }
 
