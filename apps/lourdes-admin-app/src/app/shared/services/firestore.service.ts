@@ -255,6 +255,43 @@ export class FirestoreService {
   }
 
   /**
+   * Delete a sacrament submission and all associated files from storage
+   */
+  async deleteSacrament(id: string): Promise<void> {
+    // Get the sacrament first to retrieve file URLs
+    const sacrament = await this.findSubmissionById(id);
+    
+    // Delete all files from storage if they exist
+    if (sacrament?.formData) {
+      const storage = getStorage();
+      const formData = sacrament.formData;
+      
+      // Find all URL fields in formData (they typically end with 'Url')
+      for (const [key, value] of Object.entries(formData)) {
+        if (key.toLowerCase().includes('url') && typeof value === 'string' && value.includes('firebase')) {
+          try {
+            const pathStart = value.indexOf('/o/') + 3;
+            const pathEnd = value.indexOf('?');
+            if (pathStart > 2 && pathEnd > pathStart) {
+              const encodedPath = value.substring(pathStart, pathEnd);
+              const filePath = decodeURIComponent(encodedPath);
+              const fileRef = ref(storage, filePath);
+              await deleteObject(fileRef);
+            }
+          } catch (error) {
+            console.error(`Error deleting file from storage (${key}):`, error);
+            // Continue with other files even if one fails
+          }
+        }
+      }
+    }
+    
+    // Delete the Firestore document
+    const docRef = doc(this.db, this.COLLECTION_NAME, id);
+    await deleteDoc(docRef);
+  }
+
+  /**
    * Format Firestore Timestamp to readable date string
    */
   formatDate(date: Date | Timestamp): string {
@@ -360,6 +397,43 @@ export class FirestoreService {
     await updateDoc(docRef, { notes });
   }
 
+  /**
+   * Delete a mass intention submission and all associated files from storage
+   */
+  async deleteMassIntention(id: string): Promise<void> {
+    // Get the mass intention first to retrieve file URLs
+    const massIntention = await this.getMassIntentionById(id);
+    
+    // Delete all files from storage if they exist
+    if (massIntention?.formData) {
+      const storage = getStorage();
+      const formData = massIntention.formData;
+      
+      // Find all URL fields in formData (they typically end with 'Url' or contain 'url')
+      for (const [key, value] of Object.entries(formData)) {
+        if (key.toLowerCase().includes('url') && typeof value === 'string' && value.includes('firebase')) {
+          try {
+            const pathStart = value.indexOf('/o/') + 3;
+            const pathEnd = value.indexOf('?');
+            if (pathStart > 2 && pathEnd > pathStart) {
+              const encodedPath = value.substring(pathStart, pathEnd);
+              const filePath = decodeURIComponent(encodedPath);
+              const fileRef = ref(storage, filePath);
+              await deleteObject(fileRef);
+            }
+          } catch (error) {
+            console.error(`Error deleting file from storage (${key}):`, error);
+            // Continue with other files even if one fails
+          }
+        }
+      }
+    }
+    
+    // Delete the Firestore document
+    const docRef = doc(this.db, this.MASS_INTENTIONS_COLLECTION, id);
+    await deleteDoc(docRef);
+  }
+
   // === DONATIONS METHODS ===
   async getAllDonations(): Promise<DonationSubmission[]> {
     const collectionRef = collection(this.db, this.DONATIONS_COLLECTION);
@@ -435,6 +509,43 @@ export class FirestoreService {
   async updateDonationNotes(id: string, notes: string): Promise<void> {
     const docRef = doc(this.db, this.DONATIONS_COLLECTION, id);
     await updateDoc(docRef, { notes });
+  }
+
+  /**
+   * Delete a donation submission and all associated files from storage
+   */
+  async deleteDonation(id: string): Promise<void> {
+    // Get the donation first to retrieve file URLs
+    const donation = await this.getDonationById(id);
+    
+    // Delete all files from storage if they exist
+    if (donation?.formData) {
+      const storage = getStorage();
+      const formData = donation.formData;
+      
+      // Find all URL fields in formData (they typically end with 'Url' or contain 'url')
+      for (const [key, value] of Object.entries(formData)) {
+        if (key.toLowerCase().includes('url') && typeof value === 'string' && value.includes('firebase')) {
+          try {
+            const pathStart = value.indexOf('/o/') + 3;
+            const pathEnd = value.indexOf('?');
+            if (pathStart > 2 && pathEnd > pathStart) {
+              const encodedPath = value.substring(pathStart, pathEnd);
+              const filePath = decodeURIComponent(encodedPath);
+              const fileRef = ref(storage, filePath);
+              await deleteObject(fileRef);
+            }
+          } catch (error) {
+            console.error(`Error deleting file from storage (${key}):`, error);
+            // Continue with other files even if one fails
+          }
+        }
+      }
+    }
+    
+    // Delete the Firestore document
+    const docRef = doc(this.db, this.DONATIONS_COLLECTION, id);
+    await deleteDoc(docRef);
   }
 
   // === VOLUNTEERS METHODS ===
@@ -520,6 +631,43 @@ export class FirestoreService {
   async updateVolunteerNotes(id: string, notes: string): Promise<void> {
     const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
     await updateDoc(docRef, { notes });
+  }
+
+  /**
+   * Delete a volunteer submission and all associated files from storage
+   */
+  async deleteVolunteer(id: string): Promise<void> {
+    // Get the volunteer first to retrieve file URLs
+    const volunteer = await this.getVolunteerById(id);
+    
+    // Delete all files from storage if they exist
+    if (volunteer?.formData) {
+      const storage = getStorage();
+      const formData = volunteer.formData;
+      
+      // Find all URL fields in formData (they typically end with 'Url' or contain 'url')
+      for (const [key, value] of Object.entries(formData)) {
+        if (key.toLowerCase().includes('url') && typeof value === 'string' && value.includes('firebase')) {
+          try {
+            const pathStart = value.indexOf('/o/') + 3;
+            const pathEnd = value.indexOf('?');
+            if (pathStart > 2 && pathEnd > pathStart) {
+              const encodedPath = value.substring(pathStart, pathEnd);
+              const filePath = decodeURIComponent(encodedPath);
+              const fileRef = ref(storage, filePath);
+              await deleteObject(fileRef);
+            }
+          } catch (error) {
+            console.error(`Error deleting file from storage (${key}):`, error);
+            // Continue with other files even if one fails
+          }
+        }
+      }
+    }
+    
+    // Delete the Firestore document
+    const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
+    await deleteDoc(docRef);
   }
 
   // === CONTACT US METHODS ===
@@ -644,6 +792,43 @@ export class FirestoreService {
   async updateMemberNotes(id: string, notes: string): Promise<void> {
     const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
     await updateDoc(docRef, { notes });
+  }
+
+  /**
+   * Delete a member submission and all associated files from storage
+   */
+  async deleteMember(id: string): Promise<void> {
+    // Get the member first to retrieve file URLs
+    const member = await this.getMemberById(id);
+    
+    // Delete all files from storage if they exist
+    if (member?.formData) {
+      const storage = getStorage();
+      const formData = member.formData;
+      
+      // Find all URL fields in formData (they typically end with 'Url' or contain 'url')
+      for (const [key, value] of Object.entries(formData)) {
+        if (key.toLowerCase().includes('url') && typeof value === 'string' && value.includes('firebase')) {
+          try {
+            const pathStart = value.indexOf('/o/') + 3;
+            const pathEnd = value.indexOf('?');
+            if (pathStart > 2 && pathEnd > pathStart) {
+              const encodedPath = value.substring(pathStart, pathEnd);
+              const filePath = decodeURIComponent(encodedPath);
+              const fileRef = ref(storage, filePath);
+              await deleteObject(fileRef);
+            }
+          } catch (error) {
+            console.error(`Error deleting file from storage (${key}):`, error);
+            // Continue with other files even if one fails
+          }
+        }
+      }
+    }
+    
+    // Delete the Firestore document
+    const docRef = doc(this.db, this.VOLUNTEERS_COLLECTION, id);
+    await deleteDoc(docRef);
   }
 
   // === ACTIVITIES METHODS ===

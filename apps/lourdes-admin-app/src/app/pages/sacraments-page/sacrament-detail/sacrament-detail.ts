@@ -90,6 +90,30 @@ export class SacramentDetail implements OnInit {
     }
   }
 
+  async deleteSubmission(): Promise<void> {
+    if (!this.submission || this.processing) return;
+
+    // Confirm deletion
+    const confirmed = confirm(
+      `Are you sure you want to delete this ${this.formatSacramentType(this.submission.type)} submission? This will also delete all associated files from storage. This action cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.deleteSacrament(this.submission.id);
+      // Navigate back to the list after successful deletion
+      this.router.navigate(['/sacraments']);
+    } catch (error) {
+      console.error('Error deleting submission:', error);
+      alert('Failed to delete submission. Please try again.');
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
+  }
+
   formatSacramentType(type: SacramentType): string {
     return this.firestoreService.formatSacramentType(type);
   }
