@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import jsPDF from 'jspdf';
 import {
   FirestoreService,
   DonationSubmission,
@@ -204,5 +205,85 @@ export class DonationDetail implements OnInit {
 
   isLongValue(value: string): boolean {
     return value.length > 100;
+  }
+
+  sendEmail(): void {
+    if (!this.donation?.formData) return;
+
+    const email = this.donation.formData['email'];
+    if (email) {
+      // Open Gmail compose with the email address
+      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`, '_blank');
+    } else {
+      console.error('No email address found in donation');
+    }
+  }
+
+  downloadPDF(): void {
+    if (!this.donation) return;
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+    const maxWidth = pageWidth - 2 * margin;
+    let yPosition = margin;
+
+    // Helper function to add text with wrapping and page overflow handling
+    const addText = (text: string, fontSize: number = 10, isBold: boolean = false) => {
+      if (isBold) {
+        doc.setFont('helvetica', 'bold');
+      } else {
+        doc.setFont('helvetica', 'normal');
+      }
+      doc.setFontSize(fontSize);
+      const lines = doc.splitTextToSize(text, maxWidth);
+      
+      for (const line of lines) {
+        if (yPosition > pageHeight - margin) {
+          doc.addPage();
+          yPosition = margin;
+        }
+        doc.text(line, margin, yPosition);
+        yPosition += fontSize * 0.5;
+      }
+    };
+
+    // Title
+    addText('Donation Details', 16, true);
+    yPosition += 5;
+
+    // Submission Info
+    addText(`Donation ID: ${this.donation.id}`, 10);
+    yPosition += 2;
+    addText(`Submitted At: ${this.formatDate(this.donation.submittedAt)}`, 10);
+    yPosition += 2;
+    addText(`Status: ${this.donation.status || 'pending'}`, 10);
+    yPosition += 10;
+
+    // Form Data Groups
+    const groups = this.getFormDataGroups();
+    for (const group of groups) {
+      addText(group.title, 12, true);
+      yPosition += 2;
+
+      for (const field of group.fields) {
+        if (field.value && field.value !== 'N/A') {
+          addText(`${field.key}: ${field.value}`, 10);
+          yPosition += 2;
+        }
+      }
+      yPosition += 5;
+    }
+
+    // Notes
+    if (this.donation.notes) {
+      addText('Notes', 12, true);
+      yPosition += 2;
+      addText(this.donation.notes, 10);
+    }
+
+    // Save the PDF
+    doc.save(`donation-${this.donation.id}.pdf`);
   }
 }

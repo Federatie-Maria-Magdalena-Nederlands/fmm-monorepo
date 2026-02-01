@@ -9,6 +9,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { HolyCommunion } from '@fmm/shared/models';
 import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 declare const grecaptcha: any;
 
@@ -29,6 +30,10 @@ export class HolyCommunionFormSection implements AfterViewInit {
   public selectedMotherCertificate = '';
   public selectedFatherCertificate = '';
   public selectedGodparentsCertificate = '';
+  private communicantCertificateFile: File | null = null;
+  private motherCertificateFile: File | null = null;
+  private fatherCertificateFile: File | null = null;
+  private godparentsCertificateFile: File | null = null;
   private sacramentService = inject(SacramentSubmissionService);
 
   // reCAPTCHA properties
@@ -162,22 +167,45 @@ export class HolyCommunionFormSection implements AfterViewInit {
     document.head.appendChild(script);
   }
 
+  private async uploadFile(file: File, folder: string): Promise<string | null> {
+    try {
+      const storage = getStorage();
+      const timestamp = Date.now();
+      const fileName = `${folder}/${timestamp}_${file.name}`;
+      const storageRef = ref(storage, fileName);
+      
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      return null;
+    }
+  }
+
   public onFileSelected(event: Event, fileType: string): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const fileName = input.files[0].name;
+      const file = input.files[0];
+      const fileName = file.name;
+      
       switch (fileType) {
         case 'communicant':
           this.selectedCommunicantCertificate = fileName;
+          this.communicantCertificateFile = file;
           break;
         case 'mother':
           this.selectedMotherCertificate = fileName;
+          this.motherCertificateFile = file;
           break;
         case 'father':
           this.selectedFatherCertificate = fileName;
+          this.fatherCertificateFile = file;
           break;
         case 'godparents':
           this.selectedGodparentsCertificate = fileName;
+          this.godparentsCertificateFile = file;
           break;
       }
     }
@@ -392,7 +420,34 @@ export class HolyCommunionFormSection implements AfterViewInit {
         throw new Error('reCAPTCHA verification failed');
       }
 
-      const formData: HolyCommunion = this.communionForm.value;
+      // Upload certificate files to Firebase Storage
+      const uploadedUrls: any = {};
+      
+      if (this.communicantCertificateFile) {
+        const url = await this.uploadFile(this.communicantCertificateFile, 'holy-communion/communicant-certificates');
+        if (url) uploadedUrls.communicantCertificateUrl = url;
+      }
+      
+      if (this.motherCertificateFile) {
+        const url = await this.uploadFile(this.motherCertificateFile, 'holy-communion/mother-certificates');
+        if (url) uploadedUrls.motherCertificateUrl = url;
+      }
+      
+      if (this.fatherCertificateFile) {
+        const url = await this.uploadFile(this.fatherCertificateFile, 'holy-communion/father-certificates');
+        if (url) uploadedUrls.fatherCertificateUrl = url;
+      }
+      
+      if (this.godparentsCertificateFile) {
+        const url = await this.uploadFile(this.godparentsCertificateFile, 'holy-communion/godparents-certificates');
+        if (url) uploadedUrls.godparentsCertificateUrl = url;
+      }
+
+      const formData: HolyCommunion = {
+        ...this.communionForm.value,
+        ...uploadedUrls,
+      };
+      
       const submissionId = await this.sacramentService.submitForm(
         'holy-communion',
         formData,
@@ -407,6 +462,10 @@ export class HolyCommunionFormSection implements AfterViewInit {
       this.selectedMotherCertificate = '';
       this.selectedFatherCertificate = '';
       this.selectedGodparentsCertificate = '';
+      this.communicantCertificateFile = null;
+      this.motherCertificateFile = null;
+      this.fatherCertificateFile = null;
+      this.godparentsCertificateFile = null;
 
       setTimeout(() => {
         this.submitSuccess = false;

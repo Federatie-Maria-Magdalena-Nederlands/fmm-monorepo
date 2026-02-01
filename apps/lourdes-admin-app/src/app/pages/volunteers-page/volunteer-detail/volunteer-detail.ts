@@ -5,6 +5,7 @@ import {
   FirestoreService,
   VolunteerSubmission,
 } from '../../../shared/services/firestore.service';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-volunteer-detail',
@@ -196,5 +197,93 @@ export class VolunteerDetail implements OnInit {
     } else {
       console.error('No email address found in submission');
     }
+  }
+
+  downloadPDF(): void {
+    if (!this.volunteer) return;
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPos = 20;
+
+    // Title
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Volunteer Registration Details', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 15;
+
+    // Submission Info
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`ID: ${this.volunteer.id}`, 20, yPos);
+    yPos += 7;
+    doc.text(`Submitted: ${this.formatDate(this.volunteer.submittedAt)}`, 20, yPos);
+    yPos += 7;
+    doc.text(`Status: ${this.volunteer.status || 'pending'}`, 20, yPos);
+    yPos += 15;
+
+    // Form Data Groups
+    const groups = this.getFormDataGroups();
+    
+    for (const group of groups) {
+      // Check if we need a new page
+      if (yPos > 260) {
+        doc.addPage();
+        yPos = 20;
+      }
+
+      // Group Title
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text(group.title, 20, yPos);
+      yPos += 10;
+
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+
+      for (const entry of group.fields) {
+        // Skip URL fields as they are file references
+        if (entry.key.toLowerCase().includes('url')) continue;
+
+        // Check if we need a new page
+        if (yPos > 270) {
+          doc.addPage();
+          yPos = 20;
+        }
+
+        doc.setFont('helvetica', 'bold');
+        doc.text(`${entry.key}:`, 20, yPos);
+        yPos += 6;
+
+        doc.setFont('helvetica', 'normal');
+        const lines = doc.splitTextToSize(entry.value, pageWidth - 40);
+        doc.text(lines, 20, yPos);
+        yPos += (lines.length * 6) + 4;
+      }
+
+      yPos += 5; // Space between groups
+    }
+
+    // Notes if exists
+    if (this.volunteer.notes) {
+      if (yPos > 250) {
+        doc.addPage();
+        yPos = 20;
+      }
+
+      yPos += 10;
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Notes', 20, yPos);
+      yPos += 10;
+
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      const noteLines = doc.splitTextToSize(this.volunteer.notes, pageWidth - 40);
+      doc.text(noteLines, 20, yPos);
+    }
+
+    // Save PDF
+    doc.save(`volunteer-${this.volunteer.id}.pdf`);
   }
 }
