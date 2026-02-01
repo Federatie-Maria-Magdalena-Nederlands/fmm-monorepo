@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import jsPDF from 'jspdf';
 import {
   MemberSubmission,
   FirestoreService,
@@ -211,5 +212,73 @@ export class MemberDetail implements OnInit {
     } else {
       console.error('No email address found in submission');
     }
+  }
+
+  downloadPDF(): void {
+    if (!this.submission) return;
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+    const maxWidth = pageWidth - 2 * margin;
+    let yPosition = margin;
+
+    // Helper function to add text with wrapping and page overflow handling
+    const addText = (text: string, fontSize: number = 10, isBold: boolean = false) => {
+      if (isBold) {
+        doc.setFont('helvetica', 'bold');
+      } else {
+        doc.setFont('helvetica', 'normal');
+      }
+      doc.setFontSize(fontSize);
+      const lines = doc.splitTextToSize(text, maxWidth);
+      
+      for (const line of lines) {
+        if (yPosition > pageHeight - margin) {
+          doc.addPage();
+          yPosition = margin;
+        }
+        doc.text(line, margin, yPosition);
+        yPosition += fontSize * 0.5;
+      }
+    };
+
+    // Title
+    addText('Member Registration Details', 16, true);
+    yPosition += 5;
+
+    // Submission Info
+    addText(`Application ID: ${this.submission.id}`, 10);
+    yPosition += 2;
+    addText(`Submitted At: ${this.formatDate(this.submission.submittedAt)}`, 10);
+    yPosition += 2;
+    addText(`Status: ${this.submission.status || 'pending'}`, 10);
+    yPosition += 10;
+
+    // Form Data Groups
+    const groups = this.getFormDataGroups();
+    for (const group of groups) {
+      addText(group.title, 12, true);
+      yPosition += 2;
+
+      for (const field of group.fields) {
+        if (field.value && field.value !== 'N/A') {
+          addText(`${field.key}: ${field.value}`, 10);
+          yPosition += 2;
+        }
+      }
+      yPosition += 5;
+    }
+
+    // Notes
+    if (this.submission.notes) {
+      addText('Notes', 12, true);
+      yPosition += 2;
+      addText(this.submission.notes, 10);
+    }
+
+    // Save the PDF
+    doc.save(`member-${this.submissionId}.pdf`);
   }
 }

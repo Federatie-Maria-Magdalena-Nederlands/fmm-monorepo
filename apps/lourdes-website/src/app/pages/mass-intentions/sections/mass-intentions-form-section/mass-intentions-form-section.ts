@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { MassIntentions } from '@fmm/shared/models';
 import { MassIntentionSubmissionService } from '../../../../shared/services/mass-intention-submission.service';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 declare const grecaptcha: any;
 
@@ -66,6 +67,23 @@ export class MassIntentionsFormSection implements AfterViewInit {
     document.head.appendChild(script);
   }
 
+  private async uploadFile(file: File, folder: string): Promise<string | null> {
+    try {
+      const storage = getStorage();
+      const timestamp = Date.now();
+      const fileName = `${folder}/${timestamp}_${file.name}`;
+      const storageRef = ref(storage, fileName);
+      
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      return null;
+    }
+  }
+
   public onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -95,9 +113,15 @@ export class MassIntentionsFormSection implements AfterViewInit {
         throw new Error('reCAPTCHA verification failed');
       }
 
+      // Upload proof of payment file to Firebase Storage
+      let proofOfPaymentUrl: string | null = null;
+      if (this.selectedFile) {
+        proofOfPaymentUrl = await this.uploadFile(this.selectedFile, 'mass-intentions/proof-of-payment');
+      }
+
       const formData: MassIntentions = {
         ...this.massIntentionForm.value,
-        proofOfPayment: this.selectedFile ? this.selectedFile.name : null,
+        proofOfPayment: proofOfPaymentUrl || null,
       };
 
       const submissionId = await this.massIntentionService.submitForm(formData);

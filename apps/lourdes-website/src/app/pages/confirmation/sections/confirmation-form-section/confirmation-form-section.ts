@@ -9,6 +9,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { Confirmation } from '@fmm/shared/models';
 import { SacramentSubmissionService } from '../../../../shared/services/sacrament-submission.service';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 declare const grecaptcha: any;
 
@@ -29,6 +30,10 @@ export class ConfirmationFormSection implements AfterViewInit {
   public selectedMotherCertificate = '';
   public selectedFatherCertificate = '';
   public selectedSponsorCertificate = '';
+  private confirmandCertificateFile: File | null = null;
+  private motherCertificateFile: File | null = null;
+  private fatherCertificateFile: File | null = null;
+  private sponsorCertificateFile: File | null = null;
   private sacramentService = inject(SacramentSubmissionService);
 
   // reCAPTCHA properties
@@ -159,19 +164,25 @@ export class ConfirmationFormSection implements AfterViewInit {
   public onFileSelected(event: Event, fileType: string): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const fileName = input.files[0].name;
+      const file = input.files[0];
+      const fileName = file.name;
+      
       switch (fileType) {
         case 'confirmand':
           this.selectedConfirmandCertificate = fileName;
+          this.confirmandCertificateFile = file;
           break;
         case 'mother':
           this.selectedMotherCertificate = fileName;
+          this.motherCertificateFile = file;
           break;
         case 'father':
           this.selectedFatherCertificate = fileName;
+          this.fatherCertificateFile = file;
           break;
         case 'sponsor':
           this.selectedSponsorCertificate = fileName;
+          this.sponsorCertificateFile = file;
           break;
       }
     }
@@ -189,6 +200,23 @@ export class ConfirmationFormSection implements AfterViewInit {
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
+  }
+
+  private async uploadFile(file: File, folder: string): Promise<string | null> {
+    try {
+      const storage = getStorage();
+      const timestamp = Date.now();
+      const fileName = `${folder}/${timestamp}_${file.name}`;
+      const storageRef = ref(storage, fileName);
+      
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      return null;
+    }
   }
 
   public nextStep(): void {
@@ -404,7 +432,34 @@ export class ConfirmationFormSection implements AfterViewInit {
         throw new Error('reCAPTCHA verification failed');
       }
 
-      const formData: Confirmation = this.confirmationForm.value;
+      // Upload certificate files to Firebase Storage
+      const uploadedUrls: any = {};
+      
+      if (this.confirmandCertificateFile) {
+        const url = await this.uploadFile(this.confirmandCertificateFile, 'confirmation/confirmand-certificates');
+        if (url) uploadedUrls.confirmandCertificateUrl = url;
+      }
+      
+      if (this.motherCertificateFile) {
+        const url = await this.uploadFile(this.motherCertificateFile, 'confirmation/mother-certificates');
+        if (url) uploadedUrls.motherCertificateUrl = url;
+      }
+      
+      if (this.fatherCertificateFile) {
+        const url = await this.uploadFile(this.fatherCertificateFile, 'confirmation/father-certificates');
+        if (url) uploadedUrls.fatherCertificateUrl = url;
+      }
+      
+      if (this.sponsorCertificateFile) {
+        const url = await this.uploadFile(this.sponsorCertificateFile, 'confirmation/sponsor-certificates');
+        if (url) uploadedUrls.sponsorCertificateUrl = url;
+      }
+
+      const formData: Confirmation = {
+        ...this.confirmationForm.value,
+        ...uploadedUrls,
+      };
+      
       const submissionId = await this.sacramentService.submitForm(
         'confirmation',
         formData,
@@ -419,6 +474,10 @@ export class ConfirmationFormSection implements AfterViewInit {
       this.selectedMotherCertificate = '';
       this.selectedFatherCertificate = '';
       this.selectedSponsorCertificate = '';
+      this.confirmandCertificateFile = null;
+      this.motherCertificateFile = null;
+      this.fatherCertificateFile = null;
+      this.sponsorCertificateFile = null;
 
       setTimeout(() => {
         this.submitSuccess = false;
