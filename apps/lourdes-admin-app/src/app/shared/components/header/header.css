@@ -1,0 +1,8 @@
+header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 16rem; /* 256px = w-64 sidebar width */
+  z-index: 40;
+  background: white;
+}

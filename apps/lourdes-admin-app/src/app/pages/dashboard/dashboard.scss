@@ -1,9 +1,6 @@
 // Dashboard specific styles
 @import 'tailwindcss';
 
-.content-wrapper {
-  @apply ml-64;
-}
 
 .card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
