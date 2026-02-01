@@ -79,6 +79,30 @@ export class VolunteerDetail implements OnInit {
     }
   }
 
+  async deleteSubmission(): Promise<void> {
+    if (!this.volunteer || this.processing) return;
+
+    // Confirm deletion
+    const confirmed = confirm(
+      'Are you sure you want to delete this volunteer submission? This will also delete all associated files from storage. This action cannot be undone.'
+    );
+
+    if (!confirmed) return;
+
+    this.processing = true;
+    try {
+      await this.firestoreService.deleteVolunteer(this.volunteer.id);
+      // Navigate back to the list after successful deletion
+      this.router.navigate(['/volunteers']);
+    } catch (error) {
+      console.error('Error deleting submission:', error);
+      alert('Failed to delete submission. Please try again.');
+    } finally {
+      this.processing = false;
+      this.cd.detectChanges();
+    }
+  }
+
   formatDate(date: any): string {
     return this.firestoreService.formatDate(date);
   }
