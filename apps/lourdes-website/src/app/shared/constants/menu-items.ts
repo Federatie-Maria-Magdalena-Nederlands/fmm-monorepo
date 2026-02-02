@@ -3,52 +3,52 @@ import { MenuItem } from '../models/interfaces/menu-item.interface';
 export const MENU_ITEMS: MenuItem[] = [
   { label: 'Home', path: '/home' },
   {
-    label: 'About Us',
+    label: 'Over Ons',
     children: [
-      { label: 'The History of our Church', path: '/history' },
-      { label: 'Catholic Youth Group Soul Fire', path: '/youth-group' },
-      { label: 'Organization', path: '/organization' },
-      { label: 'Magazine MMM', path: '/magazine' },
+      { label: 'De Geschiedenis van Onze Kerk', path: '/history' },
+      { label: 'Katholieke Jeugdgroep Soul Fire', path: '/youth-group' },
+      { label: 'Organisatie', path: '/organization' },
+      { label: 'Tijdschrift MMM', path: '/magazine' },
     ],
   },
   {
-    label: 'Sacraments',
+    label: 'Sacramenten',
     children: [
-      { label: 'Baptism', path: '/baptism' },
+      { label: 'Doop', path: '/baptism' },
       {
-        label: 'Holy First Communion',
+        label: 'Eerste Heilige Communie',
         path: '/holy-communion',
       },
-      { label: 'Confirmation', path: '/confirmation' },
-      { label: 'Wedding', path: '/wedding' },
+      { label: 'Vormsel', path: '/confirmation' },
+      { label: 'Huwelijk', path: '/wedding' },
       {
-        label: 'Annointing of the Sick',
+        label: 'Ziekenzalving',
         path: '/annointing',
       },
-      { label: 'Consecration', path: '/consecration' },
+      { label: 'Wijding', path: '/consecration' },
     ],
   },
   {
-    label: 'Activities',
+    label: 'Activiteiten',
     children: [
       {
-        label: 'Our Activities',
+        label: 'Onze Activiteiten',
         path: '/our-activities',
       },
-      { label: 'Celebrations', path: '/celebrations' },
+      { label: 'Vieringen', path: '/celebrations' },
       {
-        label: 'Live Streaming Celebrations',
+        label: 'Live Streaming Vieringen',
         path: '/live-streaming-celebrations',
       },
-      { label: 'Bible Course', path: '/bible-course' },
+      { label: 'Bijbelcursus', path: '/bible-course' },
     ],
   },
   {
-    label: 'Join Us',
+    label: 'Doe Mee',
     children: [
-      { label: 'Becoming a Church Member', path: '/church-member' },
-      { label: 'Become Volunteer', path: '/volunteer' },
+      { label: 'Lid Worden van de Kerk', path: '/church-member' },
+      { label: 'Word Vrijwilliger', path: '/volunteer' },
     ],
   },
-  { label: 'Mass Intentions', path: '/mass-intentions' },
+  { label: 'Misintentie', path: '/mass-intentions' },
 ];
