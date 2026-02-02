@@ -27,19 +27,19 @@
         @if(currentStep === 1) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Personal Information
+            Persoonlijke informatie
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Name <span class="text-red-600">*</span></span
+                >Naam <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="name"
-              placeholder="Enter your name"
+              placeholder="Voer uw naam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 consecrationForm.get('name')?.invalid &&
@@ -49,7 +49,7 @@
             @if(consecrationForm.get('name')?.invalid &&
             consecrationForm.get('name')?.touched) {
             <label class="label">
-              <span class="label-text-alt text-error">Name is required</span>
+              <span class="label-text-alt text-error">Naam is verplicht</span>
             </label>
             }
           </div>
@@ -57,13 +57,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Last name <span class="text-red-600">*</span></span
+                >Achternaam <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="lastName"
-              placeholder="Enter your last name"
+              placeholder="Voer uw achternaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 consecrationForm.get('lastName')?.invalid &&
@@ -74,7 +74,7 @@
             consecrationForm.get('lastName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Last name is required</span
+                >Achternaam is verplicht</span
               >
             </label>
             }
@@ -83,7 +83,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mobile phone <span class="text-red-600">*</span></span
+                >Mobiele telefoon <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -100,7 +100,7 @@
             consecrationForm.get('mobilePhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mobile phone is required</span
+                >Mobiele telefoon is verplicht</span
               >
             </label>
             }
@@ -109,13 +109,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Email address <span class="text-red-600">*</span></span
+                >E-mailadres <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="email"
               formControlName="emailAddress"
-              placeholder="your.email@example.com"
+              placeholder="uw.email@voorbeeld.com"
               class="input input-bordered w-full"
               [class.input-error]="
                 consecrationForm.get('emailAddress')?.invalid &&
@@ -127,11 +127,11 @@
             <label class="label">
               @if(consecrationForm.get('emailAddress')?.hasError('required')) {
               <span class="label-text-alt text-error">
-                Email address is required
+                E-mailadres is verplicht
               </span>
               } @else if(consecrationForm.get('emailAddress')?.hasError('email')) {
               <span class="label-text-alt text-error">
-                Please enter a valid email address
+                Voer een geldig e-mailadres in
               </span>
               }
             </label>
@@ -144,65 +144,43 @@
         @if(currentStep === 2) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Privacy Statement
+            Privacyverklaring
           </h3>
 
           <div class="bg-amber-50 p-6 rounded-lg">
             <h4 class="font-bold text-lg text-gray-800 mb-3">
-              Privacy Statement Roman Catholic Parishes and General Regulations
-              for the Protection of Personal Data Parishes 2018
+              Privacyverklaring Rooms-Katholieke Parochies en Algemene Verordening Bescherming Persoonsgegevens Parochies 2018
             </h4>
             <p class="text-sm text-gray-700 mb-3">
-              In connection with the General Data Protection Regulation (GDPR),
-              a Privacy Statement applies and the above-mentioned regulations
-              have been drawn up. The Privacy Statement and the General
-              Regulations are available on the website and can be downloaded.
+              In verband met de Algemene Verordening Gegevensbescherming (AVG) is een Privacyverklaring van toepassing en zijn bovengenoemde regelingen opgesteld. De Privacyverklaring en de Algemene Regeling zijn beschikbaar op de website en kunnen worden gedownload.
             </p>
             <p class="text-sm text-gray-700 mb-3">
-              You will automatically receive the Privacy Statement as an
-              attachment with the copy confirmation.
+              U ontvangt automatisch de Privacyverklaring als bijlage bij de kopiebevestiging.
             </p>
             <p class="text-sm text-gray-700 mb-3">
-              Below you will find a number of matters (in abbreviated,
-              simplified versions) that are important to you and for which we
-              request your permission (in advance). If you have any doubts about
-              the explanation in the abbreviated version, we always refer you to
-              the full Privacy Statement and/or the General Regulations.
+              Hieronder vindt u een aantal zaken (in verkorte, vereenvoudigde versies) die voor u belangrijk zijn en waarvoor wij (vooraf) uw toestemming vragen. Als u twijfelt over de uitleg in de verkorte versie, verwijzen wij u altijd naar de volledige Privacyverklaring en/of de Algemene Regeling.
             </p>
             <p class="text-sm text-gray-700 mb-3 font-semibold">
-              Information General
+              Informatie Algemeen
             </p>
             <div class="mt-4 space-y-3">
               <div>
-                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="font-semibold text-gray-800">Akkoord</p>
                 <p class="text-sm text-gray-700">
-                  The applicant(s) agree(s) to the provisions of the Privacy
-                  Statement.
+                  De aanvrager(s) gaat/gaan akkoord met de bepalingen van de Privacyverklaring.
                 </p>
               </div>
               <div>
-                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="font-semibold text-gray-800">Niet akkoord</p>
                 <p class="text-sm text-gray-700">
-                  If you do not agree, the application cannot be processed.
+                  Als u niet akkoord gaat, kan de aanvraag niet worden verwerkt.
                 </p>
               </div>
               <p class="text-sm text-gray-700">
-                The information you provide may be used for parish
-                administration and will be stored digitally or on paper (in
-                registers) for this purpose. A request to view this data is
-                possible. Requesting the deletion of this data is generally not
-                possible because it is necessary for the proper functioning of a
-                parish church. The "Registration and Deregistration Procedure
-                (2013)" applies to requests to be removed from the parish
-                registers/administration.
+                De informatie die u verstrekt, kan worden gebruikt voor parochiebeheer en zal hiervoor digitaal of op papier (in registers) worden opgeslagen. Een verzoek om deze gegevens in te zien is mogelijk. Het verzoeken om verwijdering van deze gegevens is over het algemeen niet mogelijk omdat dit noodzakelijk is voor het goed functioneren van een parochiekerk. De "Registratie- en Deregistratieprocedure (2013)" is van toepassing op verzoeken om uit de parochieregisters/administratie te worden verwijderd.
               </p>
               <p class="text-sm text-gray-700">
-                Your information will always be treated confidentially and will
-                never be shared with external institutions/agencies/third
-                parties without your permission. At the end of this form, you
-                will be asked a few questions regarding the GDPR. You can agree
-                or disagree with the questions posed there, and your request
-                will be processed (regardless of your answer).
+                Uw informatie wordt altijd vertrouwelijk behandeld en wordt nooit gedeeld met externe instellingen/instanties/derden zonder uw toestemming. Aan het einde van dit formulier worden u enkele vragen gesteld met betrekking tot de AVG. U kunt akkoord of niet akkoord gaan met de daar gestelde vragen, en uw verzoek zal worden verwerkt (ongeacht uw antwoord).
               </p>
             </div>
           </div>
@@ -210,7 +188,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Do you agree with our parish's privacy policy?
+                >Gaat u akkoord met het privacybeleid van onze parochie?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -222,7 +200,7 @@
                   value="agree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes! I agree</span>
+                <span class="label-text">Ja! Ik ga akkoord</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -231,14 +209,14 @@
                   value="disagree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No! I don't agree</span>
+                <span class="label-text">Nee! Ik ga niet akkoord</span>
               </label>
             </div>
             @if(consecrationForm.get('privacyAgreement')?.invalid &&
             consecrationForm.get('privacyAgreement')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please agree to privacy policy to continue</span
+                >Ga akkoord met het privacybeleid om door te gaan</span
               >
             </label>
             }
@@ -263,8 +241,7 @@
             />
           </svg>
           <span
-            >Thank you for your inquiry! We will contact you soon to explore
-            together how your vocation can grow.</span
+            >Hartelijk dank voor uw aanvraag! We nemen binnenkort contact met u op om samen te ontdekken hoe uw roeping kan groeien.</span
           >
         </div>
         }
@@ -286,7 +263,7 @@
             />
           </svg>
           <span
-            >There was an error submitting your request. Please try again.</span
+            >Er is een fout opgetreden bij het verzenden van uw verzoek. Probeer het opnieuw.</span
           >
         </div>
         }
@@ -299,7 +276,7 @@
             class="btn btn-outline btn-warning"
             (click)="previousStep()"
           >
-            Previous
+            Vorige
           </button>
           } @else {
           <div></div>
@@ -309,7 +286,7 @@
             class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
             (click)="nextStep()"
           >
-            Next
+            Volgende
           </button>
           } @else {
           <button
@@ -319,7 +296,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Inquiry }
+            Bezig met verzenden... } @else { Aanvraag indienen }
           </button>
           }
         </div>

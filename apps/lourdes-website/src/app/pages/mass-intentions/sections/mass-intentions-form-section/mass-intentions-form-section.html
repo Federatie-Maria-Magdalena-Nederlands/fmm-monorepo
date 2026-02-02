@@ -5,11 +5,11 @@
   <div class="max-w-3xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        Mass Intention Request Form
+        Misintentie Verzoek Formulier
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Fill out the form below to request a Mass intention.
+        Vul het onderstaande formulier in om een misintentie aan te vragen.
       </p>
     </div>
 
@@ -19,13 +19,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Name <span class="text-red-600">*</span></span
+              >Voornaam <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="text"
             formControlName="firstName"
-            placeholder="Enter your first name"
+            placeholder="Voer uw voornaam in"
             class="input input-bordered w-full"
             [class.input-error]="
               massIntentionForm.get('firstName')?.invalid &&
@@ -35,7 +35,7 @@
           @if(massIntentionForm.get('firstName')?.invalid &&
           massIntentionForm.get('firstName')?.touched) {
           <label class="label">
-            <span class="label-text-alt text-error">Name is required</span>
+            <span class="label-text-alt text-error">Voornaam is verplicht</span>
           </label>
           }
         </div>
@@ -44,13 +44,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Last name <span class="text-red-600">*</span></span
+              >Achternaam <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="text"
             formControlName="lastName"
-            placeholder="Enter your last name"
+            placeholder="Voer uw achternaam in"
             class="input input-bordered w-full"
             [class.input-error]="
               massIntentionForm.get('lastName')?.invalid &&
@@ -60,7 +60,7 @@
           @if(massIntentionForm.get('lastName')?.invalid &&
           massIntentionForm.get('lastName')?.touched) {
           <label class="label">
-            <span class="label-text-alt text-error">Last name is required</span>
+            <span class="label-text-alt text-error">Achternaam is verplicht</span>
           </label>
           }
         </div>
@@ -69,13 +69,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Email address <span class="text-red-600">*</span></span
+              >E-mailadres <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="email"
             formControlName="email"
-            placeholder="your.email@example.com"
+            placeholder="uw.email@voorbeeld.com"
             class="input input-bordered w-full"
             [class.input-error]="
               massIntentionForm.get('email')?.invalid &&
@@ -86,10 +86,10 @@
           massIntentionForm.get('email')?.touched) {
           <label class="label">
             @if(massIntentionForm.get('email')?.hasError('required')) {
-            <span class="label-text-alt text-error"> Email is required </span>
+            <span class="label-text-alt text-error"> E-mailadres is verplicht </span>
             } @else if(massIntentionForm.get('email')?.hasError('email')) {
             <span class="label-text-alt text-error">
-              enter a valid email address
+              Voer een geldig e-mailadres in
             </span>
             }
           </label>
@@ -100,7 +100,7 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Phone number <span class="text-red-600">*</span></span
+              >Telefoonnummer <span class="text-red-600">*</span></span
             >
           </label>
           <input
@@ -117,7 +117,7 @@
           massIntentionForm.get('phoneNumber')?.touched) {
           <label class="label">
             <span class="label-text-alt text-error">
-              Phone number is required
+              Telefoonnummer is verplicht
             </span>
           </label>
           }
@@ -127,7 +127,7 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Desired date for the Mass intention
+              >Gewenste datum voor de misintentie
               <span class="text-red-600">*</span></span
             >
           </label>
@@ -144,7 +144,7 @@
           massIntentionForm.get('desiredDate')?.touched) {
           <label class="label">
             <span class="label-text-alt text-error">
-              Please select a date for the Mass intention
+              Selecteer een datum voor de misintentie
             </span>
           </label>
           }
@@ -154,13 +154,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Mass intention (1 per form)
+              >Misintentie (1 per formulier)
               <span class="text-red-600">*</span></span
             >
           </label>
           <textarea
             formControlName="intention"
-            placeholder="Please describe your Mass intention..."
+            placeholder="Beschrijf uw misintentie..."
             class="textarea block w-full textarea-bordered h-32"
             [class.textarea-error]="
               massIntentionForm.get('intention')?.invalid &&
@@ -171,7 +171,7 @@
           massIntentionForm.get('intention')?.touched) {
           <label class="label">
             <span class="label-text-alt text-error">
-              Mass intention is required
+              Misintentie is verplicht
             </span>
           </label>
           }
@@ -181,7 +181,7 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Have you transferred the money for the Mass intentions?</span
+              >Heeft u het geld voor de misintentie overgemaakt?</span
             >
           </label>
           <div class="flex gap-6">
@@ -192,7 +192,7 @@
                 value="Yes"
                 class="radio radio-warning"
               />
-              <span class="label-text">Yes</span>
+              <span class="label-text">Ja</span>
             </label>
             <label class="cursor-pointer flex items-center gap-2">
               <input
@@ -201,7 +201,7 @@
                 value="No"
                 class="radio radio-warning"
               />
-              <span class="label-text">No</span>
+              <span class="label-text">Nee</span>
             </label>
           </div>
         </div>
@@ -210,7 +210,7 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Upload your proof of payment here if applicable</span
+              >Upload hier uw betalingsbewijs indien van toepassing</span
             >
           </label>
           <input
@@ -222,7 +222,7 @@
           @if(selectedFileName) {
           <label class="label">
             <span class="label-text-alt text-success"
-              >Selected: {{ selectedFileName }}</span
+              >Geselecteerd: {{ selectedFileName }}</span
             >
           </label>
           }
@@ -245,8 +245,7 @@
             />
           </svg>
           <span
-            >Thank you for submitting your Mass intention. We'll contact you
-            soon with confirmation.</span
+            >Bedankt voor het indienen van uw misintentie. We nemen binnenkort contact met u op voor bevestiging.</span
           >
         </div>
         }
@@ -268,7 +267,7 @@
             />
           </svg>
           <span
-            >There was an error submitting your request. Please try again.</span
+            >Er is een fout opgetreden bij het indienen van uw verzoek. Probeer het opnieuw.</span
           >
         </div>
         }
@@ -282,7 +281,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Mass Intention }
+            Bezig met verzenden... } @else { Misintentie Verzenden }
           </button>
         </div>
       </form>

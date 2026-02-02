@@ -3,11 +3,11 @@
   <div class="max-w-3xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        Monthly Donation Form
+        Maandelijks Donatieformulier
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Fill out the form below to set up your monthly donation.
+        Vul het onderstaande formulier in om uw maandelijkse donatie in te stellen.
       </p>
     </div>
 
@@ -20,7 +20,7 @@
             'step-warning': currentStep >= 1
           }"
         >
-          Personal
+          Persoonlijk
         </li>
         <li
           class="step"
@@ -36,7 +36,7 @@
             'step-warning': currentStep >= 3
           }"
         >
-          Donation
+          Donatie
         </li>
         <li
           class="step"
@@ -44,7 +44,7 @@
             'step-warning': currentStep >= 4
           }"
         >
-          Payment
+          Betaling
         </li>
       </ul>
 
@@ -53,20 +53,20 @@
         @if(currentStep === 1) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Personal Information
+            Persoonlijke Gegevens
           </h3>
 
           <!-- First Name -->
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Name <span class="text-red-600">*</span></span
+                >Voornaam <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="firstName"
-              placeholder="Enter your first name"
+              placeholder="Voer uw voornaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 donationForm.get('firstName')?.invalid &&
@@ -77,7 +77,7 @@
             donationForm.get('firstName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >First name is required</span
+                >Voornaam is verplicht</span
               >
             </label>
             }
@@ -87,13 +87,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Last name <span class="text-red-600">*</span></span
+                >Achternaam <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="lastName"
-              placeholder="Enter your last name"
+              placeholder="Voer uw achternaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 donationForm.get('lastName')?.invalid &&
@@ -104,7 +104,7 @@
             donationForm.get('lastName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Last name is required</span
+                >Achternaam is verplicht</span
               >
             </label>
             }
@@ -239,14 +239,14 @@
         @if(currentStep === 3) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Donation Details
+            Donatiegegevens
           </h3>
 
           <!-- Monthly Donation Amount -->
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >I would like to donate a fixed amount per month:
+                >Ik wil graag een vast bedrag per maand doneren:
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -258,7 +258,7 @@
                   value="5"
                   class="radio radio-warning"
                 />
-                <span class="label-text">5 euros per month</span>
+                <span class="label-text">5 euro per maand</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -267,7 +267,7 @@
                   value="10"
                   class="radio radio-warning"
                 />
-                <span class="label-text">10 euros per month</span>
+                <span class="label-text">10 euro per maand</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -276,7 +276,7 @@
                   value="15"
                   class="radio radio-warning"
                 />
-                <span class="label-text">15 euros per month</span>
+                <span class="label-text">15 euro per maand</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -285,7 +285,7 @@
                   value="20"
                   class="radio radio-warning"
                 />
-                <span class="label-text">20 euros per month</span>
+                <span class="label-text">20 euro per maand</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -294,7 +294,7 @@
                   value="25"
                   class="radio radio-warning"
                 />
-                <span class="label-text">25 euros per month</span>
+                <span class="label-text">25 euro per maand</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -303,7 +303,7 @@
                   value="50"
                   class="radio radio-warning"
                 />
-                <span class="label-text">50 euros per month</span>
+                <span class="label-text">50 euro per maand</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -312,7 +312,7 @@
                   value="100"
                   class="radio radio-warning"
                 />
-                <span class="label-text">100 euros per month</span>
+                <span class="label-text">100 euro per maand</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -322,7 +322,7 @@
                   class="radio radio-warning"
                 />
                 <span class="label-text"
-                  >I will fill in the desired amount myself</span
+                  >Ik vul het gewenste bedrag zelf in</span
                 >
               </label>
             </div>
@@ -330,7 +330,7 @@
             donationForm.get('donationAmount')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error">
-                Please select a donation amount
+                Selecteer een donatiebedrag
               </span>
             </label>
             }
@@ -341,14 +341,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >I want to choose the amount myself
+                >Ik wil het bedrag zelf kiezen
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="number"
               formControlName="customAmount"
-              placeholder="Enter your custom amount in euros"
+              placeholder="Voer uw eigen bedrag in euro's in"
               class="input input-bordered w-full"
               [class.input-error]="
                 donationForm.get('customAmount')?.invalid &&
@@ -359,7 +359,7 @@
             donationForm.get('customAmount')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error">
-                Please enter a custom amount
+                Voer een eigen bedrag in
               </span>
             </label>
             }
@@ -370,12 +370,12 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Message <span class="text-red-600">*</span></span
+                >Bericht <span class="text-red-600">*</span></span
               >
             </label>
             <textarea
               formControlName="message"
-              placeholder="Your message..."
+              placeholder="Uw bericht..."
               class="textarea w-full block textarea-bordered h-32"
               [class.textarea-error]="
                 donationForm.get('message')?.invalid &&
@@ -385,7 +385,7 @@
             @if(donationForm.get('message')?.invalid &&
             donationForm.get('message')?.touched) {
             <label class="label">
-              <span class="label-text-alt text-error">Message is required</span>
+              <span class="label-text-alt text-error">Bericht is verplicht</span>
             </label>
             }
           </div>
@@ -396,14 +396,14 @@
         @if(currentStep === 4) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Payment Information
+            Betalingsinformatie
           </h3>
 
           <!-- Bank Account Number -->
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >My bank account number is
+                >Mijn bankrekeningnummer is
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -421,7 +421,7 @@
             donationForm.get('bankAccount')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error">
-                Bank account number is required
+                Bankrekeningnummer is verplicht
               </span>
             </label>
             }
@@ -440,7 +440,7 @@
                 "
               />
               <span class="label-text font-semibold text-gray-700"
-                >I agree that the selected amount will be automatically debited
+                >Ik ga ermee akkoord dat het geselecteerde bedrag automatisch wordt afgeschreven
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -448,7 +448,7 @@
             donationForm.get('agreement')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error">
-                You must agree to the automatic debit
+                U moet akkoord gaan met de automatische incasso
               </span>
             </label>
             }
@@ -473,8 +473,8 @@
             />
           </svg>
           <span
-            >Thank you for your generous donation! We'll process your request
-            and contact you with confirmation.</span
+            >Hartelijk dank voor uw gulle donatie! We zullen uw verzoek verwerken
+            en contact met u opnemen ter bevestiging.</span
           >
         </div>
         }
@@ -496,7 +496,7 @@
             />
           </svg>
           <span
-            >There was an error submitting your request. Please try again.</span
+            >Er is een fout opgetreden bij het verzenden van uw verzoek. Probeer het opnieuw.</span
           >
         </div>
         }
@@ -509,7 +509,7 @@
             class="btn btn-outline btn-warning"
             (click)="previousStep()"
           >
-            Previous
+            Vorige
           </button>
           } @else {
           <div></div>
@@ -519,7 +519,7 @@
             class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
             (click)="nextStep()"
           >
-            Next
+            Volgende
           </button>
           } @else {
           <button
@@ -529,7 +529,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Donation }
+            Verzenden... } @else { Donatie Verzenden }
           </button>
           }
         </div>

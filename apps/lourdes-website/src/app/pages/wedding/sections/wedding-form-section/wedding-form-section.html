@@ -5,11 +5,11 @@
   <div class="max-w-3xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        Wedding Registration Form
+        Huwelijk Registratieformulier
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Fill out the form below to register for your church wedding.
+        Vul het onderstaande formulier in om uw kerkelijk huwelijk te registreren.
       </p>
     </div>
 
@@ -17,10 +17,10 @@
       <!-- Stepper -->
       <ul class="steps steps-horizontal w-full mb-8">
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 1 }">
-          Bride
+          Bruid
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 2 }">
-          Groom
+          Bruidegom
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 3 }">
           Privacy
@@ -31,18 +31,18 @@
         <!-- Step 1: Bride Information -->
         @if(currentStep === 1) {
         <div class="space-y-6">
-          <h3 class="text-2xl font-bold text-gray-800 mb-6">Bride</h3>
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Bruid</h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Bride's name <span class="text-red-600">*</span></span
+                >Naam bruid <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="brideName"
-              placeholder="Enter bride's name"
+              placeholder="Voer naam bruid in"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('brideName')?.invalid &&
@@ -53,7 +53,7 @@
             weddingForm.get('brideName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Bride's name is required</span
+                >Naam bruid is verplicht</span
               >
             </label>
             }
@@ -62,13 +62,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Bride's last name <span class="text-red-600">*</span></span
+                >Achternaam bruid <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="brideLastName"
-              placeholder="Enter bride's last name"
+              placeholder="Voer achternaam bruid in"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('brideLastName')?.invalid &&
@@ -79,7 +79,7 @@
             weddingForm.get('brideLastName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Bride's last name is required</span
+                >Achternaam bruid is verplicht</span
               >
             </label>
             }
@@ -88,7 +88,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Bride's date of birth <span class="text-red-600">*</span></span
+                >Geboortedatum bruid <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -104,7 +104,7 @@
             weddingForm.get('brideDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Bride's date of birth is required</span
+                >Geboortedatum bruid is verplicht</span
               >
             </label>
             }
@@ -113,7 +113,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Cell phone bride <span class="text-red-600">*</span></span
+                >Mobiele telefoon bruid <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -130,7 +130,7 @@
             weddingForm.get('bridePhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Bride's phone number is required</span
+                >Telefoonnummer bruid is verplicht</span
               >
             </label>
             }
@@ -139,13 +139,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Bride's email address <span class="text-red-600">*</span></span
+                >E-mailadres bruid <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="email"
               formControlName="brideEmail"
-              placeholder="bride.email@example.com"
+              placeholder="bruid.email@voorbeeld.nl"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('brideEmail')?.invalid &&
@@ -157,10 +157,10 @@
             <label class="label">
               @if(weddingForm.get('brideEmail')?.hasError('required')) {
               <span class="label-text-alt text-error">
-                Bride's email is required </span
+                E-mailadres bruid is verplicht </span
               >} @else if(weddingForm.get('brideEmail')?.hasError('email')) {
               <span class="label-text-alt text-error">
-                Please enter a valid email address </span
+                Voer een geldig e-mailadres in </span
               >}
             </label>
             }
@@ -169,13 +169,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Bride's address <span class="text-red-600">*</span></span
+                >Adres bruid <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="brideAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('brideAddress')?.invalid &&
@@ -186,7 +186,7 @@
             weddingForm.get('brideAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Bride's address is required</span
+                >Adres bruid is verplicht</span
               >
             </label>
             }
@@ -195,14 +195,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and place of residence of bride
+                >Postcode en woonplaats bruid
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="bridePostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('bridePostalCity')?.invalid &&
@@ -213,7 +213,7 @@
             weddingForm.get('bridePostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -224,18 +224,18 @@
         <!-- Step 2: Groom Information -->
         @if(currentStep === 2) {
         <div class="space-y-6">
-          <h3 class="text-2xl font-bold text-gray-800 mb-6">Groom</h3>
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Bruidegom</h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Groom's name <span class="text-red-600">*</span></span
+                >Naam bruidegom <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="groomName"
-              placeholder="Enter groom's name"
+              placeholder="Voer naam bruidegom in"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('groomName')?.invalid &&
@@ -246,7 +246,7 @@
             weddingForm.get('groomName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Groom's name is required</span
+                >Naam bruidegom is verplicht</span
               >
             </label>
             }
@@ -255,13 +255,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Groom's surname <span class="text-red-600">*</span></span
+                >Achternaam bruidegom <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="groomSurname"
-              placeholder="Enter groom's surname"
+              placeholder="Voer achternaam bruidegom in"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('groomSurname')?.invalid &&
@@ -272,7 +272,7 @@
             weddingForm.get('groomSurname')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Groom's surname is required</span
+                >Achternaam bruidegom is verplicht</span
               >
             </label>
             }
@@ -281,7 +281,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Groom's date of birth <span class="text-red-600">*</span></span
+                >Geboortedatum bruidegom <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -297,7 +297,7 @@
             weddingForm.get('groomDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Groom's date of birth is required</span
+                >Geboortedatum bruidegom is verplicht</span
               >
             </label>
             }
@@ -306,7 +306,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Cell phone groom <span class="text-red-600">*</span></span
+                >Mobiele telefoon bruidegom <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -323,7 +323,7 @@
             weddingForm.get('groomPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Groom's phone number is required</span
+                >Telefoonnummer bruidegom is verplicht</span
               >
             </label>
             }
@@ -332,13 +332,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Groom's address <span class="text-red-600">*</span></span
+                >Adres bruidegom <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="groomAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('groomAddress')?.invalid &&
@@ -349,7 +349,7 @@
             weddingForm.get('groomAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Groom's address is required</span
+                >Adres bruidegom is verplicht</span
               >
             </label>
             }
@@ -358,14 +358,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Groom's Postcode and City
+                >Postcode en woonplaats bruidegom
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="groomPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('groomPostalCity')?.invalid &&
@@ -376,7 +376,7 @@
             weddingForm.get('groomPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -385,13 +385,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Groom's email address <span class="text-red-600">*</span></span
+                >E-mailadres bruidegom <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="email"
               formControlName="groomEmail"
-              placeholder="groom.email@example.com"
+              placeholder="bruidegom.email@voorbeeld.nl"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('groomEmail')?.invalid &&
@@ -403,10 +403,10 @@
             <label class="label">
               @if(weddingForm.get('groomEmail')?.hasError('required')) {
               <span class="label-text-alt text-error">
-                Groom's email is required </span
+                E-mailadres bruidegom is verplicht </span
               >} @else if(weddingForm.get('groomEmail')?.hasError('email')) {
               <span class="label-text-alt text-error">
-                Please enter a valid email address </span
+                Voer een geldig e-mailadres in </span
               >}
             </label>
             }
@@ -415,19 +415,19 @@
           <!-- Godparents Section -->
           <div class="divider my-8"></div>
           <h4 class="text-xl font-bold text-gray-800 mb-4">
-            Godparents Information
+            Informatie Doopgetuigen
           </h4>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents Name <span class="text-red-600">*</span></span
+                >Naam doopgetuigen <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsName"
-              placeholder="Enter godparents' name"
+              placeholder="Voer naam doopgetuigen in"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('godparentsName')?.invalid &&
@@ -438,7 +438,7 @@
             weddingForm.get('godparentsName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparents' name is required</span
+                >Naam doopgetuigen is verplicht</span
               >
             </label>
             }
@@ -447,13 +447,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents' surname <span class="text-red-600">*</span></span
+                >Achternaam doopgetuigen <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsSurname"
-              placeholder="Enter godparents' surname"
+              placeholder="Voer achternaam doopgetuigen in"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('godparentsSurname')?.invalid &&
@@ -464,7 +464,7 @@
             weddingForm.get('godparentsSurname')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparents' surname is required</span
+                >Achternaam doopgetuigen is verplicht</span
               >
             </label>
             }
@@ -473,7 +473,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents' date of birth
+                >Geboortedatum doopgetuigen
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -490,7 +490,7 @@
             weddingForm.get('godparentsDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparents' date of birth is required</span
+                >Geboortedatum doopgetuigen is verplicht</span
               >
             </label>
             }
@@ -499,7 +499,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents Phone Number
+                >Telefoonnummer doopgetuigen
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -517,7 +517,7 @@
             weddingForm.get('godparentsPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparents' phone number is required</span
+                >Telefoonnummer doopgetuigen is verplicht</span
               >
             </label>
             }
@@ -526,13 +526,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents' address <span class="text-red-600">*</span></span
+                >Adres doopgetuigen <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('godparentsAddress')?.invalid &&
@@ -543,7 +543,7 @@
             weddingForm.get('godparentsAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparents' address is required</span
+                >Adres doopgetuigen is verplicht</span
               >
             </label>
             }
@@ -552,14 +552,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and city of godparents
+                >Postcode en woonplaats doopgetuigen
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 weddingForm.get('godparentsPostalCity')?.invalid &&
@@ -570,7 +570,7 @@
             weddingForm.get('godparentsPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -579,7 +579,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Are his godparents Catholic?
+                >Zijn de doopgetuigen katholiek?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -591,7 +591,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -600,14 +600,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(weddingForm.get('godparentsCatholic')?.invalid &&
             weddingForm.get('godparentsCatholic')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -619,65 +619,43 @@
         @if(currentStep === 3) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Privacy Statement
+            Privacyverklaring
           </h3>
 
           <div class="bg-amber-50 p-6 rounded-lg">
             <h4 class="font-bold text-lg text-gray-800 mb-3">
-              Privacy Statement Roman Catholic Parishes and General Regulations
-              for the Protection of Personal Data Parishes 2018
+              Privacyverklaring Rooms-Katholieke Parochies en Algemene Verordening Bescherming Persoonsgegevens Parochies 2018
             </h4>
             <p class="text-sm text-gray-700 mb-3">
-              In connection with the General Data Protection Regulation (GDPR),
-              a Privacy Statement applies and the above-mentioned regulations
-              have been drawn up. The Privacy Statement and the General
-              Regulations are available on the website and can be downloaded.
+              In verband met de Algemene Verordening Gegevensbescherming (AVG) is een Privacyverklaring van toepassing en zijn bovengenoemde regelingen opgesteld. De Privacyverklaring en de Algemene Regeling zijn beschikbaar op de website en kunnen worden gedownload.
             </p>
             <p class="text-sm text-gray-700 mb-3">
-              You will automatically receive the Privacy Statement as an
-              attachment with the copy confirmation.
+              U ontvangt automatisch de Privacyverklaring als bijlage bij de kopiebevestiging.
             </p>
             <p class="text-sm text-gray-700 mb-3">
-              Below you will find a number of matters (in abbreviated,
-              simplified versions) that are important to you and for which we
-              request your permission (in advance). If you have any doubts about
-              the explanation in the abbreviated version, we always refer you to
-              the full Privacy Statement and/or the General Regulations.
+              Hieronder vindt u een aantal zaken (in verkorte, vereenvoudigde versies) die voor u belangrijk zijn en waarvoor wij (vooraf) uw toestemming vragen. Als u twijfelt over de uitleg in de verkorte versie, verwijzen wij u altijd naar de volledige Privacyverklaring en/of de Algemene Regeling.
             </p>
             <p class="text-sm text-gray-700 mb-3 font-semibold">
-              Information General
+              Informatie Algemeen
             </p>
             <div class="mt-4 space-y-3">
               <div>
-                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="font-semibold text-gray-800">Akkoord</p>
                 <p class="text-sm text-gray-700">
-                  The applicant(s) agree(s) to the provisions of the Privacy
-                  Statement.
+                  De aanvrager(s) gaat/gaan akkoord met de bepalingen van de Privacyverklaring.
                 </p>
               </div>
               <div>
-                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="font-semibold text-gray-800">Niet akkoord</p>
                 <p class="text-sm text-gray-700">
-                  If you do not agree, the application cannot be processed.
+                  Als u niet akkoord gaat, kan de aanvraag niet worden verwerkt.
                 </p>
               </div>
               <p class="text-sm text-gray-700">
-                The information you provide may be used for parish
-                administration and will be stored digitally or on paper (in
-                registers) for this purpose. A request to view this data is
-                possible. Requesting the deletion of this data is generally not
-                possible because it is necessary for the proper functioning of a
-                parish church. The "Registration and Deregistration Procedure
-                (2013)" applies to requests to be removed from the parish
-                registers/administration.
+                De informatie die u verstrekt, kan worden gebruikt voor parochiebeheer en zal hiervoor digitaal of op papier (in registers) worden opgeslagen. Een verzoek om deze gegevens in te zien is mogelijk. Het verzoeken om verwijdering van deze gegevens is over het algemeen niet mogelijk omdat dit noodzakelijk is voor het goed functioneren van een parochiekerk. De "Registratie- en Deregistratieprocedure (2013)" is van toepassing op verzoeken om uit de parochieregisters/administratie te worden verwijderd.
               </p>
               <p class="text-sm text-gray-700">
-                Your information will always be treated confidentially and will
-                never be shared with external institutions/agencies/third
-                parties without your permission. At the end of this form, you
-                will be asked a few questions regarding the GDPR. You can agree
-                or disagree with the questions posed there, and your request
-                will be processed (regardless of your answer).
+                Uw informatie wordt altijd vertrouwelijk behandeld en wordt nooit gedeeld met externe instellingen/instanties/derden zonder uw toestemming. Aan het einde van dit formulier worden u enkele vragen gesteld met betrekking tot de AVG. U kunt akkoord of niet akkoord gaan met de daar gestelde vragen, en uw verzoek zal worden verwerkt (ongeacht uw antwoord).
               </p>
             </div>
           </div>
@@ -685,7 +663,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Do you agree with our parish's privacy policy?
+                >Gaat u akkoord met het privacybeleid van onze parochie?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -697,7 +675,7 @@
                   value="agree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes! I agree</span>
+                <span class="label-text">Ja! Ik ga akkoord</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -706,14 +684,14 @@
                   value="disagree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No! I don't agree</span>
+                <span class="label-text">Nee! Ik ga niet akkoord</span>
               </label>
             </div>
             @if(weddingForm.get('privacyAgreement')?.invalid &&
             weddingForm.get('privacyAgreement')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please agree to privacy policy to continue</span
+                >Ga akkoord met het privacybeleid om door te gaan</span
               >
             </label>
             }
@@ -738,8 +716,7 @@
             />
           </svg>
           <span
-            >Thank you for your wedding registration! We will contact you soon
-            to discuss your special day.</span
+            >Hartelijk dank voor uw huwelijksregistratie! We nemen binnenkort contact met u op om uw bijzondere dag te bespreken.</span
           >
         </div>
         }
@@ -761,7 +738,7 @@
             />
           </svg>
           <span
-            >There was an error submitting your request. Please try again.</span
+            >Er is een fout opgetreden bij het verzenden van uw verzoek. Probeer het opnieuw.</span
           >
         </div>
         }
@@ -774,7 +751,7 @@
             class="btn btn-outline btn-warning"
             (click)="previousStep()"
           >
-            Previous
+            Vorige
           </button>
           } @else {
           <div></div>
@@ -784,7 +761,7 @@
             class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
             (click)="nextStep()"
           >
-            Next
+            Volgende
           </button>
           } @else {
           <button
@@ -794,7 +771,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Request }
+            Bezig met verzenden... } @else { Verzoek verzenden }
           </button>
           }
         </div>

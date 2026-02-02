@@ -5,12 +5,12 @@
   <div class="max-w-3xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        Volunteer Registration
+        Vrijwilligersregistratie
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Fill out the form below to express your interest in volunteering with
-        us.
+        Vul het onderstaande formulier in om uw interesse in vrijwilligerswerk bij
+        ons kenbaar te maken.
       </p>
     </div>
 
@@ -20,13 +20,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Name <span class="text-red-600">*</span></span
+              >Voornaam <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="text"
             formControlName="firstName"
-            placeholder="Enter your first name"
+            placeholder="Voer uw voornaam in"
             class="input input-bordered w-full"
             [class.input-error]="
               volunteerForm.get('firstName')?.invalid &&
@@ -36,7 +36,7 @@
           @if(volunteerForm.get('firstName')?.invalid &&
           volunteerForm.get('firstName')?.touched) {
           <label class="label">
-            <span class="label-text-alt text-error">Name is required</span>
+            <span class="label-text-alt text-error">Voornaam is verplicht</span>
           </label>
           }
         </div>
@@ -45,13 +45,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Last name <span class="text-red-600">*</span></span
+              >Achternaam <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="text"
             formControlName="lastName"
-            placeholder="Enter your last name"
+            placeholder="Voer uw achternaam in"
             class="input input-bordered w-full"
             [class.input-error]="
               volunteerForm.get('lastName')?.invalid &&
@@ -61,7 +61,7 @@
           @if(volunteerForm.get('lastName')?.invalid &&
           volunteerForm.get('lastName')?.touched) {
           <label class="label">
-            <span class="label-text-alt text-error">Last name is required</span>
+            <span class="label-text-alt text-error">Achternaam is verplicht</span>
           </label>
           }
         </div>
@@ -70,13 +70,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Email address <span class="text-red-600">*</span></span
+              >E-mailadres <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="email"
             formControlName="email"
-            placeholder="your.email@example.com"
+            placeholder="uw.email@voorbeeld.com"
             class="input input-bordered w-full"
             [class.input-error]="
               volunteerForm.get('email')?.invalid &&
@@ -87,9 +87,9 @@
           volunteerForm.get('email')?.touched) {
           <label class="label">
             <span class="label-text-alt text-error">
-              @if(volunteerForm.get('email')?.hasError('required')) { Email is
-              required } @else if(volunteerForm.get('email')?.hasError('email'))
-              { Please enter a valid email address }
+              @if(volunteerForm.get('email')?.hasError('required')) { E-mailadres is
+              verplicht } @else if(volunteerForm.get('email')?.hasError('email'))
+              { Voer een geldig e-mailadres in }
             </span>
           </label>
           }
@@ -99,7 +99,7 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Phone number <span class="text-red-600">*</span></span
+              >Telefoonnummer <span class="text-red-600">*</span></span
             >
           </label>
           <input
@@ -116,7 +116,7 @@
           volunteerForm.get('phoneNumber')?.touched) {
           <label class="label">
             <span class="label-text-alt text-error">
-              Phone number is required
+              Telefoonnummer is verplicht
             </span>
           </label>
           }
@@ -126,12 +126,12 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Message <span class="text-red-600">*</span></span
+              >Bericht <span class="text-red-600">*</span></span
             >
           </label>
           <textarea
             formControlName="message"
-            placeholder="Tell us about yourself and why you'd like to volunteer..."
+            placeholder="Vertel ons over uzelf en waarom u vrijwilligerswerk wilt doen..."
             class="textarea block w-full textarea-bordered h-32"
             [class.textarea-error]="
               volunteerForm.get('message')?.invalid &&
@@ -141,7 +141,7 @@
           @if(volunteerForm.get('message')?.invalid &&
           volunteerForm.get('message')?.touched) {
           <label class="label">
-            <span class="label-text-alt text-error">Message is required</span>
+            <span class="label-text-alt text-error">Bericht is verplicht</span>
           </label>
           }
         </div>
@@ -150,7 +150,7 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >I would like to volunteer for:
+              >Ik wil graag vrijwilligerswerk doen voor:
               <span class="text-red-600">*</span></span
             >
           </label>
@@ -178,7 +178,7 @@
           volunteerForm.get('volunteerFor')?.touched) {
           <label class="label">
             <span class="label-text-alt text-error"
-              >Please select at least one volunteer option</span
+              >Selecteer minimaal één vrijwilligersoptie</span
             >
           </label>
           }
@@ -201,8 +201,7 @@
             />
           </svg>
           <span
-            >Thank you for your interest in volunteering! We'll be in touch
-            soon.</span
+            >Bedankt voor uw interesse in vrijwilligerswerk! We nemen binnenkort contact met u op.</span
           >
         </div>
         }
@@ -224,8 +223,8 @@
             />
           </svg>
           <span
-            >There was an error submitting your application. Please try
-            again.</span
+            >Er is een fout opgetreden bij het indienen van uw aanvraag. Probeer het
+            opnieuw.</span
           >
         </div>
         }
@@ -239,7 +238,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Application }
+            Bezig met verzenden... } @else { Aanvraag Indienen }
           </button>
         </div>
       </form>

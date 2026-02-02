@@ -3,12 +3,11 @@
   <div class="max-w-2xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        Register for the Course
+        Aanmelden voor de Cursus
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Fill out the form below to secure your spot in our upcoming Bible
-        course.
+        Vul het onderstaande formulier in om uw plek in onze aankomende Bijbelcursus te reserveren.
       </p>
     </div>
 
@@ -18,13 +17,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >First Name <span class="text-red-600">*</span></span
+              >Voornaam <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="text"
             formControlName="firstName"
-            placeholder="Enter your first name"
+            placeholder="Voer uw voornaam in"
             class="input input-bordered w-full"
             [class.input-error]="
               registrationForm.get('firstName')?.invalid &&
@@ -35,7 +34,7 @@
           registrationForm.get('firstName')?.touched) {
           <label class="label">
             <span class="label-text-alt text-error"
-              >First name is required</span
+              >Voornaam is verplicht</span
             >
           </label>
           }
@@ -45,13 +44,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Last Name <span class="text-red-600">*</span></span
+              >Achternaam <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="text"
             formControlName="lastName"
-            placeholder="Enter your last name"
+            placeholder="Voer uw achternaam in"
             class="input input-bordered w-full"
             [class.input-error]="
               registrationForm.get('lastName')?.invalid &&
@@ -61,7 +60,7 @@
           @if(registrationForm.get('lastName')?.invalid &&
           registrationForm.get('lastName')?.touched) {
           <label class="label">
-            <span class="label-text-alt text-error">Last name is required</span>
+            <span class="label-text-alt text-error">Achternaam is verplicht</span>
           </label>
           }
         </div>
@@ -70,13 +69,13 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Email Address <span class="text-red-600">*</span></span
+              >E-mailadres <span class="text-red-600">*</span></span
             >
           </label>
           <input
             type="email"
             formControlName="email"
-            placeholder="your.email@example.com"
+            placeholder="uw.email@voorbeeld.com"
             class="input input-bordered w-full"
             [class.input-error]="
               registrationForm.get('email')?.invalid &&
@@ -87,10 +86,10 @@
           registrationForm.get('email')?.touched) {
           <label class="label">
             @if(registrationForm.get('email')?.hasError('required')) {
-            <span class="label-text-alt text-error"> Email is required </span>
+            <span class="label-text-alt text-error"> E-mailadres is verplicht </span>
             } @else if(registrationForm.get('email')?.hasError('email')) {
             <span class="label-text-alt text-error">
-              Please enter a valid email address
+              Voer een geldig e-mailadres in
             </span>
             }
           </label>
@@ -101,7 +100,7 @@
         <div class="form-control mb-6">
           <label class="label">
             <span class="label-text font-semibold text-gray-700"
-              >Phone Number <span class="text-red-600">*</span></span
+              >Telefoonnummer <span class="text-red-600">*</span></span
             >
           </label>
           <input
@@ -119,12 +118,12 @@
           <label class="label">
             @if(registrationForm.get('phoneNumber')?.hasError('required')) {
             <span class="label-text-alt text-error">
-              Phone number is required
+              Telefoonnummer is verplicht
             </span>
             } @else if(registrationForm.get('phoneNumber')?.hasError('pattern'))
             {
             <span class="label-text-alt text-error">
-              Please enter a valid phone number
+              Voer een geldig telefoonnummer in
             </span>
             }
           </label>
@@ -148,7 +147,7 @@
             />
           </svg>
           <span
-            >Thank you for registering! We'll contact you soon with more
+            >Bedankt voor uw aanmelding! We nemen binnenkort contact met u op met meer
             details.</span
           >
         </div>
@@ -171,8 +170,8 @@
             />
           </svg>
           <span
-            >There was an error submitting your registration. Please try
-            again.</span
+            >Er is een fout opgetreden bij het indienen van uw registratie. Probeer het
+            opnieuw.</span
           >
         </div>
         }
@@ -186,7 +185,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Register Now }
+            Bezig met verzenden... } @else { Nu Aanmelden }
           </button>
         </div>
       </form>

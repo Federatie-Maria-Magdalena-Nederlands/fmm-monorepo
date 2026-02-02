@@ -5,11 +5,11 @@
   <div class="max-w-3xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        First Holy Communion Registration Form
+        Eerste Heilige Communie Registratieformulier
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Fill out the form below to register your child for First Holy Communion.
+        Vul het onderstaande formulier in om uw kind aan te melden voor de Eerste Heilige Communie.
       </p>
     </div>
 
@@ -20,13 +20,13 @@
           Communicant
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 2 }">
-          Mother
+          Moeder
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 3 }">
-          Father
+          Vader
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 4 }">
-          Godparents
+          Doopgetuigen
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 5 }">
           Privacy
@@ -37,19 +37,19 @@
         <!-- Step 1: Communicant Information -->
         @if(currentStep === 1) {
         <div class="space-y-6">
-          <h3 class="text-2xl font-bold text-gray-800 mb-6">Sender</h3>
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Afzender</h3>
 
           <!-- Name -->
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Name of communicant <span class="text-red-600">*</span></span
+                >Naam communicant <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="communicantName"
-              placeholder="Enter name"
+              placeholder="Voer naam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('communicantName')?.invalid &&
@@ -59,7 +59,7 @@
             @if(communionForm.get('communicantName')?.invalid &&
             communionForm.get('communicantName')?.touched) {
             <label class="label">
-              <span class="label-text-alt text-error">Name is required</span>
+              <span class="label-text-alt text-error">Naam is verplicht</span>
             </label>
             }
           </div>
@@ -68,13 +68,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Communicant's surname <span class="text-red-600">*</span></span
+                >Achternaam communicant <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="communicantSurname"
-              placeholder="Enter surname"
+              placeholder="Voer achternaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('communicantSurname')?.invalid &&
@@ -84,7 +84,7 @@
             @if(communionForm.get('communicantSurname')?.invalid &&
             communionForm.get('communicantSurname')?.touched) {
             <label class="label">
-              <span class="label-text-alt text-error">Surname is required</span>
+              <span class="label-text-alt text-error">Achternaam is verplicht</span>
             </label>
             }
           </div>
@@ -93,14 +93,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Communicant's first name
+                >Voornaam communicant
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="communicantFirstName"
-              placeholder="Enter first name"
+              placeholder="Voer voornaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('communicantFirstName')?.invalid &&
@@ -111,7 +111,7 @@
             communionForm.get('communicantFirstName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >First name is required</span
+                >Voornaam is verplicht</span
               >
             </label>
             }
@@ -121,7 +121,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Date and place of birth
+                >Geboortedatum en geboorteplaats
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -138,7 +138,7 @@
             communionForm.get('communicantDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Date of birth is required</span
+                >Geboortedatum is verplicht</span
               >
             </label>
             }
@@ -148,7 +148,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Gender <span class="text-red-600">*</span></span
+                >Geslacht <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -159,7 +159,7 @@
                   value="Boy"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Boy</span>
+                <span class="label-text">Jongen</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -168,14 +168,14 @@
                   value="Girl"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Girl</span>
+                <span class="label-text">Meisje</span>
               </label>
             </div>
             @if(communionForm.get('communicantGender')?.invalid &&
             communionForm.get('communicantGender')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select gender</span
+                >Selecteer geslacht</span
               >
             </label>
             }
@@ -185,14 +185,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Nationality of communicant
+                >Nationaliteit communicant
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="communicantNationality"
-              placeholder="Enter nationality"
+              placeholder="Voer nationaliteit in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('communicantNationality')?.invalid &&
@@ -203,7 +203,7 @@
             communionForm.get('communicantNationality')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Nationality is required</span
+                >Nationaliteit is verplicht</span
               >
             </label>
             }
@@ -213,7 +213,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptized? <span class="text-red-600">*</span></span
+                >Gedoopt? <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -224,7 +224,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -233,14 +233,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(communionForm.get('communicantBaptized')?.invalid &&
             communionForm.get('communicantBaptized')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -251,7 +251,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >If yes, please provide date
+                >Indien ja, vermeld de datum
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -268,7 +268,7 @@
             communionForm.get('communicantBaptismDate')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Baptism date is required</span
+                >Doopdatum is verplicht</span
               >
             </label>
             }
@@ -277,7 +277,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptismal certificate <span class="text-red-600">*</span></span
+                >Doopakte <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -289,7 +289,7 @@
             @if(selectedCommunicantCertificate) {
             <label class="label">
               <span class="label-text-alt text-success"
-                >Selected: {{ selectedCommunicantCertificate }}</span
+                >Geselecteerd: {{ selectedCommunicantCertificate }}</span
               >
             </label>
             }
@@ -298,13 +298,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptismal date <span class="text-red-600">*</span></span
+                >Doopplaats <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="communicantBaptismPlace"
-              placeholder="Enter baptismal place"
+              placeholder="Voer doopplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('communicantBaptismPlace')?.invalid &&
@@ -315,7 +315,7 @@
             communionForm.get('communicantBaptismPlace')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Baptismal place is required</span
+                >Doopplaats is verplicht</span
               >
             </label>
             }
@@ -324,13 +324,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Name of parish where communicant was baptized
+                >Naam van de parochie waar communicant gedoopt werd
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
-              placeholder="Enter parish name"
+              placeholder="Voer parochienaam in"
               class="input input-bordered w-full"
             />
           </div>
@@ -342,7 +342,7 @@
         @if(currentStep === 2) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Mother's Information
+            Informatie Moeder
           </h3>
 
           <!-- Mother's surname is shown on the image but not in a required field list. 
@@ -350,12 +350,12 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's surname <span class="text-red-600">*</span></span
+                >Achternaam moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
-              placeholder="Enter mother's surname"
+              placeholder="Voer achternaam moeder in"
               class="input input-bordered w-full"
             />
           </div>
@@ -363,13 +363,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's first names <span class="text-red-600">*</span></span
+                >Voornamen moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherFirstNames"
-              placeholder="Enter mother's first names"
+              placeholder="Voer voornamen moeder in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('motherFirstNames')?.invalid &&
@@ -380,7 +380,7 @@
             communionForm.get('motherFirstNames')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's first names are required</span
+                >Voornamen moeder zijn verplicht</span
               >
             </label>
             }
@@ -389,7 +389,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's date of birth
+                >Geboortedatum moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -406,7 +406,7 @@
             communionForm.get('motherDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's date of birth is required</span
+                >Geboortedatum moeder is verplicht</span
               >
             </label>
             }
@@ -415,14 +415,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's place of birth
+                >Geboorteplaats moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherPlaceOfBirth"
-              placeholder="Enter place of birth"
+              placeholder="Voer geboorteplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('motherPlaceOfBirth')?.invalid &&
@@ -433,7 +433,7 @@
             communionForm.get('motherPlaceOfBirth')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's place of birth is required</span
+                >Geboorteplaats moeder is verplicht</span
               >
             </label>
             }
@@ -442,7 +442,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother baptized? <span class="text-red-600">*</span></span
+                >Moeder gedoopt? <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -453,7 +453,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -462,14 +462,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(communionForm.get('motherBaptized')?.invalid &&
             communionForm.get('motherBaptized')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -479,7 +479,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's baptism date <span class="text-red-600">*</span></span
+                >Doopdatum moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -495,7 +495,7 @@
             communionForm.get('motherBaptismDate')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's baptism date is required</span
+                >Doopdatum moeder is verplicht</span
               >
             </label>
             }
@@ -504,14 +504,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptismal place of mother
+                >Doopplaats moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherBaptismPlace"
-              placeholder="Enter baptismal place"
+              placeholder="Voer doopplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('motherBaptismPlace')?.invalid &&
@@ -522,7 +522,7 @@
             communionForm.get('motherBaptismPlace')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's baptismal place is required</span
+                >Doopplaats moeder is verplicht</span
               >
             </label>
             }
@@ -531,7 +531,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's baptismal certificate</span
+                >Doopakte moeder</span
               >
             </label>
             <input
@@ -543,7 +543,7 @@
             @if(selectedMotherCertificate) {
             <label class="label">
               <span class="label-text-alt text-success"
-                >Selected: {{ selectedMotherCertificate }}</span
+                >Geselecteerd: {{ selectedMotherCertificate }}</span
               >
             </label>
             }
@@ -553,13 +553,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's nationality <span class="text-red-600">*</span></span
+                >Nationaliteit moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherNationality"
-              placeholder="Enter nationality"
+              placeholder="Voer nationaliteit in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('motherNationality')?.invalid &&
@@ -570,7 +570,7 @@
             communionForm.get('motherNationality')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's nationality is required</span
+                >Nationaliteit moeder is verplicht</span
               >
             </label>
             }
@@ -579,13 +579,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's address <span class="text-red-600">*</span></span
+                >Adres moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('motherAddress')?.invalid &&
@@ -596,7 +596,7 @@
             communionForm.get('motherAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's address is required</span
+                >Adres moeder is verplicht</span
               >
             </label>
             }
@@ -605,14 +605,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and address of mother
+                >Postcode en woonplaats moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('motherPostalCity')?.invalid &&
@@ -623,7 +623,7 @@
             communionForm.get('motherPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -632,7 +632,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mobile phone mother <span class="text-red-600">*</span></span
+                >Mobiele telefoon moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -649,7 +649,7 @@
             communionForm.get('motherPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's phone number is required</span
+                >Telefoonnummer moeder is verplicht</span
               >
             </label>
             }
@@ -658,14 +658,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's email address
+                >E-mailadres moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="email"
               formControlName="motherEmail"
-              placeholder="mother.email@example.com"
+              placeholder="moeder.email@voorbeeld.com"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('motherEmail')?.invalid &&
@@ -677,11 +677,11 @@
             <label class="label">
               @if(communionForm.get('motherEmail')?.hasError('required')) {
               <span class="label-text-alt text-error">
-                Mother's email is required
+                E-mailadres moeder is verplicht
               </span>
               } @else if(communionForm.get('motherEmail')?.hasError('email')) {
               <span class="label-text-alt text-error">
-                Please enter a valid email address
+                Voer een geldig e-mailadres in
               </span>
               }
             </label>
@@ -694,19 +694,19 @@
         @if(currentStep === 3) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Father's Information
+            Informatie Vader
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's surname <span class="text-red-600">*</span></span
+                >Achternaam vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherSurname"
-              placeholder="Enter father's surname"
+              placeholder="Voer achternaam vader in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('fatherSurname')?.invalid &&
@@ -717,7 +717,7 @@
             communionForm.get('fatherSurname')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's surname is required</span
+                >Achternaam vader is verplicht</span
               >
             </label>
             }
@@ -726,13 +726,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's first names <span class="text-red-600">*</span></span
+                >Voornamen vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherFirstNames"
-              placeholder="Enter father's first names"
+              placeholder="Voer voornamen vader in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('fatherFirstNames')?.invalid &&
@@ -743,7 +743,7 @@
             communionForm.get('fatherFirstNames')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's first names are required</span
+                >Voornamen vader zijn verplicht</span
               >
             </label>
             }
@@ -752,7 +752,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's date of birth
+                >Geboortedatum vader
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -769,7 +769,7 @@
             communionForm.get('fatherDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's date of birth is required</span
+                >Geboortedatum vader is verplicht</span
               >
             </label>
             }
@@ -778,14 +778,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's place of birth
+                >Geboorteplaats vader
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherPlaceOfBirth"
-              placeholder="Enter place of birth"
+              placeholder="Voer geboorteplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('fatherPlaceOfBirth')?.invalid &&
@@ -796,7 +796,7 @@
             communionForm.get('fatherPlaceOfBirth')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's place of birth is required</span
+                >Geboorteplaats vader is verplicht</span
               >
             </label>
             }
@@ -805,7 +805,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father baptized?</span
+                >Vader gedoopt?</span
               >
             </label>
             <div class="flex gap-6">
@@ -816,7 +816,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -825,14 +825,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(communionForm.get('fatherBaptized')?.invalid &&
             communionForm.get('fatherBaptized')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -842,7 +842,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's baptism date <span class="text-red-600">*</span></span
+                >Doopdatum vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -858,7 +858,7 @@
             communionForm.get('fatherBaptismDate')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's baptism date is required</span
+                >Doopdatum vader is verplicht</span
               >
             </label>
             }
@@ -868,13 +868,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's nationality <span class="text-red-600">*</span></span
+                >Nationaliteit vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherNationality"
-              placeholder="Enter nationality"
+              placeholder="Voer nationaliteit in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('fatherNationality')?.invalid &&
@@ -885,7 +885,7 @@
             communionForm.get('fatherNationality')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's nationality is required</span
+                >Nationaliteit vader is verplicht</span
               >
             </label>
             }
@@ -894,13 +894,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's address <span class="text-red-600">*</span></span
+                >Adres vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('fatherAddress')?.invalid &&
@@ -911,7 +911,7 @@
             communionForm.get('fatherAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's address is required</span
+                >Adres vader is verplicht</span
               >
             </label>
             }
@@ -920,14 +920,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and city father
+                >Postcode en woonplaats vader
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('fatherPostalCity')?.invalid &&
@@ -938,7 +938,7 @@
             communionForm.get('fatherPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -947,7 +947,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mobile phone father <span class="text-red-600">*</span></span
+                >Mobiele telefoon vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -964,7 +964,7 @@
             communionForm.get('fatherPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's phone number is required</span
+                >Telefoonnummer vader is verplicht</span
               >
             </label>
             }
@@ -973,14 +973,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's email address
+                >E-mailadres vader
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="email"
               formControlName="fatherEmail"
-              placeholder="father.email@example.com"
+              placeholder="vader.email@voorbeeld.com"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('fatherEmail')?.invalid &&
@@ -992,11 +992,11 @@
             <label class="label">
               @if(communionForm.get('fatherEmail')?.hasError('required')) {
               <span class="label-text-alt text-error">
-                Father's email is required
+                E-mailadres vader is verplicht
               </span>
               } @else if(communionForm.get('fatherEmail')?.hasError('email')) {
               <span class="label-text-alt text-error">
-                Please enter a valid email address
+                Voer een geldig e-mailadres in
               </span>
 
               }
@@ -1010,19 +1010,19 @@
         @if(currentStep === 4) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Godparents Information
+            Informatie Doopgetuigen
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents Name <span class="text-red-600">*</span></span
+                >Naam doopgetuige <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsName"
-              placeholder="Enter godparent's name"
+              placeholder="Voer naam doopgetuige in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('godparentsName')?.invalid &&
@@ -1033,7 +1033,7 @@
             communionForm.get('godparentsName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparent's name is required</span
+                >Naam doopgetuige is verplicht</span
               >
             </label>
             }
@@ -1042,13 +1042,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents' surname <span class="text-red-600">*</span></span
+                >Achternaam doopgetuige <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsSurname"
-              placeholder="Enter godparent's surname"
+              placeholder="Voer achternaam doopgetuige in"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('godparentsSurname')?.invalid &&
@@ -1059,7 +1059,7 @@
             communionForm.get('godparentsSurname')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparent's surname is required</span
+                >Achternaam doopgetuige is verplicht</span
               >
             </label>
             }
@@ -1068,7 +1068,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents' date of birth
+                >Geboortedatum doopgetuige
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -1085,7 +1085,7 @@
             communionForm.get('godparentsDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparent's date of birth is required</span
+                >Geboortedatum doopgetuige is verplicht</span
               >
             </label>
             }
@@ -1094,7 +1094,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents Phone Number
+                >Telefoonnummer doopgetuige
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -1112,7 +1112,7 @@
             communionForm.get('godparentsPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparent's phone number is required</span
+                >Telefoonnummer doopgetuige is verplicht</span
               >
             </label>
             }
@@ -1121,13 +1121,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Godparents' address <span class="text-red-600">*</span></span
+                >Adres doopgetuige <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('godparentsAddress')?.invalid &&
@@ -1138,7 +1138,7 @@
             communionForm.get('godparentsAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Godparent's address is required</span
+                >Adres doopgetuige is verplicht</span
               >
             </label>
             }
@@ -1147,14 +1147,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and city of godparents
+                >Postcode en woonplaats doopgetuige
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="godparentsPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 communionForm.get('godparentsPostalCity')?.invalid &&
@@ -1165,7 +1165,7 @@
             communionForm.get('godparentsPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -1174,7 +1174,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Are his godparents Catholic?
+                >Zijn zijn doopgetuigen katholiek?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -1186,7 +1186,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -1195,14 +1195,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(communionForm.get('godparentsCatholic')?.invalid &&
             communionForm.get('godparentsCatholic')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -1211,7 +1211,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Upload baptism certificate of godparent(s) here</span
+                >Upload hier doopakte van doopgetuige(n)</span
               >
             </label>
             <input
@@ -1223,7 +1223,7 @@
             @if(selectedGodparentsCertificate) {
             <label class="label">
               <span class="label-text-alt text-success"
-                >Selected: {{ selectedGodparentsCertificate }}</span
+                >Geselecteerd: {{ selectedGodparentsCertificate }}</span
               >
             </label>
             }
@@ -1235,64 +1235,43 @@
         @if(currentStep === 5) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Privacy Statement
+            Privacyverklaring
           </h3>
 
           <div class="bg-amber-50 p-6 rounded-lg">
             <h4 class="font-bold text-lg text-gray-800 mb-3">
-              Privacy Statement Roman Catholic Parishes and General Regulations
-              for the Protection of Personal Data Parishes 2018.
+              Privacyverklaring Rooms-Katholieke Parochies en Algemene Regeling Bescherming Persoonsgegevens Parochies 2018.
             </h4>
             <p class="text-sm text-gray-700 mb-3">
-              A Privacy Statement applies to the General Data Protection
-              Regulation (GDPR), and the aforementioned regulations have been
-              drawn up. The Privacy Statement and the General Regulations are
-              available on the website and can be downloaded.
+              In verband met de Algemene Verordening Gegevensbescherming (AVG) is een Privacyverklaring van toepassing en zijn voornoemde regelingen opgesteld. De Privacyverklaring en de Algemene Regeling zijn beschikbaar op de website en kunnen worden gedownload.
             </p>
             <p class="text-sm text-gray-700 mb-3">
-              Below you will find a number of matters (in abbreviated,
-              simplified versions) that are important to you and for which we
-              request your consent (in advance). If you have any doubts about
-              the explanation in the abbreviated version, please always refer to
-              the full Privacy Statement and/or the General Regulations on our
-              website.
+              Hieronder vindt u een aantal zaken (in verkorte, vereenvoudigde versies) die voor u van belang zijn en waarvoor wij uw toestemming (vooraf) vragen. Mocht u twijfelen over de uitleg in de verkorte versie, dan verwijzen wij u altijd naar de volledige Privacyverklaring en/of de Algemene Regeling op onze website.
             </p>
             <div class="mt-4 space-y-3">
               <div>
-                <p class="font-semibold text-gray-800">Data General</p>
+                <p class="font-semibold text-gray-800">Gegevens Algemeen</p>
               </div>
               <div>
-                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="font-semibold text-gray-800">Akkoord</p>
                 <p class="text-sm text-gray-700">
-                  The applicant(s) agree(s) to the terms of the Privacy
-                  Statement.
+                  De aanvrager(s) gaat/gaan akkoord met de bepalingen van de Privacyverklaring.
                 </p>
               </div>
               <div>
-                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="font-semibold text-gray-800">Niet akkoord</p>
                 <p class="text-sm text-gray-700">
-                  If you do not agree, the application cannot be processed.
+                  Indien u niet akkoord gaat, kan de aanvraag niet worden verwerkt.
                 </p>
               </div>
               <p class="text-sm text-gray-700">
-                The information you provide may be used for parish
-                administration and will be stored digitally or on paper (in
-                registers) for this purpose. You can request access to this
-                information. Requesting the deletion of this information is
-                generally not possible because it is necessary for the proper
-                functioning of a parish. The procedure for registration and
-                deregistration (2013) applies to requests to be removed from the
-                parish registers/administration.
+                De gegevens die u verstrekt kunnen worden gebruikt voor parochieadministratie en zullen hiervoor digitaal of op papier (in registers) worden bewaard. U kunt een verzoek indienen om deze gegevens in te zien. Het verzoeken om verwijdering van deze gegevens is over het algemeen niet mogelijk omdat deze noodzakelijk zijn voor het goed functioneren van een parochiekerk. De procedure inschrijving en uitschrijving (2013) is van toepassing op verzoeken om uit de parochieregisters/administratie te worden verwijderd.
               </p>
               <p class="text-sm text-gray-700">
-                Your information will always be treated confidentially and will
-                never be provided to external institutions/agencies/third
-                parties without your permission.
+                Uw gegevens worden altijd vertrouwelijk behandeld en zullen nooit zonder uw toestemming worden verstrekt aan externe instellingen/instanties/derden.
               </p>
               <p class="text-sm text-gray-700 mb-3">
-                Below you can indicate whether or not you agree with the GDPR
-                above and your request will be processed (regardless of your
-                answer).
+                Hieronder kunt u aangeven of u al dan niet akkoord gaat met bovengenoemde AVG en uw verzoek wordt verwerkt (ongeacht uw antwoord).
               </p>
             </div>
           </div>
@@ -1300,7 +1279,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Do you agree with our parish's privacy policy?
+                >Gaat u akkoord met het privacybeleid van onze parochie?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -1312,7 +1291,7 @@
                   value="agree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes! I agree</span>
+                <span class="label-text">Ja! Ik ga akkoord</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -1321,37 +1300,36 @@
                   value="disagree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No! I don't agree</span>
+                <span class="label-text">Nee! Ik ga niet akkoord</span>
               </label>
             </div>
             @if(communionForm.get('privacyAgreement')?.invalid &&
             communionForm.get('privacyAgreement')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please agree to privacy policy to continue</span
+                >Ga akkoord met het privacybeleid om door te gaan</span
               >
             </label>
             }
           </div>
 
           <div class="bg-gray-100 p-6 rounded-lg">
-            <h4 class="font-bold text-lg text-gray-800 mb-2">Costs</h4>
+            <h4 class="font-bold text-lg text-gray-800 mb-2">Kosten</h4>
             <p class="text-gray-700">
-              The cost of preparing for Holy Communion is 75.00 euros per
-              communicant.
+              De kosten voor de voorbereiding op de Eerste Heilige Communie bedragen 75,00 euro per communicant.
             </p>
           </div>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >New field <span class="text-red-600">*</span></span
+                >Nieuw veld <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="additionalField"
-              placeholder="Enter additional information"
+              placeholder="Voer aanvullende informatie in"
               class="input input-bordered w-full"
             />
           </div>
@@ -1375,8 +1353,7 @@
             />
           </svg>
           <span
-            >Thank you for your First Holy Communion registration! We will
-            contact you soon with preparation details.</span
+            >Hartelijk dank voor uw Eerste Heilige Communie registratie! We nemen binnenkort contact met u op met voorbereidingsdetails.</span
           >
         </div>
         }
@@ -1398,7 +1375,7 @@
             />
           </svg>
           <span
-            >There was an error submitting your request. Please try again.</span
+            >Er is een fout opgetreden bij het verzenden van uw verzoek. Probeer het opnieuw.</span
           >
         </div>
         }
@@ -1411,7 +1388,7 @@
             class="btn btn-outline btn-warning"
             (click)="previousStep()"
           >
-            Previous
+            Vorige
           </button>
           } @else {
           <div></div>
@@ -1421,7 +1398,7 @@
             class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
             (click)="nextStep()"
           >
-            Next
+            Volgende
           </button>
           } @else {
           <button
@@ -1431,7 +1408,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Request }
+            Bezig met verzenden... } @else { Verzoek verzenden }
           </button>
           }
         </div>

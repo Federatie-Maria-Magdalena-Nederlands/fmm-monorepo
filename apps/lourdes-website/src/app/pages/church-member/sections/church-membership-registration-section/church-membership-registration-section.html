@@ -5,11 +5,11 @@
   <div class="max-w-4xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        Church Membership Registration
+        Lidmaatschap Registratie
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Complete the registration form to become a member of our parish.
+        Vul het registratieformulier in om lid te worden van onze parochie.
       </p>
     </div>
 
@@ -34,20 +34,20 @@
         @if(currentStep === 0) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">
-            Personal Information
+            Persoonlijke Gegevens
           </h3>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="form-control">
               <label class="label">
                 <span class="label-text font-semibold text-gray-700"
-                  >Name <span class="text-red-600">*</span></span
+                  >Voornaam <span class="text-red-600">*</span></span
                 >
               </label>
               <input
                 type="text"
                 formControlName="firstName"
-                placeholder="Enter your first name"
+                placeholder="Voer uw voornaam in"
                 class="input input-bordered w-full"
                 [class.input-error]="
                   isFieldInvalid('firstName')
@@ -55,7 +55,7 @@
               />
               @if(isFieldInvalid('firstName')) {
               <label class="label">
-                <span class="label-text-alt text-error">Name is required</span>
+                <span class="label-text-alt text-error">Voornaam is verplicht</span>
               </label>
               }
             </div>
@@ -63,13 +63,13 @@
             <div class="form-control">
               <label class="label">
                 <span class="label-text font-semibold text-gray-700"
-                  >Last name <span class="text-red-600">*</span></span
+                  >Achternaam <span class="text-red-600">*</span></span
                 >
               </label>
               <input
                 type="text"
                 formControlName="lastName"
-                placeholder="Enter your last name"
+                placeholder="Voer uw achternaam in"
                 class="input input-bordered w-full"
                 [class.input-error]="
                   isFieldInvalid('lastName')
@@ -78,7 +78,7 @@
               @if(isFieldInvalid('lastName')) {
               <label class="label">
                 <span class="label-text-alt text-error"
-                  >Last name is required</span
+                  >Achternaam is verplicht</span
                 >
               </label>
               }
@@ -88,7 +88,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Gender <span class="text-red-600">*</span></span
+                >Geslacht <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -108,13 +108,13 @@
                   value="Woman"
                   class="radio radio-primary"
                 />
-                <span class="label-text">Woman</span>
+                <span class="label-text">Vrouw</span>
               </label>
             </div>
             @if(isFieldInvalid('gender')) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select your gender</span
+                >Selecteer uw geslacht</span
               >
             </label>
             }
@@ -124,13 +124,13 @@
             <div class="form-control">
               <label class="label">
                 <span class="label-text font-semibold text-gray-700"
-                  >Email address <span class="text-red-600">*</span></span
+                  >E-mailadres <span class="text-red-600">*</span></span
                 >
               </label>
               <input
                 type="email"
                 formControlName="email"
-                placeholder="your.email@example.com"
+                placeholder="uw.email@voorbeeld.nl"
                 class="input input-bordered w-full"
                 [class.input-error]="
                   isFieldInvalid('email')
@@ -140,10 +140,10 @@
               <label class="label">
                 @if(registrationForm.get('email')?.hasError('required')) {
                 <span class="label-text-alt text-error">
-                  Email is required
+                  E-mailadres is verplicht
                 </span>
                 } @if(registrationForm.get('email')?.hasError('email')) {
-                <span> Please enter a valid email address </span>
+                <span> Voer een geldig e-mailadres in </span>
                 }
               </label>
               }
@@ -152,7 +152,7 @@
             <div class="form-control">
               <label class="label">
                 <span class="label-text font-semibold text-gray-700"
-                  >Phone number <span class="text-red-600">*</span></span
+                  >Telefoonnummer <span class="text-red-600">*</span></span
                 >
               </label>
               <input
@@ -167,7 +167,7 @@
               @if(isFieldInvalid('phoneNumber')) {
               <label class="label">
                 <span class="label-text-alt text-error">
-                  Phone number is required
+                  Telefoonnummer is verplicht
                 </span>
               </label>
               }
@@ -180,20 +180,20 @@
         @if(currentStep === 1) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">
-            Address Information
+            Adresgegevens
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Address (street name, house number and any additions)
+                >Adres (straatnaam, huisnummer en eventuele toevoegingen)
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="address"
-              placeholder="Street name, house number"
+              placeholder="Straatnaam, huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 isFieldInvalid('address')
@@ -201,7 +201,7 @@
             />
             @if(isFieldInvalid('address')) {
             <label class="label">
-              <span class="label-text-alt text-error">Address is required</span>
+              <span class="label-text-alt text-error">Adres is verplicht</span>
             </label>
             }
           </div>
@@ -209,7 +209,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and city <span class="text-red-600">*</span></span
+                >Postcode en plaats <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -224,7 +224,7 @@
             @if(isFieldInvalid('postalCodeCity')) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -233,7 +233,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Are you the main resident of this address?
+                >Bent u de hoofdbewoner van dit adres?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -245,7 +245,7 @@
                   value="Yes"
                   class="radio radio-primary"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -254,13 +254,13 @@
                   value="No"
                   class="radio radio-primary"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(isFieldInvalid('mainResident')) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -272,13 +272,13 @@
         @if(currentStep === 2) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">
-            Religious Information
+            Religieuze Informatie
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Were you baptized Catholic?
+                >Bent u katholiek gedoopt?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -290,7 +290,7 @@
                   value="Yes"
                   class="radio radio-primary"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -299,13 +299,13 @@
                   value="No"
                   class="radio radio-primary"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(isFieldInvalid('baptizedCatholic')) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -317,13 +317,13 @@
         @if(currentStep === 3) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">
-            Marital Information
+            Burgerlijke Staat
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Marital status <span class="text-red-600">*</span></span
+                >Burgerlijke staat <span class="text-red-600">*</span></span
               >
             </label>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -342,7 +342,7 @@
             @if(isFieldInvalid('maritalStatus')) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select your marital status</span
+                >Selecteer uw burgerlijke staat</span
               >
             </label>
             }
@@ -354,7 +354,7 @@
             <div class="form-control">
               <label class="label">
                 <span class="label-text font-semibold text-gray-700"
-                  >Date of wedding</span
+                  >Datum huwelijk</span
                 >
               </label>
               <input
@@ -367,7 +367,7 @@
             <div class="form-control">
               <label class="label">
                 <span class="label-text font-semibold text-gray-700"
-                  >Date of dissolution of marriage</span
+                  >Datum ontbinding huwelijk</span
                 >
               </label>
               <input
@@ -380,7 +380,7 @@
             <div class="form-control">
               <label class="label">
                 <span class="label-text font-semibold text-gray-700"
-                  >Widowed since</span
+                  >Weduwe/weduwnaar sinds</span
                 >
               </label>
               <input
@@ -399,7 +399,7 @@
         @if(currentStep === 4) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">
-            Spouse Information
+            Informatie Partner
           </h3>
 
           @if(requiresSpouseInfo()) {
@@ -408,13 +408,13 @@
               <div class="form-control">
                 <label class="label">
                   <span class="label-text font-semibold text-gray-700"
-                    >Spouse's/Wife's Surname</span
+                    >Achternaam echtgenoot/echtgenote</span
                   >
                 </label>
                 <input
                   type="text"
                   formControlName="spouseSurname"
-                  placeholder="Enter surname"
+                  placeholder="Voer achternaam in"
                   class="input input-bordered w-full"
                 />
               </div>
@@ -422,13 +422,13 @@
               <div class="form-control">
                 <label class="label">
                   <span class="label-text font-semibold text-gray-700"
-                    >Spouse's/Wife's First Names</span
+                    >Voornamen echtgenoot/echtgenote</span
                   >
                 </label>
                 <input
                   type="text"
                   formControlName="spouseFirstNames"
-                  placeholder="Enter first names"
+                  placeholder="Voer voornamen in"
                   class="input input-bordered w-full"
                 />
               </div>
@@ -438,7 +438,7 @@
               <div class="form-control">
                 <label class="label">
                   <span class="label-text font-semibold text-gray-700"
-                    >Date of birth of husband/wife</span
+                    >Geboortedatum echtgenoot/echtgenote</span
                   >
                 </label>
                 <input
@@ -451,13 +451,13 @@
               <div class="form-control">
                 <label class="label">
                   <span class="label-text font-semibold text-gray-700"
-                    >Place of birth of husband/wife</span
+                    >Geboorteplaats echtgenoot/echtgenote</span
                   >
                 </label>
                 <input
                   type="text"
                   formControlName="spouseBirthPlace"
-                  placeholder="Enter birth place"
+                  placeholder="Voer geboorteplaats in"
                   class="input input-bordered w-full"
                 />
               </div>
@@ -479,7 +479,7 @@
               ></path>
             </svg>
             <span
-              >Spouse information not required for your marital status.</span
+              >Partnerinformatie niet vereist voor uw burgerlijke staat.</span
             >
           </div>
           }
@@ -490,33 +490,32 @@
         @if(currentStep === 5) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">
-            Additional Information
+            Aanvullende Informatie
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >I would also like to register the following family
-                members:</span
+                >Ik wil ook graag de volgende familieleden registreren:</span
               >
             </label>
             <textarea
               formControlName="familyMembers"
               class="textarea w-full block textarea-bordered h-24"
-              placeholder="Enter family members you would like to register..."
+              placeholder="Voer familieleden in die u wilt registreren..."
             ></textarea>
           </div>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Ask any questions here (not mandatory)</span
+                >Stel hier uw vragen (niet verplicht)</span
               >
             </label>
             <textarea
               formControlName="questions"
               class="textarea w-full block textarea-bordered h-32"
-              placeholder="Enter any questions or comments..."
+              placeholder="Voer eventuele vragen of opmerkingen in..."
             ></textarea>
           </div>
         </div>
@@ -539,7 +538,7 @@
             />
           </svg>
           <span
-            >Thank you for registering! We'll contact you soon with more
+            >Hartelijk dank voor uw registratie! We nemen binnenkort contact met u op met meer
             details.</span
           >
         </div>
@@ -562,8 +561,7 @@
             />
           </svg>
           <span
-            >There was an error submitting your registration. Please try
-            again.</span
+            >Er is een fout opgetreden bij het verzenden van uw registratie. Probeer het opnieuw.</span
           >
         </div>
         }
@@ -576,7 +574,7 @@
             (click)="previousStep()"
             [disabled]="currentStep === 0"
           >
-            Previous
+            Vorige
           </button>
 
           @if(currentStep < steps.length - 1) {
@@ -585,7 +583,7 @@
             class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
             (click)="nextStep()"
           >
-            Next
+            Volgende
           </button>
           } @else {
           <button
@@ -595,7 +593,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Registration }
+            Bezig met verzenden... } @else { Registratie Verzenden }
           </button>
           }
         </div>

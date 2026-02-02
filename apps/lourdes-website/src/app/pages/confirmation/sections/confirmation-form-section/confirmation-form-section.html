@@ -5,11 +5,11 @@
   <div class="max-w-3xl mx-auto relative z-10">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">
-        Confirmation Registration Form
+        Vormsel Registratieformulier
       </h2>
       <div class="h-1 w-20 bg-amber-600 mx-auto mb-4"></div>
       <p class="text-lg text-gray-700">
-        Fill out the form below to register for Confirmation.
+        Vul het onderstaande formulier in om u aan te melden voor het Vormsel.
       </p>
     </div>
 
@@ -17,13 +17,13 @@
       <!-- Stepper -->
       <ul class="steps steps-horizontal w-full mb-8">
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 1 }">
-          Confirmand
+          Vormeling
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 2 }">
-          Mother
+          Moeder
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 3 }">
-          Father
+          Vader
         </li>
         <li class="step" [ngClass]="{ 'step-warning': currentStep >= 4 }">
           Sponsor
@@ -38,19 +38,19 @@
         @if(currentStep === 1) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Confirmand Information
+            Informatie Vormeling
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Name of confirmand <span class="text-red-600">*</span></span
+                >Naam vormeling <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="confirmandName"
-              placeholder="Enter name"
+              placeholder="Voer naam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('confirmandName')?.invalid &&
@@ -60,7 +60,7 @@
             @if(confirmationForm.get('confirmandName')?.invalid &&
             confirmationForm.get('confirmandName')?.touched) {
             <label class="label">
-              <span class="label-text-alt text-error">Name is required</span>
+              <span class="label-text-alt text-error">Naam is verplicht</span>
             </label>
             }
           </div>
@@ -68,13 +68,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Confirmand's surname <span class="text-red-600">*</span></span
+                >Achternaam vormeling <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="confirmandSurname"
-              placeholder="Enter surname"
+              placeholder="Voer achternaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('confirmandSurname')?.invalid &&
@@ -84,7 +84,7 @@
             @if(confirmationForm.get('confirmandSurname')?.invalid &&
             confirmationForm.get('confirmandSurname')?.touched) {
             <label class="label">
-              <span class="label-text-alt text-error">Surname is required</span>
+              <span class="label-text-alt text-error">Achternaam is verplicht</span>
             </label>
             }
           </div>
@@ -92,14 +92,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Confirmand's first name
+                >Voornaam vormeling
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="confirmandFirstName"
-              placeholder="Enter first name"
+              placeholder="Voer voornaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('confirmandFirstName')?.invalid &&
@@ -110,7 +110,7 @@
             confirmationForm.get('confirmandFirstName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >First name is required</span
+                >Voornaam is verplicht</span
               >
             </label>
             }
@@ -119,7 +119,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Date and place of birth
+                >Geboortedatum en geboorteplaats
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -136,7 +136,7 @@
             confirmationForm.get('confirmandDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Date of birth is required</span
+                >Geboortedatum is verplicht</span
               >
             </label>
             }
@@ -156,7 +156,7 @@
                   value="Boy"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Boy</span>
+                <span class="label-text">Jongen</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -165,14 +165,14 @@
                   value="Girl"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Girl</span>
+                <span class="label-text">Meisje</span>
               </label>
             </div>
             @if(confirmationForm.get('confirmandGender')?.invalid &&
             confirmationForm.get('confirmandGender')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select gender</span
+                >Selecteer geslacht</span
               >
             </label>
             }
@@ -181,14 +181,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Nationality of confirmand
+                >Nationaliteit vormeling
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="confirmandNationality"
-              placeholder="Enter nationality"
+              placeholder="Voer nationaliteit in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('confirmandNationality')?.invalid &&
@@ -199,7 +199,7 @@
             confirmationForm.get('confirmandNationality')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Nationality is required</span
+                >Nationaliteit is verplicht</span
               >
             </label>
             }
@@ -208,7 +208,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptized? <span class="text-red-600">*</span></span
+                >Gedoopt? <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -219,7 +219,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -228,14 +228,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(confirmationForm.get('confirmandBaptized')?.invalid &&
             confirmationForm.get('confirmandBaptized')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -245,7 +245,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >If yes, please provide date
+                >Indien ja, vermeld de datum
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -262,7 +262,7 @@
             confirmationForm.get('confirmandBaptismDate')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Baptism date is required</span
+                >Doopdatum is verplicht</span
               >
             </label>
             }
@@ -271,7 +271,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptismal certificate</span
+                >Doopakte</span
               >
             </label>
             <input
@@ -283,7 +283,7 @@
             @if(selectedConfirmandCertificate) {
             <label class="label">
               <span class="label-text-alt text-success"
-                >Selected: {{ selectedConfirmandCertificate }}</span
+                >Geselecteerd: {{ selectedConfirmandCertificate }}</span
               >
             </label>
             }
@@ -292,13 +292,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptismal place <span class="text-red-600">*</span></span
+                >Doopplaats <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="confirmandBaptismPlace"
-              placeholder="Enter baptismal place"
+              placeholder="Voer doopplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('confirmandBaptismPlace')?.invalid &&
@@ -309,7 +309,7 @@
             confirmationForm.get('confirmandBaptismPlace')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Baptismal place is required</span
+                >Doopplaats is verplicht</span
               >
             </label>
             }
@@ -318,14 +318,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Name of parish where confirmand was baptized
+                >Naam van de parochie waar vormeling gedoopt werd
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="confirmandParishName"
-              placeholder="Enter parish name"
+              placeholder="Voer parochienaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('confirmandParishName')?.invalid &&
@@ -336,7 +336,7 @@
             confirmationForm.get('confirmandParishName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Parish name is required</span
+                >Parochienaam is verplicht</span
               >
             </label>
             }
@@ -694,11 +694,11 @@
             confirmationForm.get('motherEmail')?.touched) {
             <label class="label">
               @if(confirmationForm.get('motherEmail')?.hasError('required')) {
-              <span class="label-text-alt text-error"></span>
+              <span class="label-text-alt text-error">E-mailadres moeder is verplicht</span>
               } @else if(confirmationForm.get('motherEmail')?.hasError('email'))
               {
               <span class="label-text-alt text-error">
-                Please enter a valid email address
+                Voer een geldig e-mailadres in
               </span>
               }
             </label>
@@ -711,19 +711,19 @@
         @if(currentStep === 3) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Father's Information
+            Informatie Vader
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's surname <span class="text-red-600">*</span></span
+                >Achternaam vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherSurname"
-              placeholder="Enter father's surname"
+              placeholder="Voer achternaam vader in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('fatherSurname')?.invalid &&
@@ -734,7 +734,7 @@
             confirmationForm.get('fatherSurname')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's surname is required</span
+                >Achternaam vader is verplicht</span
               >
             </label>
             }
@@ -743,13 +743,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's first names <span class="text-red-600">*</span></span
+                >Voornamen vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherFirstNames"
-              placeholder="Enter father's first names"
+              placeholder="Voer voornamen vader in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('fatherFirstNames')?.invalid &&
@@ -760,7 +760,7 @@
             confirmationForm.get('fatherFirstNames')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's first names are required</span
+                >Voornamen vader zijn verplicht</span
               >
             </label>
             }
@@ -769,7 +769,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's date of birth
+                >Geboortedatum vader
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -786,7 +786,7 @@
             confirmationForm.get('fatherDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's date of birth is required</span
+                >Geboortedatum vader is verplicht</span
               >
             </label>
             }
@@ -795,14 +795,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's place of birth
+                >Geboorteplaats vader
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherPlaceOfBirth"
-              placeholder="Enter place of birth"
+              placeholder="Voer geboorteplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('fatherPlaceOfBirth')?.invalid &&
@@ -813,7 +813,7 @@
             confirmationForm.get('fatherPlaceOfBirth')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's place of birth is required</span
+                >Geboorteplaats vader is verplicht</span
               >
             </label>
             }
@@ -822,7 +822,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father baptized? <span class="text-red-600">*</span></span
+                >Vader gedoopt? <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -833,7 +833,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -842,14 +842,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(confirmationForm.get('fatherBaptized')?.invalid &&
             confirmationForm.get('fatherBaptized')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -859,7 +859,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's baptism date <span class="text-red-600">*</span></span
+                >Doopsdatum vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -875,7 +875,7 @@
             confirmationForm.get('fatherBaptismDate')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's baptism date is required</span
+                >Doopsdatum vader is verplicht</span
               >
             </label>
             }
@@ -885,13 +885,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's nationality <span class="text-red-600">*</span></span
+                >Nationaliteit vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherNationality"
-              placeholder="Enter nationality"
+              placeholder="Voer nationaliteit in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('fatherNationality')?.invalid &&
@@ -911,13 +911,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's address <span class="text-red-600">*</span></span
+                >Adres vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('fatherAddress')?.invalid &&
@@ -928,7 +928,7 @@
             confirmationForm.get('fatherAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's address is required</span
+                >Adres vader is verplicht</span
               >
             </label>
             }
@@ -937,14 +937,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and city father
+                >Postcode en woonplaats vader
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="fatherPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('fatherPostalCity')?.invalid &&
@@ -955,7 +955,7 @@
             confirmationForm.get('fatherPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -964,7 +964,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mobile phone father <span class="text-red-600">*</span></span
+                >Mobiele telefoon vader <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -981,7 +981,7 @@
             confirmationForm.get('fatherPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's phone number is required</span
+                >Telefoonnummer vader is verplicht</span
               >
             </label>
             }
@@ -990,14 +990,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Father's email address
+                >E-mailadres vader
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="email"
               formControlName="fatherEmail"
-              placeholder="father.email@example.com"
+              placeholder="vader.email@voorbeeld.nl"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('fatherEmail')?.invalid &&
@@ -1008,11 +1008,11 @@
             confirmationForm.get('fatherEmail')?.touched) {
             <label class="label">
               @if(confirmationForm.get('fatherEmail')?.hasError('required')) {
-              <span class="label-text-alt text-error"></span>
+              <span class="label-text-alt text-error">E-mailadres vader is verplicht</span>
               } @else if(confirmationForm.get('fatherEmail')?.hasError('email'))
               {
               <span class="label-text-alt text-error">
-                Please enter a valid email address
+                Voer een geldig e-mailadres in
               </span>
               }
             </label>
@@ -1025,19 +1025,19 @@
         @if(currentStep === 4) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Sponsor Information
+            Informatie Sponsor
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Sponsor Name <span class="text-red-600">*</span></span
+                >Naam sponsor <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="sponsorName"
-              placeholder="Enter sponsor's name"
+              placeholder="Voer naam sponsor in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('sponsorName')?.invalid &&
@@ -1048,7 +1048,7 @@
             confirmationForm.get('sponsorName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Sponsor's name is required</span
+                >Naam sponsor is verplicht</span
               >
             </label>
             }
@@ -1057,13 +1057,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Sponsor's surname <span class="text-red-600">*</span></span
+                >Achternaam sponsor <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="sponsorSurname"
-              placeholder="Enter sponsor's surname"
+              placeholder="Voer achternaam sponsor in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('sponsorSurname')?.invalid &&
@@ -1074,7 +1074,7 @@
             confirmationForm.get('sponsorSurname')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Sponsor's surname is required</span
+                >Achternaam sponsor is verplicht</span
               >
             </label>
             }
@@ -1083,7 +1083,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Sponsor's date of birth
+                >Geboortedatum sponsor
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -1100,7 +1100,7 @@
             confirmationForm.get('sponsorDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Sponsor's date of birth is required</span
+                >Geboortedatum sponsor is verplicht</span
               >
             </label>
             }
@@ -1109,7 +1109,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Sponsor Phone Number <span class="text-red-600">*</span></span
+                >Telefoonnummer sponsor <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -1126,7 +1126,7 @@
             confirmationForm.get('sponsorPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Sponsor's phone number is required</span
+                >Telefoonnummer sponsor is verplicht</span
               >
             </label>
             }
@@ -1135,13 +1135,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Sponsor's address <span class="text-red-600">*</span></span
+                >Adres sponsor <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="sponsorAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('sponsorAddress')?.invalid &&
@@ -1152,7 +1152,7 @@
             confirmationForm.get('sponsorAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Sponsor's address is required</span
+                >Adres sponsor is verplicht</span
               >
             </label>
             }
@@ -1161,14 +1161,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and city of sponsor
+                >Postcode en woonplaats sponsor
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="sponsorPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('sponsorPostalCity')?.invalid &&
@@ -1179,7 +1179,7 @@
             confirmationForm.get('sponsorPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -1188,7 +1188,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Is the sponsor Catholic?
+                >Is de sponsor katholiek?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -1200,7 +1200,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -1209,14 +1209,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(confirmationForm.get('sponsorCatholic')?.invalid &&
             confirmationForm.get('sponsorCatholic')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -1225,7 +1225,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Upload baptism certificate of sponsor here</span
+                >Upload hier doopakte van sponsor</span
               >
             </label>
             <input
@@ -1237,7 +1237,7 @@
             @if(selectedSponsorCertificate) {
             <label class="label">
               <span class="label-text-alt text-success"
-                >Selected: {{ selectedSponsorCertificate }}</span
+                >Geselecteerd: {{ selectedSponsorCertificate }}</span
               >
             </label>
             }
@@ -1249,64 +1249,43 @@
         @if(currentStep === 5) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Privacy Statement
+            Privacyverklaring
           </h3>
 
           <div class="bg-amber-50 p-6 rounded-lg">
             <h4 class="font-bold text-lg text-gray-800 mb-3">
-              Privacy Statement Roman Catholic Parishes and General Regulations
-              for the Protection of Personal Data Parishes 2018.
+              Privacyverklaring Rooms-Katholieke Parochies en Algemene Verordening Bescherming Persoonsgegevens Parochies 2018.
             </h4>
             <p class="text-sm text-gray-700 mb-3">
-              A Privacy Statement applies to the General Data Protection
-              Regulation (GDPR), and the aforementioned regulations have been
-              drawn up. The Privacy Statement and the General Regulations are
-              available on the website and can be downloaded.
+              In verband met de Algemene Verordening Gegevensbescherming (AVG) is een Privacyverklaring van toepassing en zijn bovengenoemde regelingen opgesteld. De Privacyverklaring en de Algemene Regeling zijn beschikbaar op de website en kunnen worden gedownload.
             </p>
             <p class="text-sm text-gray-700 mb-3">
-              Below you will find a number of matters (in abbreviated,
-              simplified versions) that are important to you and for which we
-              request your consent (in advance). If you have any doubts about
-              the explanation in the abbreviated version, please always refer to
-              the full Privacy Statement and/or the General Regulations on our
-              website.
+              Hieronder vindt u een aantal zaken (in verkorte, vereenvoudigde versies) die voor u belangrijk zijn en waarvoor wij (vooraf) uw toestemming vragen. Als u twijfelt over de uitleg in de verkorte versie, verwijzen wij u altijd naar de volledige Privacyverklaring en/of de Algemene Regeling op onze website.
             </p>
             <div class="mt-4 space-y-3">
               <div>
-                <p class="font-semibold text-gray-800">Data General</p>
+                <p class="font-semibold text-gray-800">Gegevens Algemeen</p>
               </div>
               <div>
-                <p class="font-semibold text-gray-800">Agreement</p>
+                <p class="font-semibold text-gray-800">Akkoord</p>
                 <p class="text-sm text-gray-700">
-                  The applicant(s) agree(s) to the terms of the Privacy
-                  Statement.
+                  De aanvrager(s) gaat/gaan akkoord met de bepalingen van de Privacyverklaring.
                 </p>
               </div>
               <div>
-                <p class="font-semibold text-gray-800">Disagreement</p>
+                <p class="font-semibold text-gray-800">Niet akkoord</p>
                 <p class="text-sm text-gray-700">
-                  If you do not agree, the application cannot be processed.
+                  Als u niet akkoord gaat, kan de aanvraag niet worden verwerkt.
                 </p>
               </div>
               <p class="text-sm text-gray-700">
-                The information you provide may be used for parish
-                administration and will be stored digitally or on paper (in
-                registers) for this purpose. You can request access to this
-                information. Requesting the deletion of this information is
-                generally not possible because it is necessary for the proper
-                functioning of a parish. The procedure for registration and
-                deregistration (2013) applies to requests to be removed from the
-                parish registers/administration.
+                De informatie die u verstrekt, kan worden gebruikt voor parochieadministratie en wordt hiervoor digitaal of op papier (in registers) opgeslagen. U kunt verzoeken om deze informatie in te zien. Het verzoeken van verwijdering van deze informatie is over het algemeen niet mogelijk omdat dit noodzakelijk is voor het goed functioneren van een parochie. De procedure voor registratie en uitschrijving (2013) is van toepassing op verzoeken om uit de parochieregisters/administratie te worden verwijderd.
               </p>
               <p class="text-sm text-gray-700">
-                Your information will always be treated confidentially and will
-                never be provided to external institutions/agencies/third
-                parties without your permission.
+                Uw informatie wordt altijd vertrouwelijk behandeld en zal nooit zonder uw toestemming worden verstrekt aan externe instellingen/instanties/derden.
               </p>
               <p class="text-sm text-gray-700 mb-3">
-                Below you can indicate whether or not you agree with the GDPR
-                above and your request will be processed (regardless of your
-                answer).
+                Hieronder kunt u aangeven of u al dan niet akkoord gaat met de bovengenoemde AVG en uw verzoek zal worden verwerkt (ongeacht uw antwoord).
               </p>
             </div>
           </div>
@@ -1314,7 +1293,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Do you agree with our parish's privacy policy?
+                >Gaat u akkoord met het privacybeleid van onze parochie?
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -1326,7 +1305,7 @@
                   value="agree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes! I agree</span>
+                <span class="label-text">Ja! Ik ga akkoord</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -1335,37 +1314,36 @@
                   value="disagree"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No! I don't agree</span>
+                <span class="label-text">Nee! Ik ga niet akkoord</span>
               </label>
             </div>
             @if(confirmationForm.get('privacyAgreement')?.invalid &&
             confirmationForm.get('privacyAgreement')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please agree to privacy policy to continue</span
+                >Ga akkoord met het privacybeleid om door te gaan</span
               >
             </label>
             }
           </div>
 
           <div class="bg-gray-100 p-6 rounded-lg">
-            <h4 class="font-bold text-lg text-gray-800 mb-2">Costs</h4>
+            <h4 class="font-bold text-lg text-gray-800 mb-2">Kosten</h4>
             <p class="text-gray-700">
-              The cost of preparing for Confirmation is 75.00 euros per
-              confirmand.
+              De kosten voor de voorbereiding op het Vormsel bedragen 75,00 euro per vormeling.
             </p>
           </div>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Additional information</span
+                >Aanvullende informatie</span
               >
             </label>
             <input
               type="text"
               formControlName="additionalField"
-              placeholder="Enter additional information (optional)"
+              placeholder="Voer aanvullende informatie in (optioneel)"
               class="input input-bordered w-full"
             />
           </div>
@@ -1389,8 +1367,7 @@
             />
           </svg>
           <span
-            >Thank you for your Confirmation registration! We will contact you
-            soon with preparation details.</span
+            >Hartelijk dank voor uw Vormsel registratie! We nemen binnenkort contact met u op met voorbereidingsdetails.</span
           >
         </div>
         }
@@ -1412,7 +1389,7 @@
             />
           </svg>
           <span
-            >There was an error submitting your request. Please try again.</span
+            >Er is een fout opgetreden bij het verzenden van uw verzoek. Probeer het opnieuw.</span
           >
         </div>
         }
@@ -1425,7 +1402,7 @@
             class="btn btn-outline btn-warning"
             (click)="previousStep()"
           >
-            Previous
+            Vorige
           </button>
           } @else {
           <div></div>
@@ -1435,7 +1412,7 @@
             class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
             (click)="nextStep()"
           >
-            Next
+            Volgende
           </button>
           } @else {
           <button
@@ -1445,7 +1422,7 @@
           >
             @if(isSubmitting) {
             <span class="loading loading-spinner"></span>
-            Submitting... } @else { Submit Request }
+            Bezig met verzenden... } @else { Verzoek verzenden }
           </button>
           }
         </div>
