@@ -33,6 +33,14 @@
       },
       'google_translate_element'
     );
+        // Force Dutch as default
+    setTimeout(function () {
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = 'nl';
+        select.dispatchEvent(new Event('change'));
+      }
+    }, 1000);
   }
 </script>
 
