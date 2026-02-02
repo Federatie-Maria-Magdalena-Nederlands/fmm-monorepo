@@ -10,7 +10,6 @@ import {
   getDocs,
   query,
   where,
-  // orderBy,
   Timestamp,
 } from 'firebase/firestore';
 
@@ -47,13 +46,13 @@ export class CelebrationsSection implements OnInit {
   public loading = signal(true);
 
   public weeklySchedule: WeeklySchedule[] = [
-    { day: 'Monday', time: '9:00 AM' },
-    { day: 'Tuesday', time: '9:00 AM' },
-    { day: 'Wednesday', time: '7:00 PM' },
-    { day: 'Thursday', time: '9:00 AM' },
-    { day: 'Friday', time: '9:00 AM' },
-    { day: 'Saturday', time: '9:00 AM' },
-    { day: 'Sunday', time: '9:30 am' },
+    { day: 'Maandag', time: '9:00 AM' },
+    { day: 'Dinsdag', time: '9:00 AM' },
+    { day: 'Woensdag', time: '7:00 PM' },
+    { day: 'Donderdag', time: '9:00 AM' },
+    { day: 'Vrijdag', time: '9:00 AM' },
+    { day: 'Zaterdag', time: '9:00 AM' },
+    { day: 'Zondag', time: '9:30 AM' },
   ];
 
   constructor(private firebaseService: FirebaseService) {
@@ -68,10 +67,10 @@ export class CelebrationsSection implements OnInit {
     this.loading.set(true);
     try {
       const collectionRef = collection(this.db, 'celebrations');
+      // Query without orderBy to avoid composite index requirement
       const q = query(
         collectionRef,
-        where('status', '==', 'published'),
-        // orderBy('date', 'asc')
+        where('status', '==', 'published')
       );
 
       const querySnapshot = await getDocs(q);
@@ -84,9 +83,17 @@ export class CelebrationsSection implements OnInit {
         } as Celebration);
       });
       
+      // Sort client-side by date
+      celebrations.sort((a, b) => {
+        const dateA = a.date instanceof Date ? a.date : (a.date as Timestamp)?.toDate() || new Date(0);
+        const dateB = b.date instanceof Date ? b.date : (b.date as Timestamp)?.toDate() || new Date(0);
+        return dateA.getTime() - dateB.getTime();
+      });
+      
       this.celebrations.set(celebrations);
     } catch (error) {
       console.error('Error loading celebrations:', error);
+      console.error('Full error details:', JSON.stringify(error, null, 2));
     } finally {
       this.loading.set(false);
     }
@@ -96,7 +103,7 @@ export class CelebrationsSection implements OnInit {
     if (!date) return '';
     
     const d = date instanceof Date ? date : (date as Timestamp).toDate();
-    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    return d.toLocaleDateString('nl-NL', { weekday: 'long', month: 'long', day: 'numeric' });
   }
 
   isHighlighted(celebration: Celebration): boolean {
