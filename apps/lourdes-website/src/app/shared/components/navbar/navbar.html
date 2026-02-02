@@ -21,7 +21,7 @@
       </div>
       <ul
         tabindex="-1"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+        class="menu menu-sm dropdown-content bg-black rounded-box z-1 mt-3 w-52 p-2 shadow"
       >
         @for(data of routeItems; track data.label) { @if(data.children?.length)
         {
@@ -54,7 +54,7 @@
         } }
       </ul>
     </div>
-    <div class="ml-12">
+    <div class="ml-12 hidden sm:block">
       <img alt="logo" class="w-[90px]" src="/assets/images/logo.png" />
     </div>
   </div>
@@ -91,6 +91,7 @@
     </ul>
   </div>
   <div class="navbar-end">
+    <h3 class="mr-2">Translate:</h3>
     <div id="google_translate_element" class="mr-5"></div>
     <a
       (click)="goToDonate()"
