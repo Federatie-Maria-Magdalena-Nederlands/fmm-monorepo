@@ -154,6 +154,12 @@ export const appRoutes: Route[] = [
     canActivate: [authGuard],
   },
   {
+    path: 'magazines',
+    loadComponent: () =>
+      import('./pages/magazine-pages/magazines/magazines').then((m) => m.Magazines),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
