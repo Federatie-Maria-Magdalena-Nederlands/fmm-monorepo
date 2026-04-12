@@ -47,6 +47,8 @@
               <th>Email</th>
               <th>Phone</th>
               <th>Submitted At</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -60,6 +62,48 @@
               <td>{{ getFieldValue(registration.formData, 'email') }}</td>
               <td>{{ getFieldValue(registration.formData, 'phoneNumber') }}</td>
               <td>{{ formatDate(registration.submittedAt) }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="getStatusClass(registration.status)"
+                >
+                  {{ registration.status || 'pending' }}
+                </span>
+              </td>
+              <td>
+                <div class="flex flex-wrap gap-2">
+                  <button
+                    class="btn btn-xs btn-outline btn-success"
+                    (click)="approveRegistration(registration)"
+                    [disabled]="processingId"
+                  >
+                    @if (processingId === registration.id) {
+                    <span class="loading loading-spinner loading-xs mr-1"></span>
+                    }
+                    Approve
+                  </button>
+                  <button
+                    class="btn btn-xs btn-outline btn-error"
+                    (click)="rejectRegistration(registration)"
+                    [disabled]="processingId"
+                  >
+                    @if (processingId === registration.id) {
+                    <span class="loading loading-spinner loading-xs mr-1"></span>
+                    }
+                    Reject
+                  </button>
+                  <button
+                    class="btn btn-xs btn-outline"
+                    (click)="deleteRegistration(registration)"
+                    [disabled]="processingId"
+                  >
+                    @if (processingId === registration.id) {
+                    <span class="loading loading-spinner loading-xs mr-1"></span>
+                    }
+                    Delete
+                  </button>
+                </div>
+              </td>
             </tr>
             }
           </tbody>

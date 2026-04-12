@@ -77,6 +77,8 @@ export interface BibleCourseRegistration {
   id: string;
   formData: Record<string, any>;
   submittedAt: Date | Timestamp | string;
+  status?: 'pending' | 'approved' | 'rejected';
+  processedAt?: Date | Timestamp;
 }
 
 export interface MemberSubmission {
@@ -709,6 +711,22 @@ export class FirestoreService {
     });
 
     return registrations;
+  }
+
+  async updateBibleCourseStatus(
+    id: string,
+    status: 'approved' | 'rejected',
+  ): Promise<void> {
+    const docRef = doc(this.db, this.BIBLE_COURSE_COLLECTION, id);
+    await updateDoc(docRef, {
+      status,
+      processedAt: new Date(),
+    });
+  }
+
+  async deleteBibleCourseRegistration(id: string): Promise<void> {
+    const docRef = doc(this.db, this.BIBLE_COURSE_COLLECTION, id);
+    await deleteDoc(docRef);
   }
 
   /**

@@ -20,6 +20,7 @@ export class BibleCourseRegistrations implements OnInit {
   public filteredRegistrations: BibleCourseRegistration[] = [];
   public loading = true;
   public searchTerm = '';
+  public processingId: string | null = null;
 
   async ngOnInit(): Promise<void> {
     await this.loadRegistrations();
@@ -59,6 +60,82 @@ export class BibleCourseRegistrations implements OnInit {
 
   formatDate(date: any): string {
     return this.firestoreService.formatDate(date);
+  }
+
+  getStatusClass(status?: string): string {
+    switch (status) {
+      case 'approved':
+        return 'badge-success';
+      case 'rejected':
+        return 'badge-error';
+      default:
+        return 'badge-warning';
+    }
+  }
+
+  async approveRegistration(registration: BibleCourseRegistration): Promise<void> {
+    if (this.processingId) return;
+
+    this.processingId = registration.id;
+    try {
+      await this.firestoreService.updateBibleCourseStatus(
+        registration.id,
+        'approved',
+      );
+      registration.status = 'approved';
+      registration.processedAt = new Date();
+    } catch (error) {
+      console.error('Error approving registration:', error);
+    } finally {
+      this.processingId = null;
+      this.cd.detectChanges();
+    }
+  }
+
+  async rejectRegistration(registration: BibleCourseRegistration): Promise<void> {
+    if (this.processingId) return;
+
+    this.processingId = registration.id;
+    try {
+      await this.firestoreService.updateBibleCourseStatus(
+        registration.id,
+        'rejected',
+      );
+      registration.status = 'rejected';
+      registration.processedAt = new Date();
+    } catch (error) {
+      console.error('Error rejecting registration:', error);
+    } finally {
+      this.processingId = null;
+      this.cd.detectChanges();
+    }
+  }
+
+  async deleteRegistration(registration: BibleCourseRegistration): Promise<void> {
+    if (this.processingId) return;
+
+    const confirmed = confirm(
+      'Are you sure you want to delete this registration? This action cannot be undone.',
+    );
+
+    if (!confirmed) return;
+
+    this.processingId = registration.id;
+    try {
+      await this.firestoreService.deleteBibleCourseRegistration(
+        registration.id,
+      );
+      this.registrations = this.registrations.filter(
+        (item) => item.id !== registration.id,
+      );
+      this.applyFilters();
+    } catch (error) {
+      console.error('Error deleting registration:', error);
+      alert('Failed to delete registration. Please try again.');
+    } finally {
+      this.processingId = null;
+      this.cd.detectChanges();
+    }
   }
 
   getFullName(formData: Record<string, any>): string {
