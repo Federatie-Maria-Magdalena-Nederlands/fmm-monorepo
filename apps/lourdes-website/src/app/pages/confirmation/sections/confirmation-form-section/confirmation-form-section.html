@@ -145,7 +145,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Gender <span class="text-red-600">*</span></span
+                >Geslacht <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -349,19 +349,19 @@
         @if(currentStep === 2) {
         <div class="space-y-6">
           <h3 class="text-2xl font-bold text-gray-800 mb-6">
-            Mother's Information
+            Informatie Moeder
           </h3>
 
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's surname <span class="text-red-600">*</span></span
+                >Achternaam moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherSurname"
-              placeholder="Enter mother's surname"
+              placeholder="Voer achternaam moeder in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherSurname')?.invalid &&
@@ -372,7 +372,7 @@
             confirmationForm.get('motherSurname')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's surname is required</span
+                >Achternaam moeder is verplicht</span
               >
             </label>
             }
@@ -381,13 +381,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's first names <span class="text-red-600">*</span></span
+                >Voornamen moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherFirstNames"
-              placeholder="Enter mother's first names"
+              placeholder="Voer voornamen moeder in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherFirstNames')?.invalid &&
@@ -398,7 +398,7 @@
             confirmationForm.get('motherFirstNames')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's first names are required</span
+                >Voornamen moeder zijn verplicht</span
               >
             </label>
             }
@@ -407,7 +407,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's date of birth
+                >Geboortedatum moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
@@ -424,7 +424,7 @@
             confirmationForm.get('motherDOB')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's date of birth is required</span
+                >Geboortedatum moeder is verplicht</span
               >
             </label>
             }
@@ -433,14 +433,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's place of birth
+                >Geboorteplaats moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherPlaceOfBirth"
-              placeholder="Enter place of birth"
+              placeholder="Voer geboorteplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherPlaceOfBirth')?.invalid &&
@@ -451,7 +451,7 @@
             confirmationForm.get('motherPlaceOfBirth')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's place of birth is required</span
+                >Geboorteplaats moeder is verplicht</span
               >
             </label>
             }
@@ -460,7 +460,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother baptized? <span class="text-red-600">*</span></span
+                >Moeder gedoopt? <span class="text-red-600">*</span></span
               >
             </label>
             <div class="flex gap-6">
@@ -471,7 +471,7 @@
                   value="Yes"
                   class="radio radio-warning"
                 />
-                <span class="label-text">Yes</span>
+                <span class="label-text">Ja</span>
               </label>
               <label class="cursor-pointer flex items-center gap-2">
                 <input
@@ -480,14 +480,14 @@
                   value="No"
                   class="radio radio-warning"
                 />
-                <span class="label-text">No</span>
+                <span class="label-text">Nee</span>
               </label>
             </div>
             @if(confirmationForm.get('motherBaptized')?.invalid &&
             confirmationForm.get('motherBaptized')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Please select an option</span
+                >Selecteer een optie</span
               >
             </label>
             }
@@ -497,7 +497,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's baptism date <span class="text-red-600">*</span></span
+                >Doopdatum moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -513,7 +513,7 @@
             confirmationForm.get('motherBaptismDate')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's baptism date is required</span
+                >Doopdatum moeder is verplicht</span
               >
             </label>
             }
@@ -522,14 +522,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Baptismal place of mother
+                >Doopplaats moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherBaptismPlace"
-              placeholder="Enter baptismal place"
+              placeholder="Voer doopplaats in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherBaptismPlace')?.invalid &&
@@ -540,7 +540,7 @@
             confirmationForm.get('motherBaptismPlace')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's baptismal place is required</span
+                >Doopplaats moeder is verplicht</span
               >
             </label>
             }
@@ -549,7 +549,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's baptismal certificate</span
+                >Doopakte moeder</span
               >
             </label>
             <input
@@ -561,7 +561,7 @@
             @if(selectedMotherCertificate) {
             <label class="label">
               <span class="label-text-alt text-success"
-                >Selected: {{ selectedMotherCertificate }}</span
+                >Geselecteerd: {{ selectedMotherCertificate }}</span
               >
             </label>
             }
@@ -571,13 +571,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's nationality <span class="text-red-600">*</span></span
+                >Nationaliteit moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherNationality"
-              placeholder="Enter nationality"
+              placeholder="Voer nationaliteit in"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherNationality')?.invalid &&
@@ -588,7 +588,7 @@
             confirmationForm.get('motherNationality')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's nationality is required</span
+                >Nationaliteit moeder is verplicht</span
               >
             </label>
             }
@@ -597,13 +597,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's address <span class="text-red-600">*</span></span
+                >Adres moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherAddress"
-              placeholder="Street name and number"
+              placeholder="Straatnaam en huisnummer"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherAddress')?.invalid &&
@@ -614,7 +614,7 @@
             confirmationForm.get('motherAddress')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's address is required</span
+                >Adres moeder is verplicht</span
               >
             </label>
             }
@@ -623,14 +623,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Postal code and city of mother
+                >Postcode en woonplaats moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="motherPostalCity"
-              placeholder="Zip code and city"
+              placeholder="Postcode en plaats"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherPostalCity')?.invalid &&
@@ -641,7 +641,7 @@
             confirmationForm.get('motherPostalCity')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Postal code and city are required</span
+                >Postcode en plaats zijn verplicht</span
               >
             </label>
             }
@@ -650,7 +650,7 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mobile phone mother <span class="text-red-600">*</span></span
+                >Mobiele telefoon moeder <span class="text-red-600">*</span></span
               >
             </label>
             <input
@@ -667,7 +667,7 @@
             confirmationForm.get('motherPhone')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Mother's phone number is required</span
+                >Telefoonnummer moeder is verplicht</span
               >
             </label>
             }
@@ -676,14 +676,14 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Mother's email address
+                >E-mailadres moeder
                 <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="email"
               formControlName="motherEmail"
-              placeholder="mother.email@example.com"
+              placeholder="moeder.email@voorbeeld.nl"
               class="input input-bordered w-full"
               [class.input-error]="
                 confirmationForm.get('motherEmail')?.invalid &&
@@ -902,7 +902,7 @@
             confirmationForm.get('fatherNationality')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Father's nationality is required</span
+                >Nationaliteit vader is verplicht</span
               >
             </label>
             }

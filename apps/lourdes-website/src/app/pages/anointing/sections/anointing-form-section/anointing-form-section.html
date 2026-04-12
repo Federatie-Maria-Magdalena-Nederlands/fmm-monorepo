@@ -53,7 +53,7 @@
             anointingForm.get('senderName')?.touched) {
             <label class="label">
               <span class="label-text-alt text-error"
-                >Sender's name is required</span
+                >Naam afzender is verplicht</span
               >
             </label>
             }
@@ -62,13 +62,13 @@
           <div class="form-control">
             <label class="label">
               <span class="label-text font-semibold text-gray-700"
-                >Sender's last name <span class="text-red-600">*</span></span
+                >Achternaam afzender <span class="text-red-600">*</span></span
               >
             </label>
             <input
               type="text"
               formControlName="senderLastName"
-              placeholder="Enter your last name"
+              placeholder="Voer uw achternaam in"
               class="input input-bordered w-full"
               [class.input-error]="
                 anointingForm.get('senderLastName')?.invalid &&
