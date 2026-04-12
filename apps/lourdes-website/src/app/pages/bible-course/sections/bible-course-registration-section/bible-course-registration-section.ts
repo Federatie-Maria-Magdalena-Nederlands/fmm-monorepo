@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
+import { FirebaseService } from '../../../../shared/services/firebase.service';
 
 const COMPONENTS = [AbstractBackground];
 
@@ -15,12 +16,16 @@ const COMPONENTS = [AbstractBackground];
   templateUrl: './bible-course-registration-section.html',
 })
 export class BibleCourseRegistrationSection {
+  private readonly collectionName = 'bible-course';
   public registrationForm: FormGroup;
   public isSubmitting = false;
   public submitSuccess = false;
   public submitError = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private firebaseService: FirebaseService,
+  ) {
     this.registrationForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
@@ -32,7 +37,7 @@ export class BibleCourseRegistrationSection {
     });
   }
 
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     if (this.registrationForm.invalid) {
       this.registrationForm.markAllAsTouched();
       return;
@@ -42,12 +47,12 @@ export class BibleCourseRegistrationSection {
     this.submitSuccess = false;
     this.submitError = false;
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', this.registrationForm.value);
+    try {
+      await this.firebaseService.addDocument(this.collectionName, {
+        formData: this.registrationForm.value,
+        submittedAt: new Date().toISOString(),
+      });
 
-      // Simulate successful submission
-      this.isSubmitting = false;
       this.submitSuccess = true;
       this.registrationForm.reset();
 
@@ -55,6 +60,11 @@ export class BibleCourseRegistrationSection {
       setTimeout(() => {
         this.submitSuccess = false;
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Bible course registration submission failed:', error);
+      this.submitError = true;
+    } finally {
+      this.isSubmitting = false;
+    }
   }
 }

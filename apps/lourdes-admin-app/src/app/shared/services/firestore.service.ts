@@ -73,6 +73,12 @@ export interface ContactUsSubmission {
   notes?: string;
 }
 
+export interface BibleCourseRegistration {
+  id: string;
+  formData: Record<string, any>;
+  submittedAt: Date | Timestamp | string;
+}
+
 export interface MemberSubmission {
   id: string;
   formData: Record<string, any>;
@@ -145,6 +151,7 @@ export class FirestoreService {
   private readonly DONATIONS_COLLECTION = 'donations-submissions';
   private readonly VOLUNTEERS_COLLECTION = 'join-us-submissions';
   private readonly CONTACT_US_COLLECTION = 'contact-us-submissions';
+  private readonly BIBLE_COURSE_COLLECTION = 'bible-course';
   private readonly ACTIVITIES_COLLECTION = 'activities';
   private readonly LIVE_CELEBRATIONS_COLLECTION = 'live-celebrations';
   private readonly BLOGS_COLLECTION = 'blogs';
@@ -685,6 +692,23 @@ export class FirestoreService {
     });
 
     return submissions;
+  }
+
+  // === BIBLE COURSE REGISTRATIONS METHODS ===
+  async getAllBibleCourseRegistrations(): Promise<BibleCourseRegistration[]> {
+    const collectionRef = collection(this.db, this.BIBLE_COURSE_COLLECTION);
+    const q = query(collectionRef, orderBy('submittedAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    const registrations: BibleCourseRegistration[] = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      registrations.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      } as BibleCourseRegistration);
+    });
+
+    return registrations;
   }
 
   /**

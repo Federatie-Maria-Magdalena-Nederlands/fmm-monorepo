@@ -1,0 +1,100 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">
+        Bible Course Registrations
+      </h1>
+      <p class="text-gray-600">View submitted Bible course registrations</p>
+    </div>
+
+    <!-- Search -->
+    <div class="card bg-white shadow-md rounded-xl mb-6">
+      <div class="card-body p-6">
+        <div class="grid grid-cols-1 gap-4">
+          <div>
+            <label class="label">
+              <span class="label-text font-semibold">Search</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Search registrations..."
+              class="input input-bordered w-full"
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+    <div class="flex justify-center items-center py-12">
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+    }
+
+    <!-- Registrations Table -->
+    @if (!loading && filteredRegistrations.length > 0) {
+    <div class="card bg-white shadow-md rounded-xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead class="bg-gray-100">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Submitted At</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (registration of filteredRegistrations; track registration.id)
+            {
+            <tr class="hover:bg-gray-50">
+              <td class="font-mono text-sm">
+                {{ registration.id.substring(0, 8) }}...
+              </td>
+              <td>{{ getFullName(registration.formData) }}</td>
+              <td>{{ getFieldValue(registration.formData, 'email') }}</td>
+              <td>{{ getFieldValue(registration.formData, 'phoneNumber') }}</td>
+              <td>{{ formatDate(registration.submittedAt) }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && filteredRegistrations.length === 0) {
+    <div class="card bg-white shadow-md rounded-xl">
+      <div class="card-body p-12 text-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-16 w-16 mx-auto text-gray-400 mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 11c0 3.866-3.582 7-8 7a9.985 9.985 0 01-4-.8L4 12c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7z"
+          />
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+          No Registrations Found
+        </h3>
+        <p class="text-gray-600">
+          @if (searchTerm) { Try adjusting your search to see more results. }
+          @else { No Bible course registrations have been received yet. }
+        </p>
+      </div>
+    </div>
+    }
+  </div>
+</div>

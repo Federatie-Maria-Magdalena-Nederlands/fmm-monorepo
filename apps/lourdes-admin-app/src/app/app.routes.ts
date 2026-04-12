@@ -56,6 +56,14 @@ export const appRoutes: Route[] = [
     canActivate: [authGuard],
   },
   {
+    path: 'bible-course-registrations',
+    loadComponent: () =>
+      import(
+        './pages/bible-course-page/bible-course-registrations/bible-course-registrations'
+      ).then((m) => m.BibleCourseRegistrations),
+    canActivate: [authGuard],
+  },
+  {
     path: 'volunteers',
     loadComponent: () =>
       import('./pages/volunteers-page/volunteers/volunteers').then((m) => m.Volunteers),
