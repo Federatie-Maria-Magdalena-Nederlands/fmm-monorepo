@@ -38,6 +38,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'our-activities/:id',
+    loadComponent: () =>
+      import('./pages/activity-detail/activity-detail').then(
+        (m) => m.ActivityDetail,
+      ),
+  },
+  {
     path: 'live-streaming-celebrations',
     loadComponent: () =>
       import('./pages/live-streaming/live-streaming').then(

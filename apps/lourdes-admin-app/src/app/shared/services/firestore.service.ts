@@ -94,7 +94,8 @@ export interface Activity {
   id: string;
   title: string;
   description: string;
-  image?: string;
+  image?: string; // deprecated: use images instead
+  images?: string[];
   body: string;
   date?: Date | Timestamp;
   time?: string;
@@ -961,32 +962,39 @@ export class FirestoreService {
    * Delete an activity
    */
   async deleteActivity(id: string): Promise<void> {
-    // Get the activity first to retrieve the image URL
+    // Get the activity first to retrieve the image URLs
     const activity = await this.getActivityById(id);
-    
-    // Delete image from storage if it exists
-    if (activity?.image) {
-      try {
-        const storage = getStorage();
-        // Extract the path from the Firebase Storage URL
-        // URL format: https://firebasestorage.googleapis.com/v0/b/{bucket}/o/{path}?alt=media&token={token}
-        const imageUrl = activity.image;
-        if (imageUrl.includes('firebase')) {
-          const pathStart = imageUrl.indexOf('/o/') + 3;
-          const pathEnd = imageUrl.indexOf('?');
-          if (pathStart > 2 && pathEnd > pathStart) {
-            const encodedPath = imageUrl.substring(pathStart, pathEnd);
-            const imagePath = decodeURIComponent(encodedPath);
-            const imageRef = ref(storage, imagePath);
-            await deleteObject(imageRef);
+
+    // Delete all images from storage if they exist
+    const imageUrls = activity?.images?.length
+      ? activity.images
+      : activity?.image
+        ? [activity.image]
+        : [];
+
+    if (imageUrls.length > 0) {
+      const storage = getStorage();
+      for (const imageUrl of imageUrls) {
+        try {
+          // Extract the path from the Firebase Storage URL
+          // URL format: https://firebasestorage.googleapis.com/v0/b/{bucket}/o/{path}?alt=media&token={token}
+          if (imageUrl.includes('firebase')) {
+            const pathStart = imageUrl.indexOf('/o/') + 3;
+            const pathEnd = imageUrl.indexOf('?');
+            if (pathStart > 2 && pathEnd > pathStart) {
+              const encodedPath = imageUrl.substring(pathStart, pathEnd);
+              const imagePath = decodeURIComponent(encodedPath);
+              const imageRef = ref(storage, imagePath);
+              await deleteObject(imageRef);
+            }
           }
+        } catch (error) {
+          console.error('Error deleting image from storage:', error);
+          // Continue with other images even if one fails
         }
-      } catch (error) {
-        console.error('Error deleting image from storage:', error);
-        // Continue with document deletion even if image deletion fails
       }
     }
-    
+
     // Delete the Firestore document
     const docRef = doc(this.db, this.ACTIVITIES_COLLECTION, id);
     await deleteDoc(docRef);

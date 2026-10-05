@@ -1,0 +1,122 @@
+<!-- Activity Detail Section -->
+<section class="py-16 px-2 bg-gray-50 relative overflow-hidden min-h-screen">
+  <app-abstract-background></app-abstract-background>
+
+  <div class="max-w-5xl mx-auto relative z-10">
+    <!-- Back Button -->
+    <button class="btn btn-ghost btn-sm mb-6" (click)="goBack()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        />
+      </svg>
+      Terug naar Activiteiten
+    </button>
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="flex justify-center items-center py-20">
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-amber-600"
+      ></div>
+    </div>
+    }
+
+    <!-- Not Found State -->
+    @if (!loading() && notFound()) {
+    <div class="text-center bg-white rounded-2xl shadow-xl p-12">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">
+        Activiteit niet gevonden
+      </h2>
+      <p class="text-gray-600 mb-6">
+        Deze activiteit bestaat niet (meer) of is niet gepubliceerd.
+      </p>
+      <button
+        class="btn bg-amber-600 hover:bg-amber-700 text-white border-none"
+        (click)="goBack()"
+      >
+        Terug naar Activiteiten
+      </button>
+    </div>
+    }
+
+    <!-- Activity Content -->
+    @if (!loading() && !notFound() && activity(); as currentActivity) {
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <!-- Image Gallery -->
+      @if (getImages().length > 0) {
+      <div class="p-4 md:p-6">
+        <div class="h-64 md:h-[32rem] rounded-xl overflow-hidden mb-4 bg-gray-100">
+          <img
+            [src]="getImages()[activeImageIndex()]"
+            [alt]="currentActivity.title"
+            class="w-full h-full object-contain"
+          />
+        </div>
+        @if (getImages().length > 1) {
+        <div class="grid grid-cols-4 md:grid-cols-6 gap-3">
+          @for (imageUrl of getImages(); track imageUrl; let idx = $index) {
+          <button
+            type="button"
+            class="h-16 md:h-20 rounded-lg overflow-hidden border-2 transition-all"
+            [ngClass]="
+              idx === activeImageIndex()
+                ? 'border-amber-600'
+                : 'border-transparent opacity-70 hover:opacity-100'
+            "
+            (click)="selectImage(idx)"
+          >
+            <img
+              [src]="imageUrl"
+              [alt]="currentActivity.title"
+              class="w-full h-full object-cover"
+            />
+          </button>
+          }
+        </div>
+        }
+      </div>
+      } @else {
+      <div
+        class="h-64 md:h-96 bg-gradient-to-br from-amber-200 to-orange-200 flex items-center justify-center"
+      >
+        <app-spark-icon></app-spark-icon>
+      </div>
+      }
+
+      <div class="p-6 md:p-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          {{ currentActivity.title }}
+        </h1>
+
+        @if (formatSchedule()) {
+        <div
+          class="flex items-center gap-2 mb-6 text-amber-700 bg-amber-50 px-4 py-2 rounded-lg w-fit"
+        >
+          <app-spark-icon></app-spark-icon>
+          <span class="font-semibold">{{ formatSchedule() }}</span>
+        </div>
+        }
+
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          {{ currentActivity.description }}
+        </p>
+
+        <div
+          class="prose prose-lg max-w-none"
+          [innerHTML]="currentActivity.body"
+        ></div>
+      </div>
+    </div>
+    }
+  </div>
+</section>

@@ -100,30 +100,54 @@
             <!-- Image Upload Field -->
             <div class="form-control mb-4">
               <label class="label">
-                <span class="label-text font-semibold">Activity Image</span>
+                <span class="label-text font-semibold">Activity Images</span>
               </label>
-              
+
               <!-- File Input -->
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 class="file-input file-input-bordered w-full"
-                (change)="onFileSelected($event)" />
-              
-              <!-- Image Preview -->
-              @if (imagePreview) {
-                <div class="mt-4 relative">
-                  <img [src]="imagePreview" alt="Preview" class="w-full max-w-md rounded-lg border border-gray-300" />
-                  @if (uploading) {
-                    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
-                      <span class="loading loading-spinner loading-lg text-white"></span>
+                (change)="onFilesSelected($event)" />
+
+              <!-- Image Previews -->
+              @if (existingImages.length > 0 || newImageFiles.length > 0) {
+                <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                  @for (imageUrl of existingImages; track imageUrl) {
+                    <div class="relative group">
+                      <img [src]="imageUrl" alt="Activity image" class="w-full h-32 object-cover rounded-lg border border-gray-300" />
+                      <button
+                        type="button"
+                        class="btn btn-circle btn-xs btn-error absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        (click)="removeExistingImage(imageUrl)"
+                        title="Remove image">
+                        ✕
+                      </button>
+                    </div>
+                  }
+                  @for (newImage of newImageFiles; track newImage.preview; let idx = $index) {
+                    <div class="relative group">
+                      <img [src]="newImage.preview" alt="New image preview" class="w-full h-32 object-cover rounded-lg border border-amber-400" />
+                      <button
+                        type="button"
+                        class="btn btn-circle btn-xs btn-error absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        (click)="removeNewImage(idx)"
+                        title="Remove image">
+                        ✕
+                      </button>
+                      @if (uploading) {
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
+                          <span class="loading loading-spinner loading-sm text-white"></span>
+                        </div>
+                      }
                     </div>
                   }
                 </div>
               }
-              
+
               <label class="label">
-                <span class="label-text-alt">Upload an image for the activity</span>
+                <span class="label-text-alt">Upload one or more images for the activity</span>
               </label>
             </div>
 

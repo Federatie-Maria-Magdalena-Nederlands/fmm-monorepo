@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FirebaseService } from '../../../../shared/services/firebase.service';
 import {
   Firestore,
@@ -16,6 +17,7 @@ interface Activity {
   title: string;
   description: string;
   image?: string;
+  images?: string[];
   body: string;
   date?: Date | Timestamp;
   time?: string;
@@ -26,7 +28,7 @@ interface Activity {
 
 @Component({
   selector: 'app-upcoming-celebrations-section',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './upcoming-celebrations-section.html',
 })
 export class UpcomingCelebrationsSection implements OnInit {
@@ -83,5 +85,10 @@ export class UpcomingCelebrationsSection implements OnInit {
 
   truncateText(text: string, maxLength: number = 120): string {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  }
+
+  getCoverImage(activity: Activity): string | null {
+    if (activity.images?.length) return activity.images[0];
+    return activity.image || null;
   }
 }

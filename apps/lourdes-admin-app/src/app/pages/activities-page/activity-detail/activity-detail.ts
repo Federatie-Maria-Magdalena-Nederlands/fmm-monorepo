@@ -30,8 +30,8 @@ export class ActivityDetail implements OnInit, AfterViewInit {
   public saving = false;
   public isNewActivity = false;
   public activityId = '';
-  public selectedFile: File | null = null;
-  public imagePreview: string | null = null;
+  public existingImages: string[] = [];
+  public newImageFiles: { file: File; preview: string }[] = [];
   public uploading = false;
 
   async ngOnInit(): Promise<void> {
@@ -58,7 +58,6 @@ export class ActivityDetail implements OnInit, AfterViewInit {
     this.activityForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      image: [''],
       body: ['', Validators.required],
       date: ['', Validators.required],
       time: ['', Validators.required],
@@ -74,17 +73,18 @@ export class ActivityDetail implements OnInit, AfterViewInit {
         this.activityForm.patchValue({
           title: this.activity.title,
           description: this.activity.description,
-          image: this.activity.image || '',
           body: this.activity.body,
           date: this.activity.date ? this.formatDateForInput(this.activity.date) : '',
           time: this.activity.time || '',
           status: this.activity.status || 'draft',
         });
         
-        // Set image preview if image exists
-        if (this.activity.image) {
-          this.imagePreview = this.activity.image;
-        }
+        // Set existing images
+        this.existingImages = this.activity.images?.length
+          ? [...this.activity.images]
+          : this.activity.image
+            ? [this.activity.image]
+            : [];
         
         // Set editor content if available
         if (this.bodyEditor && this.activity.body) {
@@ -105,15 +105,10 @@ export class ActivityDetail implements OnInit, AfterViewInit {
     this.saving = true;
     try {
       const formValue = this.activityForm.value;
-      
-      // Upload image if a new file was selected
-      let imageUrl = formValue.image;
-      if (this.selectedFile) {
-        const uploadedUrl = await this.uploadImage();
-        if (uploadedUrl) {
-          imageUrl = uploadedUrl;
-        }
-      }
+
+      // Upload any newly selected images
+      const uploadedUrls = await this.uploadImages();
+      const images = [...this.existingImages, ...uploadedUrls];
 
       if (this.isNewActivity) {
         // Create new activity
@@ -121,7 +116,7 @@ export class ActivityDetail implements OnInit, AfterViewInit {
         const activityData = {
           title: formValue.title,
           description: formValue.description,
-          image: imageUrl || '',
+          images,
           body: formValue.body,
           date: formValue.date ? new Date(formValue.date) : null,
           time: formValue.time || '',
@@ -143,7 +138,7 @@ export class ActivityDetail implements OnInit, AfterViewInit {
         await this.firestoreService.updateActivity(this.activityId, {
           title: formValue.title,
           description: formValue.description,
-          image: imageUrl || '',
+          images,
           body: formValue.body,
           date: formValue.date ? new Date(formValue.date) : undefined,
           time: formValue.time || '',
@@ -152,6 +147,8 @@ export class ActivityDetail implements OnInit, AfterViewInit {
         
         await this.loadActivity(this.activityId);
       }
+
+      this.newImageFiles = [];
     } catch (error) {
       console.error('Error saving activity:', error);
     } finally {
@@ -258,38 +255,50 @@ export class ActivityDetail implements OnInit, AfterViewInit {
     this.activityForm.patchValue({ body: target.innerHTML });
   }
 
-  onFileSelected(event: Event): void {
+  onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.selectedFile = input.files[0];
-      
-      // Create image preview
+    if (!input.files || input.files.length === 0) return;
+
+    Array.from(input.files).forEach((file) => {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.imagePreview = e.target.result;
+        this.newImageFiles.push({ file, preview: e.target.result });
         this.cd.detectChanges();
       };
-      reader.readAsDataURL(this.selectedFile);
-    }
+      reader.readAsDataURL(file);
+    });
+
+    // Reset input so the same file can be reselected later if removed
+    input.value = '';
   }
 
-  async uploadImage(): Promise<string | null> {
-    if (!this.selectedFile) return null;
+  removeExistingImage(imageUrl: string): void {
+    this.existingImages = this.existingImages.filter((url) => url !== imageUrl);
+  }
+
+  removeNewImage(index: number): void {
+    this.newImageFiles.splice(index, 1);
+  }
+
+  async uploadImages(): Promise<string[]> {
+    if (this.newImageFiles.length === 0) return [];
 
     this.uploading = true;
     try {
       const storage = getStorage();
-      const timestamp = Date.now();
-      const fileName = `activities/${timestamp}_${this.selectedFile.name}`;
-      const storageRef = ref(storage, fileName);
-      
-      await uploadBytes(storageRef, this.selectedFile);
-      const downloadURL = await getDownloadURL(storageRef);
-      
-      return downloadURL;
+      const uploadPromises = this.newImageFiles.map(async ({ file }) => {
+        const timestamp = Date.now();
+        const fileName = `activities/${timestamp}_${file.name}`;
+        const storageRef = ref(storage, fileName);
+
+        await uploadBytes(storageRef, file);
+        return await getDownloadURL(storageRef);
+      });
+
+      return await Promise.all(uploadPromises);
     } catch (error) {
-      console.error('Error uploading image:', error);
-      return null;
+      console.error('Error uploading images:', error);
+      return [];
     } finally {
       this.uploading = false;
     }

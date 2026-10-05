@@ -100,6 +100,15 @@ export class Activities implements OnInit {
     }
   }
 
+  getCoverImage(activity: Activity): string | null {
+    if (activity.images?.length) return activity.images[0];
+    return activity.image || null;
+  }
+
+  getImageCount(activity: Activity): number {
+    return activity.images?.length || (activity.image ? 1 : 0);
+  }
+
   truncateText(text: string, maxLength: number = 100): string {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }

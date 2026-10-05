@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { AbstractBackground } from '../../../../shared/components/abstract-background/abstract-background';
 import { SparkIcon } from '../../../../shared/components/icons/spark-icon';
 import { FirebaseService } from '../../../../shared/services/firebase.service';
@@ -17,6 +18,7 @@ interface Activity {
   title: string;
   description: string;
   image?: string;
+  images?: string[];
   body: string;
   date?: Date | Timestamp;
   time?: string;
@@ -25,7 +27,7 @@ interface Activity {
   updatedAt?: Date | Timestamp;
 }
 
-const COMPONENTS = [AbstractBackground, SparkIcon, CommonModule];
+const COMPONENTS = [AbstractBackground, SparkIcon, CommonModule, RouterModule];
 
 @Component({
   selector: 'app-activities-section',
@@ -91,5 +93,14 @@ export class ActivitiesSection implements OnInit {
 
   truncateText(text: string, maxLength: number = 120): string {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  }
+
+  getCoverImage(activity: Activity): string | null {
+    if (activity.images?.length) return activity.images[0];
+    return activity.image || null;
+  }
+
+  getImageCount(activity: Activity): number {
+    return activity.images?.length || (activity.image ? 1 : 0);
   }
 }

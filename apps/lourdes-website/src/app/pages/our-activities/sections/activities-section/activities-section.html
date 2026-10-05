@@ -28,16 +28,22 @@
     @if (!loading() && activities().length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       @for(activity of activities(); track activity.id) {
-      <div
+      <a
+        [routerLink]="['/our-activities', activity.id]"
         class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300"
       >
-        <figure class="h-48 overflow-hidden">
-          @if (activity.image) {
+        <figure class="h-48 overflow-hidden relative">
+          @if (getCoverImage(activity)) {
           <img
-            [src]="activity.image"
+            [src]="getCoverImage(activity)"
             [alt]="activity.title"
             class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
           />
+          @if (getImageCount(activity) > 1) {
+          <span class="badge badge-neutral absolute bottom-2 right-2">
+            +{{ getImageCount(activity) - 1 }}
+          </span>
+          }
           } @else {
           <div class="w-full h-full bg-gradient-to-br from-amber-200 to-orange-200 flex items-center justify-center">
             <app-spark-icon></app-spark-icon>
@@ -58,7 +64,7 @@
           </div>
           }
         </div>
-      </div>
+      </a>
       }
     </div>
     }
